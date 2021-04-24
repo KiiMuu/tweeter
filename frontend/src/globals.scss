@@ -1,0 +1,18 @@
+@import './theme/colors.scss';
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+    scroll-behavior: smooth;
+    padding: 0;
+    margin: 0;
+}

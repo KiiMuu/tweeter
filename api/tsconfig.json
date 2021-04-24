@@ -1,0 +1,21 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "ES2018",
+        "module": "commonjs",
+        "outDir": "./dist",
+        "rootDir": "./app",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+    },
+    "include": [
+        "app/**/*.ts",
+    ],
+    "exclude": [
+        "typings/*",
+        "node_modules",
+        ".vscode",
+    ]
+}
