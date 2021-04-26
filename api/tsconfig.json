@@ -9,6 +9,7 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
+        "typeRoots": ["app/@types", "node_modules/@types"],
     },
     "include": [
         "app/**/*.ts",

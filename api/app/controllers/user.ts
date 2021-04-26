@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/User';
-import { IUser } from '../interfaces/user';
+// import { IUser } from '../interfaces/user';
 import generateToken from '../helpers/generateToken';
-import { BAD_REQUEST, CREATED, OK } from '../constants';
+import { BAD_REQUEST, CREATED, OK, SERVER_ERROR } from '../constants';
 
-const signUp = async (req: Request, res: Response): Promise<{}> => {
+const signUp = async (req: Request, res: Response): Promise<object | string> => {
     try {
         const { 
             name, username, email, password,
-        } = req.body as Pick<IUser, 'name' | 'username' | 'email' | 'password'>;
+        } = req.body;
 
         const isUserExists = await User.findOne({ $or: [{email}, {username}] });
 
@@ -21,26 +21,23 @@ const signUp = async (req: Request, res: Response): Promise<{}> => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createdUser: IUser = await new User({
+        const createdUser = await new User({
             name, username, email, password: hashedPassword,
         }).save();
 
-        return res.status(CREATED).json({
-            createdUser,
-            token: generateToken(createdUser._id),
-        });
+        return res.status(CREATED).json({ token: generateToken(createdUser._id) });
     } catch (error) {
-        return res.status(BAD_REQUEST).json({
+        return res.status(SERVER_ERROR).json({
             message: error.message,
         });
     }
 }
 
-const signIn = async (req: Request, res: Response): Promise<{}> => {
+const signIn = async (req: Request, res: Response): Promise<object | string> => {
     try {
         const { 
             email, password,
-        } = req.body as Pick<IUser, 'email' | 'password'>;
+        } = req.body;
 
         const user = await User.findOne({ email });
 
@@ -53,18 +50,26 @@ const signIn = async (req: Request, res: Response): Promise<{}> => {
         const isMatch = await bcrypt.compare(password, user?.password);
         
         if (isMatch) {
-            return res.status(OK).json({
-                user,
-                token: generateToken(user._id),
-            });
+            return res.status(OK).json({ token: generateToken(user._id) });
         } else {
             return res.status(BAD_REQUEST).json({
                 message: 'Invalid user password',
             });
         }
     } catch (error) {
-        console.log(error);
-        return res.status(BAD_REQUEST).json({
+        return res.status(SERVER_ERROR).json({
+            message: error.message,
+        });
+    }
+}
+
+const getCurrentUser = async (req: Request, res: Response): Promise<object | string> => {
+    try {
+        const user = await User.findOne({ email: req.user?.email }).select('-password');
+
+        return res.json(user);
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
             message: error.message,
         });
     }
@@ -73,4 +78,5 @@ const signIn = async (req: Request, res: Response): Promise<{}> => {
 export {
     signUp,
     signIn,
+    getCurrentUser,
 }

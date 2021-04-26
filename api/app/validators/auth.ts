@@ -15,7 +15,7 @@ const validateSignUp = [
     .withMessage('Username must has at least 2 characters long.')
     .trim()
     .isLowercase()
-    .withMessage('Username must contain small letter only.'),
+    .withMessage('Username must contain small letters only.'),
     check('email')
     .not()
     .isEmpty()

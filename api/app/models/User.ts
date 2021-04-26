@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { IUser } from '../interfaces/user';
 
 const UserSchema: Schema = new Schema({
     name: {
@@ -27,6 +26,7 @@ const UserSchema: Schema = new Schema({
     },
     profilePic: { 
         type: String, 
+        default: 'https://res.cloudinary.com/ndsnvf0/image/upload/v1619469737/tweeter/17317730_tephvk.jpg',
     },
     coverPhoto: { 
         type: String 
@@ -35,6 +35,6 @@ const UserSchema: Schema = new Schema({
     timestamps: true,
 });
 
-const User = model<IUser>('User', UserSchema);
+const User = model('User', UserSchema);
 
 export default User;

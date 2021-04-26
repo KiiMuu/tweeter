@@ -27,6 +27,7 @@ const UserSchema = new mongoose_1.Schema({
     },
     profilePic: {
         type: String,
+        default: 'https://res.cloudinary.com/ndsnvf0/image/upload/v1619469737/tweeter/17317730_tephvk.jpg',
     },
     coverPhoto: {
         type: String

@@ -1,10 +1,3 @@
-import { Document } from 'mongoose';
-
-export interface IUser extends Document {
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-    profilePic: string,
-    coverPhoto: string,
+export interface IDataStoredInToken {
+    id: string;
 }
