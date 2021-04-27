@@ -6,7 +6,7 @@ interface AuthState {
     error: string | null;
     token?: string | null;
     userInfo?: object;
-    isAuth: boolean;
+    isAuth?: boolean;
 }
 
 const initialAuthState: AuthState = {
@@ -28,7 +28,6 @@ const authReducer = (
                 loading: true,
                 error: null,
                 token: null,
-                isAuth: false,
             }
         case SignUpType.SIGNUP_SUCCESS:
         case SignInType.SIGNIN_SUCCESS:

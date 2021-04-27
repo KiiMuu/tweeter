@@ -8,9 +8,12 @@ const GlobalStyles = createGlobalStyle`
         --grayColor: #F9FAFB;
         --lightColor: #FFF;
         --darkColor: #111827;
+        --grayDark: #bdb9b9;
 
         // * spaces
         // * common
+        --br: 3px;
+        /* --bs: 3px; */
     }
     *,
     *:before,

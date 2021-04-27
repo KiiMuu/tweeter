@@ -115,7 +115,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
             error: state.error,
             token: state.token!,
             userInfo: state.userInfo!,
-            isAuth: state.isAuth,
+            isAuth: state.isAuth!,
             signUp,
             signIn,
             getCurrentUser,
