@@ -13,6 +13,8 @@ const GlobalStyles = createGlobalStyle`
         // * spaces
         // * common
         --br: 3px;
+        --borderColor: #f0ebeb;
+        --paddingLeftRight: 20px;
         /* --bs: 3px; */
     }
     *,

@@ -1,8 +1,15 @@
+import { Fragment } from 'react';
+import { PageTitle } from '../../styles/headings';
+import CreateTweet from './CreateTweet';
+import Tweets from './Tweets';
+
 const NewsFeed: React.FC = () => {
     return (
-        <div>
-            NewsFeed
-        </div>
+        <Fragment>
+            <PageTitle>Home</PageTitle>
+            <CreateTweet />
+            <Tweets />
+        </Fragment>
     )
 }
 

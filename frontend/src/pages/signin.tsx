@@ -121,9 +121,9 @@ const Signin: React.FC = () => {
                                         variant='outlined'
                                         size='large'>
                                         <Link 
-                                            to='/reset/password'
+                                            to='/signup'
                                             style={{ textDecoration: 'none', color: '#1da1f2' }}
-                                        >Reset Password</Link>
+                                        >Sign Up?</Link>
                                     </Button>
                                 </FormAction>
                             </div>
