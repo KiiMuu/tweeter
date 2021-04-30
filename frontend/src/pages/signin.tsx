@@ -54,7 +54,6 @@ const Signin: React.FC = () => {
                     <Container maxWidth='xl'>
                         <Snackbar 
                             open={error ? true : false}
-                            autoHideDuration={6000} 
                             anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                             <Alert severity='error'>
                                 {error}

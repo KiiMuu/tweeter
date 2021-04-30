@@ -1,18 +1,86 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import Picker from 'emoji-picker-react';
 import AuthContext from '../../context/contexts/authContext';
+import TweetaContext from '../../context/contexts/tweetaContext';
+import FileUpload from '../forms/FileUpload';
+import Snackbar from '../alerts/SnackBar';
+import useSnackBar from '../../hooks/useSnackBar';
 
 import { TweetForm } from '../../styles/home';
+import { Spin } from '../../styles/spinners';
 
 import { Button, Divider } from '@material-ui/core';
 import { FaSmile } from 'react-icons/fa';
-import { BsImageFill } from 'react-icons/bs';
+import { VscClose } from 'react-icons/vsc';
+
+interface Image {
+    public_id: string,
+    url: string,
+}
 
 const CreateTweet: React.FC = () => {
+    const [content, setContent] = useState<string>('');
+    const [images, setImages] = useState<Image[]>([]);
+    const [pickerVisible, setPickerVisible] = useState<boolean>(false);
+    
+    const { open, setOpen, handleClose } = useSnackBar();
     const { userInfo } = useContext(AuthContext);
+    const { 
+        error, 
+        tweetaCreatesuccess, 
+        loading,
+        createTweeta,
+        removeTweetaImgs,
+    } = useContext(TweetaContext);
+
+    const setInput = (setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setter(e.currentTarget.value);
+    }
+
+    const handleCreateTweet = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        createTweeta({ content, images });
+    }
+
+    const handleRemove = (id: string) => {
+        removeTweetaImgs(id);
+
+        let filteredImgs = images.filter(img => img.public_id !== id);
+
+        setImages(filteredImgs);
+    }
+
+    const onEmojiClick = (e: React.MouseEvent<Element, MouseEvent>, emojiObject: any) => {
+        e.preventDefault();
+        setPickerVisible(false);
+        setContent(`${content}${emojiObject.emoji}`);
+    }
+
+    useEffect(() => {
+        if (error) {
+            setOpen(true);
+        }
+
+        if (tweetaCreatesuccess) {
+            setContent('');
+            setImages([]);
+            setOpen(true);
+        }
+        // eslint-disable-next-line
+    }, [error, tweetaCreatesuccess]);
+
+    console.log({images})
 
     return (
-        <TweetForm>
+        <TweetForm onSubmit={handleCreateTweet}>
+            <Snackbar 
+                open={open}
+                handleClose={handleClose}
+                autoHideDuration={3000}
+                message={tweetaCreatesuccess ? 'Tweet has been posted' : error!}
+            />
             <div className='userPhoto'>
                 <Link to='/profile'>
                     <img 
@@ -23,37 +91,48 @@ const CreateTweet: React.FC = () => {
             </div>
             <div className='formContent'>
                 <div className='formBox'>
-                    <textarea placeholder="What's happening?" />
+                    <textarea 
+                        placeholder="What's happening?" 
+                        value={content}
+                        onChange={setInput(setContent)}
+                    />
+                </div>
+                <div className='tweetaImages'>
+                    {loading ? <div className='spinner'><Spin></Spin></div> : (
+                        images?.map(img => (
+                            <div className='imgBox' key={img?.public_id}>
+                                <span>
+                                    <VscClose 
+                                        onClick={() => handleRemove(img?.public_id)} 
+                                    />
+                                </span>
+                                <img
+                                    src={img?.url}
+                                    alt={img?.url}
+                                />
+                            </div>
+                        ))
+                    )}
                 </div>
                 <Divider />
                 <div className='formOptions'>
                     <div className='options'>
                         <div className='upload'>
-                            <input
-                                style={{ display: 'none' }}
-                                accept="image/*"
-                                id='contained-button-file'
-                                multiple
-                                type='file'
-                            />
-                            <label htmlFor='contained-button-file'>
-                                <Button 
-                                    variant='text'
-                                    color='primary' 
-                                    component='span'
-                                    size='small'>
-                                    <BsImageFill />
-                                </Button>
-                            </label>
+                            <FileUpload images={images} setImages={setImages} />
                         </div>
                         <div className='addEmoji'>
-                            <Button 
-                                variant='text'
-                                color='primary' 
-                                component='span'
-                                size='small'>
+                            <span 
+                                onClick={() => {
+                                    setPickerVisible(!pickerVisible);
+                                }}
+                            >
                                 <FaSmile />
-                            </Button>
+                            </span>
+                            {pickerVisible ? (
+                                <div className='EmojiPicker'>
+                                    <Picker native={true} onEmojiClick={onEmojiClick} />
+                                </div>
+                            ) : null}
                         </div>
                     </div>
                     <div className='submitButton'>
@@ -67,7 +146,8 @@ const CreateTweet: React.FC = () => {
                             disableElevation
                             size='small'
                             color='primary'
-                            type='submit'>
+                            type='submit'
+                            disabled={!content && !images.length}>
                             Tweet
                         </Button>
                     </div>

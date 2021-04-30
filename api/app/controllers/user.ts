@@ -67,7 +67,10 @@ const getCurrentUser = async (req: Request, res: Response): Promise<object | str
     try {
         const user = await User.findOne({ email: req.user?.email }).select('-password');
 
-        return res.json(user);
+        return res.json({
+            user,
+            token: generateToken(user._id),
+        });
     } catch (error) {
         return res.status(SERVER_ERROR).json({
             message: error.message,

@@ -61,7 +61,10 @@ const getCurrentUser = async (req, res) => {
     var _a;
     try {
         const user = await User_1.default.findOne({ email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email }).select('-password');
-        return res.json(user);
+        return res.json({
+            user,
+            token: generateToken_1.default(user._id),
+        });
     }
     catch (error) {
         return res.status(constants_1.SERVER_ERROR).json({

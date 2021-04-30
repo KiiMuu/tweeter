@@ -17,14 +17,18 @@ const app = express_1.default();
 db_1.default;
 // get routes
 const user_1 = __importDefault(require("./routes/user"));
+const tweeta_1 = __importDefault(require("./routes/tweeta"));
+const cloudinary_1 = __importDefault(require("./routes/cloudinary"));
 // middlewares
-app.use(express_1.default.json());
+app.use(express_1.default.json({ limit: '2mb' }));
 app.use(morgan_1.default('dev'));
 app.use(cors_1.default());
 app.use(helmet_1.default());
 app.use(compression_1.default());
 // use routes
 app.use('/api', user_1.default);
+app.use('/api', tweeta_1.default);
+app.use('/api', cloudinary_1.default);
 // app launching!
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

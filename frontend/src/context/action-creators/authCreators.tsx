@@ -23,7 +23,7 @@ const AuthState = ({ children }: { children: React.ReactNode }) => {
 
             const config = {
                 headers: {
-                    'Authorization': `Bearer ${userToken.token}`,
+                    'Authorization': `Bearer ${userToken?.token}`,
                 }
             }
 
