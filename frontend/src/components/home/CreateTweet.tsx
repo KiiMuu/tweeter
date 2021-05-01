@@ -27,11 +27,12 @@ const CreateTweet: React.FC = () => {
     const { open, setOpen, handleClose } = useSnackBar();
     const { userInfo } = useContext(AuthContext);
     const { 
-        error, 
-        tweetaCreatesuccess, 
-        loading,
+        tweetaCreateError, 
+        tweetaCreateSuccess, 
+        tweetaCreateLoading,
         createTweeta,
         removeTweetaImgs,
+        getTweets,
     } = useContext(TweetaContext);
 
     const setInput = (setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -59,19 +60,18 @@ const CreateTweet: React.FC = () => {
     }
 
     useEffect(() => {
-        if (error) {
+        if (tweetaCreateError) {
             setOpen(true);
         }
 
-        if (tweetaCreatesuccess) {
+        if (tweetaCreateSuccess) {
             setContent('');
             setImages([]);
             setOpen(true);
+            getTweets();
         }
         // eslint-disable-next-line
-    }, [error, tweetaCreatesuccess]);
-
-    console.log({images})
+    }, [tweetaCreateError, tweetaCreateSuccess]);
 
     return (
         <TweetForm onSubmit={handleCreateTweet}>
@@ -79,7 +79,7 @@ const CreateTweet: React.FC = () => {
                 open={open}
                 handleClose={handleClose}
                 autoHideDuration={3000}
-                message={tweetaCreatesuccess ? 'Tweet has been posted' : error!}
+                message='Tweet has been posted'
             />
             <div className='userPhoto'>
                 <Link to='/profile'>
@@ -98,7 +98,7 @@ const CreateTweet: React.FC = () => {
                     />
                 </div>
                 <div className='tweetaImages'>
-                    {loading ? <div className='spinner'><Spin></Spin></div> : (
+                    {tweetaCreateLoading ? <div className='spinner'><Spin></Spin></div> : (
                         images?.map(img => (
                             <div className='imgBox' key={img?.public_id}>
                                 <span>

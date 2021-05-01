@@ -2,31 +2,80 @@ import { createContext } from 'react';
 import { ICreateTweeta } from '../types/tweeta';
 
 type tweetaContextType = {
-    loading: boolean,
-    error: string | null,
-    tweetaCreatesuccess: boolean,
-    tweetaRemovesuccess: boolean,
-    tweetaImgAddsuccess: boolean,
-    tweets: string[],
-    images: any,
-    tweeta: any,
+    // * get tweets
+    tweetsLoading?: boolean;
+    tweetsError?: string | null;
+    tweets?: any;
+
+    // * create tweet
+    tweetaCreateLoading?: boolean;
+    tweetaCreateError?: string | null;
+    tweetaCreateSuccess?: boolean;
+    tweetaCreated?: any,
+
+    // * get single tweet
+    getSingleTweetaLoading?: boolean;
+    getSingleTweetaError?: string | null;
+    singleTweeta?: any,
+
+    // * remove tweeta
+    removeTweetaLoading?: boolean;
+    removeTweetaError?: string | null;
+    removeTweetaSuccess?: boolean,
+    removedTweeta?: object,
+
+    // * add tweeta img
+    addTweetaImgLoading?: boolean;
+    addTweetaImgError?: string | null;
+    addTweetaImgSuccess?: boolean,
+    images?: any,
+
+    // * remove tweeta img
+    removeTweetaImgLoading?: boolean;
+    removeTweetaImgError?: string | null;
+    removeTweetaImgSuccess?: boolean,
     createTweeta: (tweeta: ICreateTweeta) => any;
     addTweetaImgs: (images: object) => any,
     removeTweetaImgs: (public_id: string) => any,
+    getTweets: () => any,
 }
 
 const tweetaContextDefaultValues: tweetaContextType = {
-    loading: false,
-    error: null,
-    tweetaCreatesuccess: false,
-    tweetaRemovesuccess: false,
-    tweetaImgAddsuccess: false,
+    // * get tweets
+    tweetsLoading: false,
+    tweetsError: null,
     tweets: [],
+
+    // * create tweet
+    tweetaCreateLoading: false,
+    tweetaCreateError: null,
+    tweetaCreateSuccess: false,
+    tweetaCreated: {},
+
+    // * get single tweet
+    getSingleTweetaLoading: false,
+    getSingleTweetaError: null,
+    singleTweeta: {},
+
+    // * remove tweeta
+    removeTweetaLoading: false,
+    removeTweetaError: null,
+    removeTweetaSuccess: false,
+    removedTweeta: {},
+
+    // * add tweeta img
+    addTweetaImgLoading: false,
+    addTweetaImgError: null,
+    addTweetaImgSuccess: false,
     images: {},
-    tweeta: {},
+
+    // * remove tweeta img
+    removeTweetaImgLoading: false,
+    removeTweetaImgError: null,
     createTweeta: () => {},
     addTweetaImgs: () => {},
     removeTweetaImgs: () => {},
+    getTweets: () => [],
 };
 
 const TweetaContext = createContext<tweetaContextType>(tweetaContextDefaultValues);

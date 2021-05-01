@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
+export const NewsFeedContainer = styled.div`
+    border-right: 1px solid var(--borderColor);
+`;
+
 export const TweetForm = styled.form`
     padding: 10px var(--paddingLeftRight);
     border-bottom: 10px solid var(--grayColor);
     display: flex;
     max-height: 300px;
     position: relative;
+    margin-bottom: 20px;
     .userPhoto {
         padding-right: 15px;
         img {

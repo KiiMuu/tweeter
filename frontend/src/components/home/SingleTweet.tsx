@@ -1,7 +1,9 @@
-const SingleTweet: React.FC = () => {
+import { TweetaProps } from '../../typings';
+
+const SingleTweet: React.FC<TweetaProps> = ({ tweeta }) => {
     return (
         <div>
-            Tweeta
+            <p>{tweeta.content}</p>
         </div>
     )
 }

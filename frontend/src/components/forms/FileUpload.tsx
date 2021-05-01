@@ -17,8 +17,8 @@ interface ChildProps {
 
 const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
     const {
-        error,
-        tweetaImgAddsuccess,
+        addTweetaImgError,
+        addTweetaImgSuccess,
         addTweetaImgs,
         images: fileChunks,
     } = useContext(TweetaContext);
@@ -36,11 +36,11 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
     }
 
     useEffect(() => {
-        if (error) {
-            console.log({error});
+        if (addTweetaImgError) {
+            console.log({addTweetaImgError});
         }
 
-        if (tweetaImgAddsuccess) {
+        if (addTweetaImgSuccess) {
             let uploadedFiles = images;
 
             if (fileChunks !== undefined) {
@@ -49,7 +49,7 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 
             setImages(uploadedFiles);
         }
-    }, [error, tweetaImgAddsuccess, images, fileChunks, setImages]);
+    }, [addTweetaImgError, addTweetaImgSuccess, images, fileChunks, setImages]);
 
     return (
         <Fragment>

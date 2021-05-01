@@ -1,31 +1,20 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import TweetaContext from '../contexts/tweetaContext';
-import { tweetaReducer } from '../reducers/tweetaReducer';
+import { tweetaReducer, initialTweetaState } from '../reducers/tweetaReducer';
 import { 
     CreateTweetaType, 
     // GetSingleTweetaType, 
-    // GetTweetsType, 
     // RemoveTweetaType, 
     AddTweetaImgType,
-    RemoveTweetaImgType 
+    RemoveTweetaImgType, 
+    GetTweetsType
 } from '../types/tweeta';
 import { ICreateTweeta } from '../types/tweeta';
 import useUserInfo from '../../hooks/useUserInfo';
 
 const TweetaState = ({ children }: { children: React.ReactNode }) => {
-    const initialState = {
-        loading: false,
-        error: null,
-        tweetaCreatesuccess: false,
-        tweetaRemovesuccess: false,
-        tweetaImgAddsuccess: false,
-        tweets: [],
-        images: {},
-        tweeta: {},
-    }
-
-    const [state, dispatch] = useReducer(tweetaReducer, initialState);
+    const [state, dispatch] = useReducer(tweetaReducer, initialTweetaState);
     const { userInfo } = useUserInfo();
 
     // * actions
@@ -110,19 +99,70 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const getTweets = async () => {
+        try {
+            dispatch({
+                type: GetTweetsType.TWEETS_LIST_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${userInfo?.token}`,
+                }
+            }
+
+            const { data } = await axios.get('/tweeta/getTweets', config);
+
+            dispatch({
+                type: GetTweetsType.TWEETS_LIST_SUCCESS,
+                payload: data,
+            });
+
+        } catch (error) {
+            dispatch({
+                type: GetTweetsType.TWEETS_LIST_FAIL,
+                payload: error.response?.data.message ? error.response.data.message : error.message,
+            });
+        }
+    }
+
     return (
         <TweetaContext.Provider value={{
-            loading: state.loading!,
-            error: state.error!,
-            tweetaCreatesuccess: state.tweetaCreatesuccess!,
-            tweetaRemovesuccess: state.tweetaRemovesuccess!,
-            tweetaImgAddsuccess: state.tweetaImgAddsuccess!,
-            tweets: state.tweets!,
-            images: state.images!,
-            tweeta: state.tweeta!,
+            // * get tweets
+            tweetsLoading: state.tweetsLoading,
+            tweetsError: state.tweetsError,
+            tweets: state.tweets,
+
+            // * create tweet
+            tweetaCreateLoading: state.tweetaCreateLoading,
+            tweetaCreateError: state.tweetaCreateError,
+            tweetaCreateSuccess: state.tweetaCreateSuccess,
+            tweetaCreated: state.tweetaCreated,
+
+            // * get single tweet
+            getSingleTweetaLoading: state.getSingleTweetaLoading,
+            getSingleTweetaError: state.getSingleTweetaError,
+            singleTweeta: state.singleTweeta,
+
+            // * remove tweeta
+            removeTweetaLoading: state.removeTweetaLoading,
+            removeTweetaError: state.removeTweetaError,
+            removeTweetaSuccess: state.removeTweetaSuccess,
+            removedTweeta: state.removedTweeta,
+
+            // * add tweeta img
+            addTweetaImgLoading: state.addTweetaImgLoading,
+            addTweetaImgError: state.addTweetaImgError,
+            addTweetaImgSuccess: state.addTweetaImgSuccess,
+            images: state.images,
+
+            // * remove tweeta img
+            removeTweetaImgLoading: state.removeTweetaImgLoading,
+            removeTweetaImgError: state.removeTweetaImgError,
             createTweeta,
             addTweetaImgs,
             removeTweetaImgs,
+            getTweets,
         }}>
             {children}
         </TweetaContext.Provider>
