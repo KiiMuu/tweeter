@@ -5,7 +5,6 @@ type tweetaContextType = {
     // * get tweets
     tweetsLoading?: boolean;
     tweetsError?: string | null;
-    tweets?: any;
 
     // * create tweet
     tweetaCreateLoading?: boolean;
@@ -44,7 +43,6 @@ const tweetaContextDefaultValues: tweetaContextType = {
     // * get tweets
     tweetsLoading: false,
     tweetsError: null,
-    tweets: [],
 
     // * create tweet
     tweetaCreateLoading: false,

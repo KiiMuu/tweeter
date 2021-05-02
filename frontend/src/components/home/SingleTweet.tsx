@@ -1,10 +1,11 @@
 import { TweetaProps } from '../../typings';
+import { SingleTweeta } from '../../styles/home';
 
 const SingleTweet: React.FC<TweetaProps> = ({ tweeta }) => {
     return (
-        <div>
+        <SingleTweeta>
             <p>{tweeta.content}</p>
-        </div>
+        </SingleTweeta>
     )
 }
 

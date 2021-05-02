@@ -1,7 +1,10 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import TweetaContext from '../contexts/tweetaContext';
-import { tweetaReducer, initialTweetaState } from '../reducers/tweetaReducer';
+import { 
+    tweetaReducer, 
+    initialTweetaState,
+} from '../reducers/tweetaReducer';
 import { 
     CreateTweetaType, 
     // GetSingleTweetaType, 
@@ -37,6 +40,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
                 payload: data,
             });
 
+            return data;
         } catch (error) {
             dispatch({
                 type: CreateTweetaType.TWEETA_CREATE_FAIL,
@@ -115,9 +119,9 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             dispatch({
                 type: GetTweetsType.TWEETS_LIST_SUCCESS,
-                payload: data,
             });
 
+            return data;
         } catch (error) {
             dispatch({
                 type: GetTweetsType.TWEETS_LIST_FAIL,
@@ -131,7 +135,6 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
             // * get tweets
             tweetsLoading: state.tweetsLoading,
             tweetsError: state.tweetsError,
-            tweets: state.tweets,
 
             // * create tweet
             tweetaCreateLoading: state.tweetaCreateLoading,

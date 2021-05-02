@@ -1,29 +1,25 @@
-import { Fragment, useContext, useEffect } from 'react';
+import { Fragment, useContext } from 'react';
 import TweetaContext from '../../context/contexts/tweetaContext';
 import SingleTweet from './SingleTweet';
-import { TweetaType } from '../../typings';
+import { TweetaType, TweetsProps } from '../../typings';
 
 import { AlertStyles } from '../../styles/notifiers';
 
 import { Alert } from '@material-ui/lab';
+import { TweetaList } from '../../styles/home';
 
-const Tweets: React.FC = () => {
+const Tweets: React.FC<TweetsProps> = ({ tweets }) => {
     const {
         tweetsLoading,
         tweetsError,
-        getTweets,
-        tweets,
     } = useContext(TweetaContext);
 
-    useEffect(() => {
-        getTweets();
-        // eslint-disable-next-line
-    }, []);
-
     const showTweets = () => (
-        tweets?.map((tweeta: TweetaType) => (
-            <SingleTweet tweeta={tweeta} key={tweeta._id} />
-        ))
+        <TweetaList>
+            {tweets?.map((tweeta: TweetaType) => (
+                <SingleTweet tweeta={tweeta} key={tweeta._id} />
+            ))}
+        </TweetaList>
     )
 
     return (
@@ -31,7 +27,14 @@ const Tweets: React.FC = () => {
             {tweetsLoading ? (
                 <p>Loading...</p>
             ) : tweetsError ? (
-                <p>{`ERROR: ${tweetsError}`}</p>
+                <AlertStyles>
+                    <Alert 
+                        severity='error'
+                        icon={false}
+                    >
+                        {tweetsError}
+                    </Alert>
+                </AlertStyles>
             ) : !tweets?.length ? (
                 <AlertStyles>
                     <Alert 

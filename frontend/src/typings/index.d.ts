@@ -13,9 +13,20 @@ declare module 'myTypes' {
     interface TweetaProps {
         tweeta: TweetaType,
     }
+
+    interface TweetsProps {
+        tweets: TweetaType[],
+    }
+
+    interface CreateTweetaProps {
+        content?: string, 
+        images: object,
+    }
 }
 
 export {
     TweetaType,
     TweetaProps,
+    TweetsProps,
+    CreateTweetaProps,
 }

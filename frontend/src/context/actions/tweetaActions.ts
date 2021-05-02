@@ -27,7 +27,6 @@ interface TweetsListActionRequest {
 
 interface TweetsListActionSuccess {
     type: GetTweetsType.TWEETS_LIST_SUCCESS,
-    payload: object[],
 }
 
 interface TweetsListActionFail {

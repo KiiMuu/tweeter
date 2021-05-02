@@ -6,6 +6,7 @@ import TweetaContext from '../../context/contexts/tweetaContext';
 import FileUpload from '../forms/FileUpload';
 import Snackbar from '../alerts/SnackBar';
 import useSnackBar from '../../hooks/useSnackBar';
+import { CreateTweetaProps } from '../../typings';
 
 import { TweetForm } from '../../styles/home';
 import { Spin } from '../../styles/spinners';
@@ -19,7 +20,7 @@ interface Image {
     url: string,
 }
 
-const CreateTweet: React.FC = () => {
+const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta, fetchTweets }) => {
     const [content, setContent] = useState<string>('');
     const [images, setImages] = useState<Image[]>([]);
     const [pickerVisible, setPickerVisible] = useState<boolean>(false);
@@ -30,9 +31,7 @@ const CreateTweet: React.FC = () => {
         tweetaCreateError, 
         tweetaCreateSuccess, 
         tweetaCreateLoading,
-        createTweeta,
         removeTweetaImgs,
-        getTweets,
     } = useContext(TweetaContext);
 
     const setInput = (setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -68,8 +67,9 @@ const CreateTweet: React.FC = () => {
             setContent('');
             setImages([]);
             setOpen(true);
-            getTweets();
+            fetchTweets();
         }
+
         // eslint-disable-next-line
     }, [tweetaCreateError, tweetaCreateSuccess]);
 
@@ -98,7 +98,7 @@ const CreateTweet: React.FC = () => {
                     />
                 </div>
                 <div className='tweetaImages'>
-                    {tweetaCreateLoading ? <div className='spinner'><Spin></Spin></div> : (
+                    {tweetaCreateLoading && images?.length > 0 ? <div className='spinner'><Spin></Spin></div> : (
                         images?.map(img => (
                             <div className='imgBox' key={img?.public_id}>
                                 <span>
@@ -147,7 +147,7 @@ const CreateTweet: React.FC = () => {
                             size='small'
                             color='primary'
                             type='submit'
-                            disabled={!content && !images.length}>
+                            disabled={!content.trim() && !images.length}>
                             Tweet
                         </Button>
                     </div>

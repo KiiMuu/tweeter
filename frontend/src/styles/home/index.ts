@@ -123,3 +123,11 @@ export const TweetForm = styled.form`
         }
     }
 `;
+
+export const TweetaList = styled.div`
+    padding: 0 var(--paddingLeftRight);
+`;
+
+export const SingleTweeta = styled.div`
+    background-color: gray;
+`;

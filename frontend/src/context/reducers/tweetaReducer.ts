@@ -12,7 +12,6 @@ interface TweetaState {
     // * get tweets
     tweetsLoading?: boolean;
     tweetsError?: string | null;
-    tweets?: object[];
 
     // * create tweet
     tweetaCreateLoading?: boolean;
@@ -55,7 +54,6 @@ export const initialTweetaState: TweetaState = {
     // * get tweets
     tweetsLoading: false,
     tweetsError: null,
-    tweets: [],
 
     // * create tweet
     tweetaCreateLoading: false,
@@ -88,7 +86,7 @@ export const initialTweetaState: TweetaState = {
 export const tweetaReducer = (
     state = initialTweetaState, 
     action: Action
-    ): TweetaState => {
+): TweetaState => {
     switch(action.type) {
         // * get tweets
         case GetTweetsType.TWEETS_LIST_REQUEST:
@@ -98,8 +96,7 @@ export const tweetaReducer = (
         case GetTweetsType.TWEETS_LIST_SUCCESS:
             return {
                 tweetsLoading: false,
-                error: null,
-                tweets: action.payload,
+                tweetsError: null,
             }
         case GetTweetsType.TWEETS_LIST_FAIL:
             return {
