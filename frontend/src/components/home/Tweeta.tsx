@@ -7,7 +7,7 @@ import getTimeDifference from '../../helpers/geTimeDifference';
 import useUserInfo from '../../hooks/useUserInfo';
 import useSnackBar from '../../hooks/useSnackBar';
 
-import { Button, Menu, MenuItem, Snackbar } from '@material-ui/core';
+import { Button, Dialog, Menu, MenuItem, Snackbar } from '@material-ui/core';
 import { 
     AiOutlineRetweet, 
     AiOutlineHeart, 
@@ -21,6 +21,11 @@ import {
 } from 'react-icons/ai';
 import { Spin } from '../../styles/spinners';
 
+interface Image {
+    public_id: string,
+    url: string,
+}
+
 const Tweeta: React.FC<TweetaProps> = ({ 
     tweeta, 
     isViewThisTweet = true, 
@@ -28,6 +33,7 @@ const Tweeta: React.FC<TweetaProps> = ({
     isTweetaPage = false,
 }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [selectedImg, setSelectedImg] = useState<null | string>(null);
 
     const { 
         tweetaLike, 
@@ -63,6 +69,14 @@ const Tweeta: React.FC<TweetaProps> = ({
     const handleTweetaRemove = (id: string) => {
         deleteTweeta(id);
     }
+
+    const handleClickOpen = (id: string) => {
+        setSelectedImg(id);
+    };
+
+    const handleModalClose = () => {
+        setSelectedImg(null);
+    };
 
     useEffect(() => {
         if (removeTweetaSuccess) {
@@ -169,18 +183,63 @@ const Tweeta: React.FC<TweetaProps> = ({
                     </div>
                 </div>
                 {isLinkContent ? (
-                    <Link to={`/tweeta/${tweeta?._id}`}>
-                        <div className='tweetaContent'>
+                    <div className='tweetaContent'>
+                        <Link to={`/tweeta/${tweeta?._id}`}>
                             <span>
                                 {tweeta?.content}
                             </span>
+                        </Link>
+                        <div className='tweetaImgs'>
+                            {tweeta?.images?.map((img: Image) => (
+                                <div className='modalImg' key={img.public_id} >
+                                    <img 
+                                        src={img.url} 
+                                        alt={img.public_id}
+                                        onClick={() => handleClickOpen(img.public_id)}
+                                    />
+                                    {selectedImg === img.public_id && (
+                                        <Dialog 
+                                            open={selectedImg !== null}
+                                            onClose={handleModalClose}
+                                        >
+                                            <img 
+                                                src={img.url} 
+                                                alt={img.public_id} 
+                                            />
+                                        </Dialog>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                    </Link>
+                    </div>
                 ) : (
                     <div className='tweetaContent'>
                         <span>
                             {tweeta?.content}
                         </span>
+                        <div className='tweetaImgs'>
+                            {tweeta?.images?.map((img: Image) => (
+                                <div className='modalImg' key={img.public_id} >
+                                    <img 
+                                        key={img.public_id} 
+                                        src={img.url} 
+                                        alt={img.public_id}
+                                        onClick={() => handleClickOpen(img.public_id)}
+                                    />
+                                    {selectedImg === img.public_id && (
+                                        <Dialog 
+                                            open={selectedImg !== null}
+                                            onClose={handleModalClose}
+                                        >
+                                            <img 
+                                                src={img.url} 
+                                                alt={img.public_id} 
+                                            />
+                                        </Dialog>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
                 <div className='tweetaFooter'>

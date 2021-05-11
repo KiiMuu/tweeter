@@ -43,13 +43,14 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
         if (addTweetaImgSuccess) {
             let uploadedFiles = images;
 
-            // if (fileChunks !== undefined) {
-            // }
-            uploadedFiles.push(fileChunks);
-
-            setImages(uploadedFiles);
+            if (fileChunks !== undefined) {
+                uploadedFiles.push(fileChunks);
+    
+                setImages(uploadedFiles);
+            }
         }
-    }, [addTweetaImgError, addTweetaImgSuccess, images, fileChunks, setImages]);
+        // eslint-disable-next-line
+    }, [addTweetaImgError, addTweetaImgSuccess, images, fileChunks]);
 
     return (
         <Fragment>

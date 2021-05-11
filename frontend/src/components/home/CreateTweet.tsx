@@ -97,17 +97,17 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
                     />
                 </div>
                 <div className='tweetaImages'>
-                    {tweetaCreateLoading && images?.length > 0 ? <div className='spinner'><Spin></Spin></div> : (
+                    {tweetaCreateLoading && images?.length ? <div className='spinner'><Spin></Spin></div> : (
                         images?.map(img => (
-                            <div className='imgBox' key={img?.public_id}>
+                            <div className='imgBox' key={img.public_id}>
                                 <span>
                                     <VscClose 
-                                        onClick={() => handleRemove(img?.public_id)} 
+                                        onClick={() => handleRemove(img.public_id)} 
                                     />
                                 </span>
                                 <img
-                                    src={img?.url}
-                                    alt={img?.url}
+                                    src={img.url}
+                                    alt={img.url}
                                 />
                             </div>
                         ))

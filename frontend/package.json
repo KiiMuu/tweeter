@@ -20,7 +20,6 @@
     "react-image-file-resizer": "^0.4.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "react-viewer": "^3.2.2",
     "styled-components": "^5.2.3",
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.1"

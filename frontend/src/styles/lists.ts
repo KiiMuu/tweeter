@@ -42,6 +42,9 @@ export const Sider = styled.div`
                     font-size: 15px;
                     margin-left: 15px;
                     font-weight: 900;
+                    @media screen and (max-width: 1100px) {
+                        display: none;
+                    }
                 }
             }
         }

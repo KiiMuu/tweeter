@@ -210,6 +210,31 @@ export const SingleTweeta = styled.div`
             span {
                 line-height: 1.72;
             }
+            .tweetaImgs {
+                display: flex;
+                overflow: auto;
+                margin-top: 10px;
+                .modalImg {
+                    position: relative;
+                    flex: 0 0 100%;
+                }
+                ::-webkit-scrollbar {
+                    height: 5px;
+                    border-radius: 10px;
+                    background-color: #ddd;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background-color: #666;
+                    border-radius: 10px;
+                }
+                img {
+                    object-fit: cover;
+                    border-radius: 3px;
+                    width: 100%;
+                    height: 250px;
+                    cursor: pointer;
+                }
+            }
         }
         .tweetaFooter {
             display: flex;
@@ -217,14 +242,14 @@ export const SingleTweeta = styled.div`
             button {
                 ${customMUIButton};
                 span {
-                    font-weight: 600;
+                    color: #000;
                 }
                 .loved {
                     color: #f02727;
-                    animation: test .45s ease;
+                    animation: bounce .45s ease;
                 }
             }
-            @keyframes test {
+            @keyframes bounce {
                 0% {
                     transform: scale(0);
                 }
