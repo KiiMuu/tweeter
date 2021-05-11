@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { customMUIButton } from '../../theme/mixins';
 
 export const NewsFeedContainer = styled.div`
     border-right: 1px solid var(--borderColor);
@@ -97,20 +98,24 @@ export const TweetForm = styled.form`
             .options {
                 display: flex;
                 .upload {
+                    margin-right: 15px;
                     label {
                         span {
                             min-width: 0;
-                            padding: 0;
+                            padding: 5px 0;
                             font-size: 15px;
+                            color: var(--mainColor);
                         }
                     }
                 }
                 .addEmoji {
-                    margin-left: 15px;
+                    button {
+                        min-width: 0;
+                        padding: 5px 0;
+                    }
                     span {
+                        padding: 5px 0;
                         font-size: 15px;
-                        vertical-align: middle;
-                        cursor: pointer;
                         color: var(--mainColor);
                     }
                     .EmojiPicker {
@@ -125,9 +130,112 @@ export const TweetForm = styled.form`
 `;
 
 export const TweetaList = styled.div`
-    padding: 0 var(--paddingLeftRight);
+    padding-bottom: 20px;
 `;
 
 export const SingleTweeta = styled.div`
-    background-color: gray;
+    &:not(:last-child) {
+        border-bottom: 10px solid var(--grayColor);
+    }
+    padding: var(--paddingLeftRight);
+    display: flex;
+    &:hover {
+        background: #f5f5f6;
+    }
+    .userPhoto {
+        padding-right: 15px;
+        img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    }
+    .tweetaWrapper { 
+        flex: 1; 
+        .tweetaHeader {
+            display: flex;
+            justify-content: space-between;
+            .userInfo {
+                display: flex;
+                flex-wrap: wrap;
+                h4 {
+                    margin: 0 5px 0 0;
+                    a {
+                        text-decoration: none;
+                        color: #000;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                span {
+                    font-size: 15px;
+                }
+                span:nth-of-type(1) {
+                    margin-right: 5px;
+                    font-size: 15px;
+                    a {
+                        text-decoration: none;
+                        color: #797979;
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+                }
+                span:nth-of-type(2) {
+                    color: #797979;
+                }
+            }
+            .tweetaOption {
+                button {
+                    ${customMUIButton};
+                    padding: 5px 0;
+                }
+                .optionsMenu {
+                    svg {
+                        margin-right: 10px !important;
+                    }
+                    span {
+                        color: red !important;
+                    }
+                }
+            }
+        }
+        a {
+            text-decoration: none;
+            color: #000;
+        }
+        .tweetaContent {
+            padding: 20px 0;
+            span {
+                line-height: 1.72;
+            }
+        }
+        .tweetaFooter {
+            display: flex;
+            justify-content: space-between;
+            button {
+                ${customMUIButton};
+                span {
+                    font-weight: 600;
+                }
+                .loved {
+                    color: #f02727;
+                    animation: test .45s ease;
+                }
+            }
+            @keyframes test {
+                0% {
+                    transform: scale(0);
+                }
+                70% {
+                    transform: scale(5);
+                    opacity: .5;
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        }
+    }
 `;

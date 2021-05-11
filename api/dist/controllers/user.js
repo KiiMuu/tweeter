@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getCurrentUser = exports.signIn = exports.signUp = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
-// import { IUser } from '../interfaces/user';
 const generateToken_1 = __importDefault(require("../helpers/generateToken"));
 const constants_1 = require("../constants");
 const signUp = async (req, res) => {
@@ -22,7 +21,10 @@ const signUp = async (req, res) => {
         const createdUser = await new User_1.default({
             name, username, email, password: hashedPassword,
         }).save();
-        return res.status(constants_1.CREATED).json({ token: generateToken_1.default(createdUser._id) });
+        return res.status(constants_1.CREATED).json({
+            createdUser,
+            token: generateToken_1.default(createdUser._id),
+        });
     }
     catch (error) {
         return res.status(constants_1.SERVER_ERROR).json({
@@ -42,7 +44,10 @@ const signIn = async (req, res) => {
         }
         const isMatch = await bcryptjs_1.default.compare(password, user === null || user === void 0 ? void 0 : user.password);
         if (isMatch) {
-            return res.status(constants_1.OK).json({ token: generateToken_1.default(user._id) });
+            return res.status(constants_1.OK).json({
+                user,
+                token: generateToken_1.default(user._id),
+            });
         }
         else {
             return res.status(constants_1.BAD_REQUEST).json({

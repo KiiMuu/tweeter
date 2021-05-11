@@ -5,7 +5,9 @@ import {
     GetSingleTweetaType,
     AddTweetaImgType,
     RemoveTweetaType,
+    LikeTweetaType,
 } from '../types/tweeta';
+import { TweetaProps } from '../../typings';
 
 interface CreateTweetaActionRequest {
     type: CreateTweetaType.TWEETA_CREATE_REQUEST,
@@ -27,6 +29,7 @@ interface TweetsListActionRequest {
 
 interface TweetsListActionSuccess {
     type: GetTweetsType.TWEETS_LIST_SUCCESS,
+    payload: object[],
 }
 
 interface TweetsListActionFail {
@@ -40,7 +43,7 @@ interface SingleTweetaActionRequest {
 
 interface SingleTweetaActionSuccess {
     type: GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS,
-    payload: object,
+    payload: TweetaProps,
 }
 
 interface SingleTweetaActionFail {
@@ -82,11 +85,25 @@ interface TweetaRemveActionRequest {
 
 interface TweetaRemveActionSuccess {
     type: RemoveTweetaType.TWEETA_REMOVE_SUCCESS,
-    payload: object,
+    payload: TweetaProps,
 }
 
 interface TweetaRemveActionFail {
     type: RemoveTweetaType.TWEETA_REMOVE_FAIL,
+    payload: string,
+}
+
+interface TweetaLikeActionRequest {
+    type: LikeTweetaType.LIKE_TWEETA_REQUEST,
+}
+
+interface TweetaLikeActionSuccess {
+    type: LikeTweetaType.LIKE_TWEETA_SUCCESS,
+    payload: TweetaProps,
+}
+
+interface TweetaLikeActionFail {
+    type: LikeTweetaType.LIKE_TWEETA_FAIL,
     payload: string,
 }
 
@@ -108,3 +125,6 @@ export type Action = CreateTweetaActionRequest
     | TweetaRemveActionRequest
     | TweetaRemveActionSuccess
     | TweetaRemveActionFail
+    | TweetaLikeActionRequest
+    | TweetaLikeActionSuccess
+    | TweetaLikeActionFail

@@ -20,13 +20,13 @@ interface Image {
     url: string,
 }
 
-const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta, fetchTweets }) => {
+const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
     const [content, setContent] = useState<string>('');
     const [images, setImages] = useState<Image[]>([]);
     const [pickerVisible, setPickerVisible] = useState<boolean>(false);
     
     const { open, setOpen, handleClose } = useSnackBar();
-    const { userInfo } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const { 
         tweetaCreateError, 
         tweetaCreateSuccess, 
@@ -67,7 +67,6 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta, fetchTweets })
             setContent('');
             setImages([]);
             setOpen(true);
-            fetchTweets();
         }
 
         // eslint-disable-next-line
@@ -84,8 +83,8 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta, fetchTweets })
             <div className='userPhoto'>
                 <Link to='/profile'>
                     <img 
-                        src={userInfo?.profilePic} 
-                        alt={userInfo?.username} 
+                        src={user?.user?.profilePic} 
+                        alt={user?.user?.username} 
                     />
                 </Link>
             </div>
@@ -121,13 +120,15 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta, fetchTweets })
                             <FileUpload images={images} setImages={setImages} />
                         </div>
                         <div className='addEmoji'>
-                            <span 
+                            <Button
+                                variant='text'
+                                size='small' 
                                 onClick={() => {
                                     setPickerVisible(!pickerVisible);
                                 }}
                             >
                                 <FaSmile />
-                            </span>
+                            </Button>
                             {pickerVisible ? (
                                 <div className='EmojiPicker'>
                                     <Picker native={true} onEmojiClick={onEmojiClick} />

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/User';
-// import { IUser } from '../interfaces/user';
 import generateToken from '../helpers/generateToken';
 import { BAD_REQUEST, CREATED, OK, SERVER_ERROR } from '../constants';
 
@@ -25,7 +24,10 @@ const signUp = async (req: Request, res: Response): Promise<object | string> => 
             name, username, email, password: hashedPassword,
         }).save();
 
-        return res.status(CREATED).json({ token: generateToken(createdUser._id) });
+        return res.status(CREATED).json({
+            createdUser,
+            token: generateToken(createdUser._id),
+        });
     } catch (error) {
         return res.status(SERVER_ERROR).json({
             message: error.message,
@@ -50,7 +52,10 @@ const signIn = async (req: Request, res: Response): Promise<object | string> => 
         const isMatch = await bcrypt.compare(password, user?.password);
         
         if (isMatch) {
-            return res.status(OK).json({ token: generateToken(user._id) });
+            return res.status(OK).json({
+                user,
+                token: generateToken(user._id),
+            });
         } else {
             return res.status(BAD_REQUEST).json({
                 message: 'Invalid user password',

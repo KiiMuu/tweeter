@@ -1,24 +1,22 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
 import TweetaContext from '../contexts/tweetaContext';
-import { 
-    tweetaReducer, 
-    initialTweetaState,
-} from '../reducers/tweetaReducer';
+import { tweetaReducer, initialTweetaState } from '../reducers/tweetaReducer';
 import { 
     CreateTweetaType, 
-    // GetSingleTweetaType, 
-    // RemoveTweetaType, 
+    GetSingleTweetaType, 
+    RemoveTweetaType, 
     AddTweetaImgType,
     RemoveTweetaImgType, 
-    GetTweetsType
+    GetTweetsType,
+    LikeTweetaType,
 } from '../types/tweeta';
 import { ICreateTweeta } from '../types/tweeta';
 import useUserInfo from '../../hooks/useUserInfo';
 
 const TweetaState = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(tweetaReducer, initialTweetaState);
-    const { userInfo } = useUserInfo();
+    const { user } = useUserInfo();
 
     // * actions
     const createTweeta = async (tweeta: ICreateTweeta) => {
@@ -29,7 +27,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             const config = {
                 headers: {
-                    'Authorization': `Bearer ${userInfo?.token}`,
+                    'Authorization': `Bearer ${user?.token}`,
                 }
             }
 
@@ -39,8 +37,6 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
                 type: CreateTweetaType.TWEETA_CREATE_SUCCESS,
                 payload: data,
             });
-
-            return data;
         } catch (error) {
             dispatch({
                 type: CreateTweetaType.TWEETA_CREATE_FAIL,
@@ -57,7 +53,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             const config = {
                 headers: {
-                    'Authorization': `Bearer ${userInfo?.token}`,
+                    'Authorization': `Bearer ${user?.token}`,
                 }
             }
 
@@ -84,7 +80,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             const config = {
                 headers: {
-                    'Authorization': `Bearer ${userInfo?.token}`,
+                    'Authorization': `Bearer ${user?.token}`,
                 }
             }
 
@@ -111,7 +107,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             const config = {
                 headers: {
-                    'Authorization': `Bearer ${userInfo?.token}`,
+                    'Authorization': `Bearer ${user?.token}`,
                 }
             }
 
@@ -119,6 +115,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
             dispatch({
                 type: GetTweetsType.TWEETS_LIST_SUCCESS,
+                payload: data,
             });
 
             return data;
@@ -130,17 +127,95 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const tweetaLike = async (id: string) => {
+        try {
+            dispatch({
+                type: LikeTweetaType.LIKE_TWEETA_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`,
+                }
+            }
+
+            const { data } = await axios.put(`/tweeta/${id}/like`, {}, config);
+
+            dispatch({
+                type: LikeTweetaType.LIKE_TWEETA_SUCCESS,
+                payload: data,
+            });
+        } catch (error) {
+            dispatch({
+                type: LikeTweetaType.LIKE_TWEETA_FAIL,
+                payload: error.response?.data.message ? error.response.data.message : error.message,
+            });
+        }
+    }
+    
+    const getSingleTweeta = async (id: string) => {
+        try {
+            dispatch({
+                type: GetSingleTweetaType.GET_SINGLE_TWEETA_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`,
+                }
+            }
+
+            const { data } = await axios.get(`/tweeta/getSingleTweeta/${id}`, config);
+
+            dispatch({
+                type: GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS,
+                payload: data,
+            });
+        } catch (error) {
+            dispatch({
+                type: GetSingleTweetaType.GET_SINGLE_TWEETA_FAIL,
+                payload: error.response?.data.message ? error.response.data.message : error.message,
+            });
+        }
+    }
+    
+    const deleteTweeta = async (id: string) => {
+        try {
+            dispatch({
+                type: RemoveTweetaType.TWEETA_REMOVE_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`,
+                }
+            }
+
+            const { data } = await axios.delete(`/tweeta/remove/${id}`, config);
+
+            dispatch({
+                type: RemoveTweetaType.TWEETA_REMOVE_SUCCESS,
+                payload: data,
+            });
+        } catch (error) {
+            dispatch({
+                type: RemoveTweetaType.TWEETA_REMOVE_FAIL,
+                payload: error.response?.data.message ? error.response.data.message : error.message,
+            });
+        }
+    }
+
     return (
         <TweetaContext.Provider value={{
             // * get tweets
             tweetsLoading: state.tweetsLoading,
             tweetsError: state.tweetsError,
+            tweets: state.tweets,
 
             // * create tweet
             tweetaCreateLoading: state.tweetaCreateLoading,
             tweetaCreateError: state.tweetaCreateError,
             tweetaCreateSuccess: state.tweetaCreateSuccess,
-            tweetaCreated: state.tweetaCreated,
 
             // * get single tweet
             getSingleTweetaLoading: state.getSingleTweetaLoading,
@@ -162,10 +237,19 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
             // * remove tweeta img
             removeTweetaImgLoading: state.removeTweetaImgLoading,
             removeTweetaImgError: state.removeTweetaImgError,
+
+            // * tweeta like
+            likeTweetaLoading: state.likeTweetaLoading,
+            likeTweetaError: state.likeTweetaError,
+            likeTweetaSuccess: state.likeTweetaSuccess,
+
             createTweeta,
             addTweetaImgs,
             removeTweetaImgs,
             getTweets,
+            tweetaLike,
+            getSingleTweeta,
+            deleteTweeta,
         }}>
             {children}
         </TweetaContext.Provider>

@@ -43,9 +43,9 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
         if (addTweetaImgSuccess) {
             let uploadedFiles = images;
 
-            if (fileChunks !== undefined) {
-                uploadedFiles.push(fileChunks);
-            }
+            // if (fileChunks !== undefined) {
+            // }
+            uploadedFiles.push(fileChunks);
 
             setImages(uploadedFiles);
         }

@@ -2,9 +2,9 @@ import { useContext } from 'react';
 import AuthContext from '../context/contexts/authContext';
 
 const useUserInfo = () => {
-    const { userInfo } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     
-    return { userInfo }
+    return { user }
 }
 
 export default useUserInfo;

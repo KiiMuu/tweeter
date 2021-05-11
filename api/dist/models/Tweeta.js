@@ -14,6 +14,10 @@ const TweetaSchema = new mongoose_1.Schema({
         ref: 'User',
     },
     isPinned: Boolean,
+    likes: [{
+            type: ObjectId,
+            ref: 'User',
+        }],
     retweeters: [{
             type: ObjectId,
             ref: 'User',

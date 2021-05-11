@@ -1,5 +1,7 @@
 import { model, Schema } from 'mongoose';
 
+const { ObjectId } = Schema.Types;
+
 const UserSchema: Schema = new Schema({
     name: {
         type: String,
@@ -31,6 +33,10 @@ const UserSchema: Schema = new Schema({
     coverPhoto: { 
         type: String 
     },
+    likes: [{
+        type: ObjectId,
+        ref: 'Tweeta',
+    }],
 }, {
     timestamps: true,
 });

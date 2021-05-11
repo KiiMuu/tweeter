@@ -22,8 +22,9 @@ const Signin: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
-    const authContext = useContext(AuthContext);
-    const { loading, error, isAuth, signIn } = authContext;
+    const { 
+        loading, error, signIn, user,
+     } = useContext(AuthContext);
 
     const history = useHistory();
 
@@ -42,10 +43,10 @@ const Signin: React.FC = () => {
     }
     
     useEffect(() => {
-        if (isAuth) {
+        if (user?.user) {
             history.push('/');
         } 
-    }, [isAuth, history]);
+    }, [user, history]);
 
     return (
         <SignInScreen>

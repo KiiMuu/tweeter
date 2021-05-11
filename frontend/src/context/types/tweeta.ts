@@ -34,6 +34,12 @@ export enum RemoveTweetaImgType {
     TWEETA_IMG_REMOVE_FAIL = 'TWEETA_IMG_REMOVE_FAIL',
 }
 
+export enum LikeTweetaType {
+    LIKE_TWEETA_REQUEST = 'LIKE_TWEETA_REQUEST',
+    LIKE_TWEETA_SUCCESS = 'LIKE_TWEETA_SUCCESS',
+    LIKE_TWEETA_FAIL = 'LIKE_TWEETA_FAIL',
+}
+
 export interface ICreateTweeta {
     content?: string, 
     images: object,

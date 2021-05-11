@@ -3,6 +3,7 @@ declare module 'myTypes' {
         content: string,
         images: object[],
         postedBy: object,
+        likes: string[],
         retweetData: object[],
         retweeters: object[],
         createdAt: string,

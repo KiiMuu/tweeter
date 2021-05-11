@@ -1,4 +1,4 @@
-import { SignUpType, SignInType, LogoutType, AuthType } from '../types/user';
+import { SignUpType, SignInType, LogoutType } from '../types/user';
 
 interface SignUpActionRequest {
     type: SignUpType.SIGNUP_REQUEST,
@@ -6,7 +6,7 @@ interface SignUpActionRequest {
 
 interface SignUpActionSuccess {
     type: SignUpType.SIGNUP_SUCCESS,
-    payload: string,
+    payload: object,
 }
 
 interface SignUpActionFail {
@@ -20,7 +20,7 @@ interface SignInActionRequest {
 
 interface SignInActionSuccess {
     type: SignInType.SIGNIN_SUCCESS,
-    payload: string,
+    payload: object,
 }
 
 interface SignInActionFail {
@@ -33,16 +33,6 @@ interface LogoutAction {
     payload: {},
 }
 
-interface UserLoadedAction {
-    type: AuthType.USER_LOADED,
-    payload: object,
-}
-
-interface AuthErrorAction {
-    type: AuthType.AUTH_ERROR,
-    payload: {},
-}
-
 export type Action = SignUpActionRequest 
     | SignUpActionSuccess 
     | SignUpActionFail
@@ -50,5 +40,3 @@ export type Action = SignUpActionRequest
     | SignInActionSuccess
     | SignInActionFail
     | LogoutAction
-    | UserLoadedAction
-    | AuthErrorAction

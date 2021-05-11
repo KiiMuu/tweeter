@@ -50,6 +50,7 @@ const Sidebar: React.FC = () => {
                         <Button variant='text' color='primary'>
                             <Link to='/'>
                                 <HiOutlineHome />
+                                <span className='linkTitle'>Home</span>
                             </Link>
                         </Button>
                     </Tooltip>
@@ -62,6 +63,7 @@ const Sidebar: React.FC = () => {
                         <Button variant='text' color='primary'>
                             <Link to='/notifications'>
                                 <IoMdNotificationsOutline />
+                                <span className='linkTitle'>Notifications</span>
                             </Link>
                         </Button>
                     </Tooltip>
@@ -74,6 +76,7 @@ const Sidebar: React.FC = () => {
                         <Button variant='text' color='primary'>
                             <Link to='/messages'>
                                 <BiMessageDetail />
+                                <span className='linkTitle'>Messages</span>
                             </Link>
                         </Button>
                     </Tooltip>
@@ -86,6 +89,7 @@ const Sidebar: React.FC = () => {
                         <Button variant='text' color='primary'>
                             <Link to='/search'>
                                 <IoMdSearch />
+                                <span className='linkTitle'>Search</span>
                             </Link>
                         </Button>
                     </Tooltip>
@@ -98,6 +102,7 @@ const Sidebar: React.FC = () => {
                         <Button variant='text' color='primary'>
                             <Link to='/user/profile'>
                                 <AiOutlineUser />
+                                <span className='linkTitle'>My Profile</span>
                             </Link>
                         </Button>
                     </Tooltip>
@@ -110,6 +115,7 @@ const Sidebar: React.FC = () => {
                         <Button onClick={handleLogout} variant='text' color='primary'>
                             <span>
                                 <IoMdLogOut />
+                                <span className='linkTitle'>Sign Out</span>
                             </span>
                         </Button>
                     </Tooltip>

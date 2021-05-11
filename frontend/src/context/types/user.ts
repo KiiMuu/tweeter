@@ -14,11 +14,6 @@ export enum LogoutType {
     USER_LOGOUT = 'USER_LOGOUT',
 }
 
-export enum AuthType {
-    USER_LOADED = 'USER_LOADED',
-    AUTH_ERROR = 'AUTH_ERROR',
-}
-
 export interface ISignUp {
     name: string, 
     username: string, 
@@ -32,5 +27,5 @@ export interface ISignIn {
 }
 
 export interface IUserInfo {
-    userInfo: object,
+    user: object,
 }

@@ -1,6 +1,6 @@
 import { Fragment, useContext } from 'react';
 import TweetaContext from '../../context/contexts/tweetaContext';
-import SingleTweet from './SingleTweet';
+import Tweeta from './Tweeta';
 import { TweetaType, TweetsProps } from '../../typings';
 
 import { AlertStyles } from '../../styles/notifiers';
@@ -17,7 +17,7 @@ const Tweets: React.FC<TweetsProps> = ({ tweets }) => {
     const showTweets = () => (
         <TweetaList>
             {tweets?.map((tweeta: TweetaType) => (
-                <SingleTweet tweeta={tweeta} key={tweeta._id} />
+                <Tweeta tweeta={tweeta} key={tweeta._id} />
             ))}
         </TweetaList>
     )

@@ -25,3 +25,17 @@ export const bounceAnimation = () => {
         }
     `;
 }
+
+export const customMUIButton = () => {
+    return`
+        font-size: 14px;
+        text-transform: lowercase;
+        border-radius: 50%;
+        padding: 5px;
+        min-width: 0;
+        color: #000;
+        svg {
+            margin-right: 3px;
+        }
+    `;
+}

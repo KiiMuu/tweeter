@@ -4,24 +4,24 @@ import { ISignIn, ISignUp } from '../types/user';
 type authContextType = {
     loading: boolean,
     error: string | null,
-    token: string | null,
-    isAuth: boolean,
-    userInfo: any,
+    user: any,
     signUp: (user: ISignUp) => any;
     signIn: (user: ISignIn) => any;
-    getCurrentUser: () => any;
+    // getCurrentUser: () => any;
     logout: () => void;
 }
+
+const userInfoFromLS = localStorage.getItem('tweeterUser')
+	? JSON.parse(localStorage.getItem('tweeterUser') as string)
+	: null;
 
 const authContextDefaultValues: authContextType = {
     loading: false,
     error: null,
-    token: null,
-    userInfo: {},
-    isAuth: false,
+    user: userInfoFromLS,
     signUp: () => {},
     signIn: () => {},
-    getCurrentUser: () => {},
+    // getCurrentUser: () => {},
     logout: () => {},
 };
 
