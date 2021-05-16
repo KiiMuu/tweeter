@@ -37,7 +37,16 @@ const getTweets = async (req: Request, res: Response): Promise<object> => {
         const tweets = await Tweeta
         .find({})
         .sort({ createdAt: -1 })
-        .populate('postedBy', '_id profilePic name username email');
+        .populate('postedBy', '_id profilePic name username email')
+        .populate('retweetData')
+        .populate({
+            path: 'retweetData',
+            populate: {
+                path: 'postedBy',
+                select: '_id profilePic name username email',
+                model: 'User',
+            },
+        })
 
         return res.status(OK).json(tweets);
     } catch (error) {
@@ -121,10 +130,74 @@ const tweetaLike = async (req: Request, res: Response): Promise<object> => {
     }
 }
 
+const tweetaRetweet = async (req: Request, res: Response): Promise<object> => {
+    try {
+        const tweetaId = req.params.id; 
+        const user = await User.findOne({ email: req.user?.email }).exec();
+
+        let deletedTweeta = await Tweeta.findOneAndDelete({
+            postedBy: user._id,
+            retweetData: tweetaId,
+        }).exec();
+
+        const option: string = deletedTweeta !== null ? '$pull' : '$addToSet';
+        let retweet = deletedTweeta;
+
+        if (retweet === null) {
+            retweet = await Tweeta.create({
+                postedBy: user._id,
+                retweetData: tweetaId,
+            });
+        }
+
+        await User.findByIdAndUpdate(
+            user._id,
+            {
+                [option]: {
+                    retweets: retweet._id,
+                },
+            },
+            { new: true, }
+        );
+
+        const tweeta = await Tweeta.findByIdAndUpdate(
+            tweetaId,
+            {
+                [option]: {
+                    retweeters: user._id,
+                },
+            },
+            { new: true, }
+        );
+
+        await User.populate(
+            tweeta, 
+            { 
+                path: 'postedBy', 
+                select: '_id profilePic name username email',
+            },
+        );
+
+        await Tweeta.populate(
+            tweeta, 
+            { 
+                path: 'retweetData',
+            },
+        );
+
+        return res.status(OK).json(tweeta);
+    } catch (error) {
+        return res.status(BAD_REQUEST).json({
+            message: error.message,
+        });
+    }
+}
+
 export {
     createTweeta,
     getTweets,
     getSingleTweeta,
     removeTweeta,
     tweetaLike,
+    tweetaRetweet,
 }

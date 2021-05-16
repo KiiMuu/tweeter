@@ -6,6 +6,7 @@ import {
     AddTweetaImgType,
     RemoveTweetaType,
     LikeTweetaType,
+    RetweetTweetaType,
 } from '../types/tweeta';
 import { TweetaProps } from '../../typings';
 
@@ -107,6 +108,20 @@ interface TweetaLikeActionFail {
     payload: string,
 }
 
+interface TweetaRetweetActionRequest {
+    type: RetweetTweetaType.RETWEET_TWEETA_REQUEST,
+}
+
+interface TweetaRetweetActionSuccess {
+    type: RetweetTweetaType.RETWEET_TWEETA_SUCCESS,
+    payload: TweetaProps,
+}
+
+interface TweetaRetweetActionFail {
+    type: RetweetTweetaType.RETWEET_TWEETA_FAIL,
+    payload: string,
+}
+
 export type Action = CreateTweetaActionRequest 
     | CreateTweetaActionSuccess 
     | CreateTweetaActionFail
@@ -128,3 +143,6 @@ export type Action = CreateTweetaActionRequest
     | TweetaLikeActionRequest
     | TweetaLikeActionSuccess
     | TweetaLikeActionFail
+    | TweetaRetweetActionRequest
+    | TweetaRetweetActionSuccess
+    | TweetaRetweetActionFail

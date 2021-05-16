@@ -37,6 +37,10 @@ const UserSchema: Schema = new Schema({
         type: ObjectId,
         ref: 'Tweeta',
     }],
+    retweets: [{
+        type: ObjectId,
+        ref: 'Tweeta',
+    }],
 }, {
     timestamps: true,
 });

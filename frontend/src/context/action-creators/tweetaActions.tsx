@@ -10,6 +10,7 @@ import {
     RemoveTweetaImgType, 
     GetTweetsType,
     LikeTweetaType,
+    RetweetTweetaType,
 } from '../types/tweeta';
 import { ICreateTweeta } from '../types/tweeta';
 import useUserInfo from '../../hooks/useUserInfo';
@@ -205,6 +206,32 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const tweetaRetweet = async (id: string) => {
+        try {
+            dispatch({
+                type: RetweetTweetaType.RETWEET_TWEETA_REQUEST,
+            });
+
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`,
+                }
+            }
+
+            const { data } = await axios.post(`/tweeta/${id}/retweet`, {}, config);
+
+            dispatch({
+                type: RetweetTweetaType.RETWEET_TWEETA_SUCCESS,
+                payload: data,
+            });
+        } catch (error) {
+            dispatch({
+                type: RetweetTweetaType.RETWEET_TWEETA_FAIL,
+                payload: error.response?.data.message ? error.response.data.message : error.message,
+            });
+        }
+    }
+
     return (
         <TweetaContext.Provider value={{
             // * get tweets
@@ -242,6 +269,11 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
             likeTweetaLoading: state.likeTweetaLoading,
             likeTweetaError: state.likeTweetaError,
             likeTweetaSuccess: state.likeTweetaSuccess,
+            
+            // * tweeta retweet
+            retweetTweetaLoading: state.likeTweetaLoading,
+            retweetTweetaError: state.likeTweetaError,
+            retweetTweetaSuccess: state.likeTweetaSuccess,
 
             createTweeta,
             addTweetaImgs,
@@ -250,6 +282,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
             tweetaLike,
             getSingleTweeta,
             deleteTweeta,
+            tweetaRetweet,
         }}>
             {children}
         </TweetaContext.Provider>

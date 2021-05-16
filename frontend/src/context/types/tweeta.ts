@@ -40,6 +40,12 @@ export enum LikeTweetaType {
     LIKE_TWEETA_FAIL = 'LIKE_TWEETA_FAIL',
 }
 
+export enum RetweetTweetaType {
+    RETWEET_TWEETA_REQUEST = 'RETWEET_TWEETA_REQUEST',
+    RETWEET_TWEETA_SUCCESS = 'RETWEET_TWEETA_SUCCESS',
+    RETWEET_TWEETA_FAIL = 'RETWEET_TWEETA_FAIL',
+}
+
 export interface ICreateTweeta {
     content?: string, 
     images: object,

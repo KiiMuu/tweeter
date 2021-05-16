@@ -38,12 +38,18 @@ type tweetaContextType = {
     likeTweetaLoading?: boolean,
     likeTweetaError?: string | null,
     likeTweetaSuccess?: boolean,
+    
+    // * retweet tweeta
+    retweetTweetaLoading?: boolean,
+    retweetTweetaError?: string | null,
+    retweetTweetaSuccess?: boolean,
 
     createTweeta: (tweeta: ICreateTweeta) => any;
     addTweetaImgs: (images: object) => any,
     removeTweetaImgs: (public_id: string) => any,
     getTweets: () => any,
     tweetaLike: (id: string) => any,
+    tweetaRetweet: (id: string) => any,
     getSingleTweeta: (id: string) => any,
     deleteTweeta: (id: string) => any,
 }
@@ -84,12 +90,18 @@ const tweetaContextDefaultValues: tweetaContextType = {
     likeTweetaLoading: false,
     likeTweetaError: null,
     likeTweetaSuccess: false,
+    
+    // * retweet tweeta
+    retweetTweetaLoading: false,
+    retweetTweetaError: null,
+    retweetTweetaSuccess: false,
 
     createTweeta: () => {},
     addTweetaImgs: () => {},
     removeTweetaImgs: () => {},
     getTweets: () => [],
     tweetaLike: () => {},
+    tweetaRetweet: () => {},
     getSingleTweeta: () => {},
     deleteTweeta: () => {},
 };

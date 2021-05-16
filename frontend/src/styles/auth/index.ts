@@ -53,8 +53,8 @@ export const SignInScreen = styled.div`
     ${authCommon()}
     background-image: url('/images/signin_preview.jpg');
     background-image: linear-gradient(
-        to right,
-        rgba(29, 161, 242, .91),
+        to left,
+        rgba(29, 161, 242, .71),
         rgba(37, 99, 235, 1)),
     url('/images/signin_preview.jpg');
     background-size: cover;

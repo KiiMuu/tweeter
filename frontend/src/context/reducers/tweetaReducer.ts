@@ -7,6 +7,7 @@ import {
     RemoveTweetaImgType,
     RemoveTweetaType,
     LikeTweetaType,
+    RetweetTweetaType,
 } from '../types/tweeta';
 import { TweetaProps } from '../../typings';
 
@@ -47,6 +48,11 @@ interface TweetaState {
     likeTweetaLoading?: boolean;
     likeTweetaError?: string | null;
     likeTweetaSuccess?: boolean;
+    
+    // * retweet tweeta
+    retweetTweetaLoading?: boolean;
+    retweetTweetaError?: string | null;
+    retweetTweetaSuccess?: boolean;
 }
 
 export const initialTweetaState: TweetaState = {
@@ -85,6 +91,11 @@ export const initialTweetaState: TweetaState = {
     likeTweetaLoading: false,
     likeTweetaError: null,
     likeTweetaSuccess: false,
+    
+    // * retweet tweeta
+    retweetTweetaLoading: false,
+    retweetTweetaError: null,
+    retweetTweetaSuccess: false,
 }
 
 export const tweetaReducer = (
@@ -251,14 +262,14 @@ export const tweetaReducer = (
         // * like tweeta
         case LikeTweetaType.LIKE_TWEETA_REQUEST:
             return {
-                likeTweetaLoading: false,
+                likeTweetaLoading: true,
                 tweets: state.tweets,
                 images: state.images,
                 singleTweeta: state.singleTweeta,
             }
         case LikeTweetaType.LIKE_TWEETA_SUCCESS:
             return {
-                likeTweetaLoading: true,
+                likeTweetaLoading: false,
                 likeTweetaError: null,
                 likeTweetaSuccess: true,
                 tweets: state.tweets.map((tweeta: TweetaProps) => tweeta._id === action.payload._id ? { ...action.payload, likes: action.payload.likes } : tweeta),
@@ -273,6 +284,26 @@ export const tweetaReducer = (
                 tweets: state.tweets,
                 images: state.images,
                 singleTweeta: state.singleTweeta,
+            }
+
+        // * retweet tweeta
+        case RetweetTweetaType.RETWEET_TWEETA_REQUEST:
+            return {
+                ...state,
+                retweetTweetaLoading: true,
+            }
+        case RetweetTweetaType.RETWEET_TWEETA_SUCCESS:
+            return {
+                ...state,
+                retweetTweetaLoading: false,
+                retweetTweetaSuccess: true,
+                tweets: state.tweets.map((tweeta: TweetaProps) => tweeta._id === action.payload._id ? { ...action.payload, retweeters: action.payload.retweeters } : tweeta),
+            }
+        case RetweetTweetaType.RETWEET_TWEETA_FAIL:
+            return {
+                ...state,
+                retweetTweetaLoading: false,
+                retweetTweetaError: action.payload,
             }
         default:
             return state;

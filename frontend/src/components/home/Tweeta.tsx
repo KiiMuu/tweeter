@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import TweetaContext from '../../context/contexts/tweetaContext';
 import { TweetaProps } from '../../typings';
@@ -7,9 +7,17 @@ import getTimeDifference from '../../helpers/geTimeDifference';
 import useUserInfo from '../../hooks/useUserInfo';
 import useSnackBar from '../../hooks/useSnackBar';
 
-import { Button, Dialog, Menu, MenuItem, Snackbar } from '@material-ui/core';
 import { 
-    AiOutlineRetweet, 
+    Button, 
+    Dialog, 
+    DialogContent, 
+    DialogContentText,
+    Menu, 
+    MenuItem, 
+    Snackbar 
+} from '@material-ui/core';
+import { 
+    AiOutlineRetweet,
     AiOutlineHeart, 
     AiOutlineComment,
     AiOutlineMore,
@@ -41,6 +49,7 @@ const Tweeta: React.FC<TweetaProps> = ({
         removeTweetaSuccess,
         removeTweetaError,
         removeTweetaLoading,
+        tweetaRetweet,
     } = useContext(TweetaContext);
     const { user } = useUserInfo();
     const { open, setOpen, handleClose } = useSnackBar();
@@ -57,6 +66,10 @@ const Tweeta: React.FC<TweetaProps> = ({
 
     const handleTweetaLike = (id: string) => {
         tweetaLike(id);
+    }
+    
+    const handleTweetaRetweet = (id: string) => {
+        tweetaRetweet(id);
     }
 
     const handleTweetaCopy = () => {
@@ -96,6 +109,10 @@ const Tweeta: React.FC<TweetaProps> = ({
         }
     }, [location, history, removeTweetaSuccess, tweeta, isTweetaPage]);
 
+    let isRetweeted = tweeta?.retweetData !== undefined;
+    let retweetedBy = isRetweeted ? tweeta?.postedBy?.name : '';
+    tweeta = isRetweeted ? tweeta.retweetData : tweeta;
+
     return (
         <SingleTweeta>
             <Snackbar 
@@ -119,6 +136,14 @@ const Tweeta: React.FC<TweetaProps> = ({
                 </Link>
             </div>
             <div className='tweetaWrapper'>
+                <div className='retweetText'>
+                    {isRetweeted ? (
+                        <Fragment>
+                            <span><AiOutlineRetweet /> </span>
+                            <Link to='/profile'>{retweetedBy}</Link> retweeted
+                        </Fragment>
+                    ) : ''}
+                </div>
                 <div className='tweetaHeader'>
                     <div className='userInfo'>
                         <h4>
@@ -182,74 +207,61 @@ const Tweeta: React.FC<TweetaProps> = ({
                         </div>
                     </div>
                 </div>
-                {isLinkContent ? (
-                    <div className='tweetaContent'>
+                <div className='tweetaContent'>
+                    {isLinkContent ? (
                         <Link to={`/tweeta/${tweeta?._id}`}>
                             <span>
                                 {tweeta?.content}
                             </span>
                         </Link>
-                        <div className='tweetaImgs'>
-                            {tweeta?.images?.map((img: Image) => (
-                                <div className='modalImg' key={img.public_id} >
-                                    <img 
-                                        src={img.url} 
-                                        alt={img.public_id}
-                                        onClick={() => handleClickOpen(img.public_id)}
-                                    />
-                                    {selectedImg === img.public_id && (
-                                        <Dialog 
-                                            open={selectedImg !== null}
-                                            onClose={handleModalClose}
-                                        >
-                                            <img 
-                                                src={img.url} 
-                                                alt={img.public_id} 
-                                            />
-                                        </Dialog>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                ) : (
-                    <div className='tweetaContent'>
+                    ) : (
                         <span>
                             {tweeta?.content}
                         </span>
-                        <div className='tweetaImgs'>
-                            {tweeta?.images?.map((img: Image) => (
-                                <div className='modalImg' key={img.public_id} >
-                                    <img 
-                                        key={img.public_id} 
-                                        src={img.url} 
-                                        alt={img.public_id}
-                                        onClick={() => handleClickOpen(img.public_id)}
-                                    />
-                                    {selectedImg === img.public_id && (
-                                        <Dialog 
-                                            open={selectedImg !== null}
-                                            onClose={handleModalClose}
-                                        >
-                                            <img 
-                                                src={img.url} 
-                                                alt={img.public_id} 
-                                            />
-                                        </Dialog>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
+                    )}
+                    <div className='tweetaImgs'>
+                        {tweeta?.images?.map((img: Image) => (
+                            <div className='modalImg' key={img.public_id} >
+                                <img 
+                                    key={img.public_id} 
+                                    src={img.url} 
+                                    alt={img.public_id}
+                                    onClick={() => handleClickOpen(img.public_id)}
+                                />
+                                {selectedImg === img.public_id && (
+                                    <Dialog 
+                                        open={selectedImg !== null}
+                                        onClose={handleModalClose}
+                                    >
+                                        <img 
+                                            src={img.url} 
+                                            alt={img.public_id} 
+                                        />
+                                        <DialogContent>
+                                            <DialogContentText 
+                                                style={{ marginBottom: '0' }}>
+                                                {tweeta?.content}
+                                            </DialogContentText>
+                                        </DialogContent>
+                                    </Dialog>
+                                )}
+                            </div>
+                        ))}
                     </div>
-                )}
+                </div>
                 <div className='tweetaFooter'>
                     <Button variant='text' size='small'>
                         <AiOutlineComment />
                         <span>0</span>
                     </Button>
-                    <Button variant='text' size='small'>
-                        <AiOutlineRetweet />
-                        <span>0</span>
+                    <Button
+                        onClick={() => handleTweetaRetweet(tweeta?._id)} 
+                        variant='text' 
+                        size='small'>
+                        <AiOutlineRetweet 
+                            className={tweeta?.retweeters?.includes(user?.user._id) ? 'retweeted' : ''} 
+                        />
+                        <span>{tweeta?.retweeters?.length || ''}</span>
                     </Button>
                     <Button
                         onClick={() => handleTweetaLike(tweeta?._id)} 

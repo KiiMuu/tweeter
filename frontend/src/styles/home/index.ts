@@ -152,6 +152,17 @@ export const SingleTweeta = styled.div`
     }
     .tweetaWrapper { 
         flex: 1; 
+        .retweetText {
+            color: var(--darkColor);
+            font-size: 14px;
+            margin-bottom: 5px;
+            span {
+                vertical-align: middle;
+            }
+            a {
+                color: inherit;
+            }
+        }
         .tweetaHeader {
             display: flex;
             justify-content: space-between;
@@ -246,6 +257,10 @@ export const SingleTweeta = styled.div`
                 }
                 .loved {
                     color: #f02727;
+                    animation: bounce .45s ease;
+                }
+                .retweeted {
+                    color: #1ad087;
                     animation: bounce .45s ease;
                 }
             }

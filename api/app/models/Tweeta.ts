@@ -22,10 +22,10 @@ const TweetaSchema: Schema = new Schema({
         type: ObjectId,
         ref: 'User',
     }],
-    retweetData: [{
+    retweetData: {
         type: ObjectId,
         ref: 'Tweeta',
-    }],
+    },
     replyTo: {
         type: ObjectId,
         ref: 'Tweeta',
