@@ -9,4 +9,7 @@ router.get('/tweeta/getTweets', isAuth_1.isAuth, tweeta_1.getTweets);
 router.get('/tweeta/getSingleTweeta/:id', isAuth_1.isAuth, tweeta_1.getSingleTweeta);
 router.delete('/tweeta/remove/:id', isAuth_1.isAuth, tweeta_1.removeTweeta);
 router.put('/tweeta/:id/like', isAuth_1.isAuth, tweeta_1.tweetaLike);
+router.post('/tweeta/:id/retweet', isAuth_1.isAuth, tweeta_1.tweetaRetweet);
+router.post('/tweeta/:id/createReply', isAuth_1.isAuth, tweeta_1.createReply);
+router.delete('/tweeta/:id/removeReply/:replyId', isAuth_1.isAuth, tweeta_1.removeReply);
 exports.default = router;

@@ -22,14 +22,35 @@ const TweetaSchema = new mongoose_1.Schema({
             type: ObjectId,
             ref: 'User',
         }],
-    retweetData: [{
-            type: ObjectId,
-            ref: 'Tweeta',
-        }],
-    replyTo: {
+    retweetData: {
         type: ObjectId,
         ref: 'Tweeta',
     },
+    replies: [{
+            content: {
+                type: String,
+                trim: true,
+                text: true,
+            },
+            images: Array,
+            postedBy: {
+                type: ObjectId,
+                ref: 'User',
+            },
+            isPinned: Boolean,
+            likes: [{
+                    type: ObjectId,
+                    ref: 'User',
+                }],
+            retweeters: [{
+                    type: ObjectId,
+                    ref: 'User',
+                }],
+            retweetData: {
+                type: ObjectId,
+                ref: 'Tweeta',
+            },
+        }],
 }, {
     timestamps: true,
 });
