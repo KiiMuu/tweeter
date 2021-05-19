@@ -218,6 +218,10 @@ export const SingleTweeta = styled.div`
         }
         .tweetaContent {
             padding: 20px 0;
+            a {
+                display: flex;
+                flex: 1;
+            }
             span {
                 line-height: 1.72;
             }

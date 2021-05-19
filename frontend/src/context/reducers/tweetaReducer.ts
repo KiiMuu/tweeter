@@ -106,184 +106,143 @@ export const tweetaReducer = (
         // * get tweets
         case GetTweetsType.TWEETS_LIST_REQUEST:
             return {
+                ...state,
                 tweetsLoading: true,
-                tweets: [],
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case GetTweetsType.TWEETS_LIST_SUCCESS:
             return {
+                ...state,
                 tweetsLoading: false,
-                tweetsError: null,
                 tweets: action.payload,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case GetTweetsType.TWEETS_LIST_FAIL:
             return {
+                ...state,
                 tweetsLoading: false,
                 tweetsError: action.payload,
                 tweets: [],
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
 
         
         // * create tweet
         case CreateTweetaType.TWEETA_CREATE_REQUEST:
             return {
+                ...state,
                 tweetaCreateLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case CreateTweetaType.TWEETA_CREATE_SUCCESS:
             return {
+                ...state,
                 tweetaCreateLoading: false,
-                tweetaCreateError: null,
                 tweetaCreateSuccess: true,
                 tweets: [action.payload, ...state.tweets],
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case CreateTweetaType.TWEETA_CREATE_FAIL:
             return {
+                ...state,
                 tweetaCreateLoading: false,
                 tweetaCreateError: action.payload,
-                tweetaCreateSuccess: false,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         
         // * get single tweeta
         case GetSingleTweetaType.GET_SINGLE_TWEETA_REQUEST:
             return  {
+                ...state,
                 getSingleTweetaLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS:
             return {
+                ...state,
                 getSingleTweetaLoading: false,
-                getSingleTweetaError: null,
                 singleTweeta: action.payload,
-                images: state.images,
-                tweets: state.tweets,
             }
         case GetSingleTweetaType.GET_SINGLE_TWEETA_FAIL:
             return {
+                ...state,
                 getSingleTweetaLoading: false,
                 getSingleTweetaError: action.payload,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
 
         // * remove tweeta
         case RemoveTweetaType.TWEETA_REMOVE_REQUEST:
             return  {
+                ...state,
                 removeTweetaLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case RemoveTweetaType.TWEETA_REMOVE_SUCCESS:
             return {
+                ...state,
                 removeTweetaLoading: false,
-                removeTweetaError: null,
                 removeTweetaSuccess: true,
                 removedTweeta: action.payload,
                 tweets: state.tweets.filter((tweeta: TweetaProps) => tweeta._id !== action.payload._id),
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case RemoveTweetaType.TWEETA_REMOVE_FAIL:
             return {
+                ...state,
                 removeTweetaLoading: false,
                 removeTweetaError: action.payload,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
 
         // * add tweeta img
         case AddTweetaImgType.TWEETA_IMG_ADD_REQUEST:
             return {
+                ...state,
                 addTweetaImgLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case AddTweetaImgType.TWEETA_IMG_ADD_SUCCESS:
             return {
+                ...state,
                 addTweetaImgLoading: false,
-                addTweetaImgError: null,
                 addTweetaImgSuccess: true,
                 images: action.payload,
-                tweets: state.tweets,
-                singleTweeta: state.singleTweeta,
             }
         case AddTweetaImgType.TWEETA_IMG_ADD_FAIL:
             return {
+                ...state,
                 addTweetaImgLoading: false,
                 addTweetaImgError: action.payload,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
 
         // * remove tweeta img
         case RemoveTweetaImgType.TWEETA_IMG_REMOVE_REQUEST:
             return {
+                ...state,
                 removeTweetaImgLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case RemoveTweetaImgType.TWEETA_IMG_REMOVE_SUCCESS:
             return {
+                ...state,
                 removeTweetaImgLoading: false,
                 removeTweetaImgError: null,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
+                removeTweetaImgSuccess: true,
             }
         case RemoveTweetaImgType.TWEETA_IMG_REMOVE_FAIL:
             return {
+                ...state,
                 removeTweetaImgLoading: false,
                 removeTweetaImgError: action.payload,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         
         // * like tweeta
         case LikeTweetaType.LIKE_TWEETA_REQUEST:
             return {
+                ...state,
                 likeTweetaLoading: true,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
         case LikeTweetaType.LIKE_TWEETA_SUCCESS:
             return {
+                ...state,
                 likeTweetaLoading: false,
-                likeTweetaError: null,
                 likeTweetaSuccess: true,
                 tweets: state.tweets.map((tweeta: TweetaProps) => tweeta._id === action.payload._id ? { ...action.payload, likes: action.payload.likes } : tweeta),
-                images: state.images,
-                singleTweeta: { ...state.singleTweeta, likes: action.payload.likes },
             }
         case LikeTweetaType.LIKE_TWEETA_FAIL:
             return {
+                ...state,
                 likeTweetaLoading: false,
                 likeTweetaError: action.payload,
                 likeTweetaSuccess: false,
-                tweets: state.tweets,
-                images: state.images,
-                singleTweeta: state.singleTweeta,
             }
 
         // * retweet tweeta
