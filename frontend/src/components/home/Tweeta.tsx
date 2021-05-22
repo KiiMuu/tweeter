@@ -10,11 +10,14 @@ import useSnackBar from '../../hooks/useSnackBar';
 import { 
     Button, 
     Dialog, 
+    DialogActions, 
     DialogContent, 
     DialogContentText,
+    DialogTitle,
     Menu, 
     MenuItem, 
-    Snackbar 
+    Snackbar, 
+    TextField
 } from '@material-ui/core';
 import { 
     AiOutlineRetweet,
@@ -36,20 +39,27 @@ interface Image {
 
 const Tweeta: React.FC<TweetaProps> = ({ 
     tweeta, 
+    replies,
     isViewThisTweet = true, 
     isLinkContent = true,
     isTweetaPage = false,
 }) => {
+    const [content, setContent] = useState<string>('');
+    const [images] = useState<Image[]>([]);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [selectedImg, setSelectedImg] = useState<null | string>(null);
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     const { 
         tweetaLike, 
         deleteTweeta,
         removeTweetaSuccess,
-        removeTweetaError,
         removeTweetaLoading,
         tweetaRetweet,
+        createTweeta,
+        tweetaCreateSuccess,
+        tweetaCreateLoading,
+        removeTweetaError,
     } = useContext(TweetaContext);
     const { user } = useUserInfo();
     const { open, setOpen, handleClose } = useSnackBar();
@@ -93,15 +103,48 @@ const Tweeta: React.FC<TweetaProps> = ({
 
     useEffect(() => {
         if (removeTweetaSuccess) {
-            setOpen(true);
             handleMenuClose();
+        }
+        
+        if (tweetaCreateSuccess) {
+            setDialogOpen(false);
         }
 
         if (removeTweetaError) {
-            setOpen(true);
             handleMenuClose();
         }
-    }, [removeTweetaSuccess, removeTweetaError, setOpen]);
+    }, [removeTweetaSuccess, tweetaCreateSuccess, removeTweetaError]);
+
+    const replyDialog = () => (
+        <Dialog 
+            open={dialogOpen} 
+            onClose={() => setDialogOpen(false)} 
+            aria-labelledby='form-dialog-title'>
+            <DialogTitle id='form-dialog-title'>Tweet your quick reply</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    margin='dense'
+                    id='name'
+                    label='Type your reply'
+                    type='text'
+                    fullWidth={true}
+                    value={content}
+                    onChange={e => setContent(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => setDialogOpen(false)} color='primary'>
+                    Cancel
+                </Button>
+                <Button 
+                    onClick={() => createTweeta({ content, images, replyTo: tweeta?._id })} 
+                    color='primary'>
+                    {tweetaCreateLoading ? <Spin></Spin> : 'Tweet'}
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
 
     useEffect(() => {
         if (location.pathname === `/tweeta/${tweeta?._id}` && isTweetaPage && removeTweetaSuccess) {
@@ -110,20 +153,19 @@ const Tweeta: React.FC<TweetaProps> = ({
     }, [location, history, removeTweetaSuccess, tweeta, isTweetaPage]);
 
     let isRetweeted = tweeta?.retweetData !== undefined;
-    let retweetedBy = isRetweeted ? tweeta?.postedBy?.name : '';
+    let retweetedBy = isRetweeted ? tweeta?.postedBy?.username : '';
     tweeta = isRetweeted ? tweeta.retweetData : tweeta;
+
+    let isReply = tweeta?.replyTo !== undefined;
+    let repliedBy = isReply ? tweeta?.replyTo?.postedBy?.username : '';
 
     return (
         <SingleTweeta>
             <Snackbar 
                 open={open}
                 onClose={handleClose}
-                autoHideDuration={(removeTweetaSuccess || removeTweetaError) ? 3000 : 2000}
-                message={removeTweetaSuccess ? (
-                    'Tweeta has been removed'
-                ) : removeTweetaError ? (
-                    removeTweetaError
-                ) : 'Copied'}
+                autoHideDuration={3000}
+                message='Copied'
             />
             <div className='userPhoto'>
                 <Link to='/profile'>
@@ -141,6 +183,14 @@ const Tweeta: React.FC<TweetaProps> = ({
                         <Fragment>
                             <span><AiOutlineRetweet /> </span>
                             <Link to='/profile'>{retweetedBy}</Link> retweeted
+                        </Fragment>
+                    ) : ''}
+                </div>
+                <div className='retweetText'>
+                    {isReply && !isTweetaPage ? (
+                        <Fragment>
+                            <span><AiOutlineComment /> </span>
+                            <Link to='/profile'>{repliedBy}</Link> tweeted this reply
                         </Fragment>
                     ) : ''}
                 </div>
@@ -209,7 +259,7 @@ const Tweeta: React.FC<TweetaProps> = ({
                 </div>
                 <div className='tweetaContent'>
                     {isLinkContent ? (
-                        <Link to={`/tweeta/${tweeta?._id}`}>
+                        <Link to={`/tweeta/${isReply ? tweeta?.replyTo?._id : tweeta?._id}`}>
                             <span>
                                 {tweeta?.content}
                             </span>
@@ -250,10 +300,14 @@ const Tweeta: React.FC<TweetaProps> = ({
                     </div>
                 </div>
                 <div className='tweetaFooter'>
-                    <Button variant='text' size='small'>
+                    <Button 
+                        variant='text' 
+                        size='small' 
+                        onClick={() => setDialogOpen(true)}>
                         <AiOutlineComment />
-                        <span>0</span>
+                        <span>{replies?.length || ''}</span>
                     </Button>
+                    {replyDialog()}
                     <Button
                         onClick={() => handleTweetaRetweet(tweeta?._id)} 
                         variant='text' 

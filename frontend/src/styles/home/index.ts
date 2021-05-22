@@ -133,6 +133,10 @@ export const TweetaList = styled.div`
     padding-bottom: 20px;
 `;
 
+export const SkeletonLoading = styled.div`
+    padding: var(--paddingLeftRight);
+`;
+
 export const SingleTweeta = styled.div`
     &:not(:last-child) {
         border-bottom: 10px solid var(--grayColor);

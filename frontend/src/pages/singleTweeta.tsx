@@ -1,6 +1,7 @@
 import { Alert } from '@material-ui/lab';
 import { Fragment, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import ReplyForm from '../components/forms/ReplyForm';
 import HomeLayout from '../components/home/HomeLayout';
 import Tweeta from '../components/home/Tweeta';
 import TweetaContext from '../context/contexts/tweetaContext';
@@ -29,7 +30,7 @@ const SingleTweeta: React.FC = () => {
         <HomeLayout>
             <PageTitle>
                 {getSingleTweetaLoading ? <Spin></Spin> : (
-                    `Tweeted by @${singleTweeta?.postedBy?.username}`
+                    `Tweeted by @${singleTweeta?.tweeta?.postedBy?.username}`
                 )}
             </PageTitle>
             <TweetaPage>
@@ -48,13 +49,25 @@ const SingleTweeta: React.FC = () => {
                     <Fragment>
                         <div className='mainTweeta'>
                             <Tweeta 
-                                tweeta={singleTweeta} 
+                                tweeta={singleTweeta?.tweeta} 
+                                replies={singleTweeta?.replies}
                                 isViewThisTweet={false} 
                                 isLinkContent={false}
                                 isTweetaPage={true}
                             />
                         </div>
-                        <div>some replies</div>
+                        <div className='replies'>
+                            {singleTweeta.replies?.map((reply: any) => (
+                                <Tweeta 
+                                    key={reply._id}
+                                    tweeta={reply} 
+                                    isViewThisTweet={false} 
+                                    isLinkContent={false}
+                                    isTweetaPage={true}
+                                />
+                            ))}
+                        </div>
+                        <ReplyForm singleTweeta={singleTweeta} />
                     </Fragment>
                 )}
             </TweetaPage>

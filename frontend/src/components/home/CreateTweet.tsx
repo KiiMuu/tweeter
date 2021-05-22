@@ -60,13 +60,13 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 
     useEffect(() => {
         if (tweetaCreateError) {
-            setOpen(true);
+            setOpen(prev => !prev)
         }
 
         if (tweetaCreateSuccess) {
             setContent('');
             setImages([]);
-            setOpen(true);
+            setOpen(prev => !prev)
         }
 
         // eslint-disable-next-line

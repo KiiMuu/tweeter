@@ -49,4 +49,5 @@ export enum RetweetTweetaType {
 export interface ICreateTweeta {
     content?: string, 
     images: object,
+    replyTo?: string,
 }
