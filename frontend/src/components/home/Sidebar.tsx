@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import AuthContext from '../../context/contexts/authContext';
 
 import { Sider } from '../../styles/lists';
 
@@ -14,12 +13,15 @@ import {
     IoMdSearch, 
     IoMdLogOut,
 } from 'react-icons/io';
+import useUserInfo from '../../hooks/useUserInfo';
+import UserContext from '../../context/contexts/userContext';
 
 const Sidebar: React.FC = () => {
-    const authContext = useContext(AuthContext);
+    const authContext = useContext(UserContext);
     const { logout } = authContext;
 
     const history = useHistory();
+    const { user } = useUserInfo();
 
     const handleLogout = () => {
         logout();
@@ -100,7 +102,7 @@ const Sidebar: React.FC = () => {
                         arrow 
                         TransitionComponent={Zoom}>
                         <Button variant='text' color='primary'>
-                            <Link to='/user/profile'>
+                            <Link to={`/profile/${user?.user.username}`}>
                                 <AiOutlineUser />
                                 <span className='linkTitle'>My Profile</span>
                             </Link>

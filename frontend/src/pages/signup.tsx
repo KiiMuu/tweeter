@@ -1,7 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import AuthContext from '../context/contexts/authContext';
-
 import { 
     AuthForm,
     AuthPreview,
@@ -20,10 +18,11 @@ import {
     Snackbar,
 } from '@material-ui/core';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-
 import { AiOutlineUserAdd, AiOutlineUserSwitch } from 'react-icons/ai';
 import { HiOutlineKey } from 'react-icons/hi';
 import { AiOutlineMail } from 'react-icons/ai';
+import { Spin } from '../styles/spinners';
+import UserContext from '../context/contexts/userContext';
 
 const Signup: React.FC = () => {
     const [name, setName] = useState<string>('');
@@ -33,7 +32,7 @@ const Signup: React.FC = () => {
 
     const {
         loading, error, signUp, user,
-    } = useContext(AuthContext);
+    } = useContext(UserContext);
 
     const history = useHistory();
 
@@ -52,16 +51,15 @@ const Signup: React.FC = () => {
     }
     
     useEffect(() => {
-        if (user) {
+        if (user?.user) {
             history.push('/');
         }
-    }, [user, history]);
+    }, [user?.user, history]);
 
     return (
         <div style={{ overflow: 'hidden' }}>
             <Snackbar 
                 open={error ? true : false}
-                autoHideDuration={6000} 
                 anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
                 <Alert severity='error'>
                     {error}
@@ -180,7 +178,7 @@ const Signup: React.FC = () => {
                                     color='primary'
                                     size='large'
                                 >
-                                    {loading ? 'Signing Up...' : 'Sign Up'}
+                                    {loading ? <Spin></Spin> : 'Sign Up'}
                                 </Button>
                                 <Button 
                                     style={{ borderRadius: '0' }}

@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Picker from 'emoji-picker-react';
-import AuthContext from '../../context/contexts/authContext';
 import TweetaContext from '../../context/contexts/tweetaContext';
 import FileUpload from '../forms/FileUpload';
 import Snackbar from '../alerts/SnackBar';
@@ -14,6 +13,7 @@ import { Spin } from '../../styles/spinners';
 import { Button, Divider } from '@material-ui/core';
 import { FaSmile } from 'react-icons/fa';
 import { VscClose } from 'react-icons/vsc';
+import UserContext from '../../context/contexts/userContext';
 
 interface Image {
     public_id: string,
@@ -26,7 +26,7 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
     const [pickerVisible, setPickerVisible] = useState<boolean>(false);
     
     const { open, setOpen, handleClose } = useSnackBar();
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     const { 
         tweetaCreateError, 
         tweetaCreateSuccess, 

@@ -2,7 +2,6 @@ import { Fragment, useContext, useEffect } from 'react';
 import TweetaContext from '../../context/contexts/tweetaContext';
 import Tweeta from './Tweeta';
 import { TweetaType, TweetsProps } from '../../typings';
-
 import { AlertStyles } from '../../styles/notifiers';
 
 import { Alert } from '@material-ui/lab';

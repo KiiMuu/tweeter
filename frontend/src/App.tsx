@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 import FallbackScreen from './components/FallbackScreen';
 import ProtectRoute from './helpers/ProtectRoute';
+import Profile from './pages/profile';
 
 const Singup = lazy(() => import('./pages/signup'));
 const Signin = lazy(() => import('./pages/signin'));
@@ -19,6 +20,7 @@ const App: React.FC = () => {
                     <Route exact path={ROUTES.SIGNIN} component={Signin} />
                     <ProtectRoute exact path={ROUTES.HOME} component={Home} />
                     <ProtectRoute exact path={ROUTES.SINGLE_TWEETA} component={SingleTweeta} />
+                    <ProtectRoute exact path={ROUTES.MY_PROFILE} component={Profile} />
                 </Switch>
             </Router>
         </Suspense>

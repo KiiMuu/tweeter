@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import cloudinary from 'cloudinary';
 import { BAD_REQUEST, OK } from '../constants';
+import User from '../models/User';
 
 cloudinary.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -13,6 +14,26 @@ const addTweetaImages = async (req: Request, res: Response): Promise<object> => 
         const { images } = req.body;
 
         const result = await cloudinary.v2.uploader.upload(images, {
+            public_id: `${Date.now()}`,
+            resource_type: 'auto',
+        });
+
+        return res.status(OK).json({
+            public_id: result.public_id,
+            url: result.secure_url,
+        });
+    } catch (error) {
+        return res.status(BAD_REQUEST).json({
+            message: error.message,
+        });
+    }
+}
+
+const handleProfilePic = async (req: Request, res: Response): Promise<object> => {
+    try {
+        const { profilePic } = req.body;
+
+        const result = await cloudinary.v2.uploader.upload(profilePic, {
             public_id: `${Date.now()}`,
             resource_type: 'auto',
         });
@@ -45,4 +66,5 @@ const removeTweetaImages = async (req: Request, res: Response): Promise<object> 
 export {
     addTweetaImages,
     removeTweetaImages,
+    handleProfilePic,
 }

@@ -1,6 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import AuthContext from '../context/contexts/authContext';
 
 import { FormAction, SignInForm, SignInScreen } from '../styles/auth';
 import { NormaHeading, SubNormaHeading } from '../styles/headings';
@@ -17,6 +16,8 @@ import {
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { AiOutlineMail } from 'react-icons/ai';
 import { HiOutlineKey } from 'react-icons/hi';
+import { Spin } from '../styles/spinners';
+import UserContext from '../context/contexts/userContext';
 
 const Signin: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -24,7 +25,7 @@ const Signin: React.FC = () => {
 
     const { 
         loading, error, signIn, user,
-     } = useContext(AuthContext);
+    } = useContext(UserContext);
 
     const history = useHistory();
 
@@ -46,7 +47,7 @@ const Signin: React.FC = () => {
         if (user?.user) {
             history.push('/');
         } 
-    }, [user, history]);
+    }, [user?.user, history]);
 
     return (
         <SignInScreen>
@@ -113,7 +114,7 @@ const Signin: React.FC = () => {
                                         color='primary'
                                         size='large'
                                     >
-                                        {loading ? 'Signing In...' : 'Sign In'}
+                                        {loading ? <Spin></Spin> : 'Sign In'}
                                     </Button>
                                     <Button 
                                         style={{ borderRadius: '0' }}

@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/User';
 import generateToken from '../helpers/generateToken';
-import { BAD_REQUEST, CREATED, OK, SERVER_ERROR } from '../constants';
+import { BAD_REQUEST, CREATED, OK, SERVER_ERROR, UNPROCESSABLE_ENTITY } from '../constants';
+import { handleProfilePic } from './cloudinary';
 
 const signUp = async (req: Request, res: Response): Promise<object | string> => {
     try {
@@ -20,13 +21,13 @@ const signUp = async (req: Request, res: Response): Promise<object | string> => 
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const createdUser = await new User({
+        const user = await new User({
             name, username, email, password: hashedPassword,
         }).save();
 
         return res.status(CREATED).json({
-            createdUser,
-            token: generateToken(createdUser._id),
+            user,
+            token: generateToken(user._id),
         });
     } catch (error) {
         return res.status(SERVER_ERROR).json({
@@ -83,8 +84,52 @@ const getCurrentUser = async (req: Request, res: Response): Promise<object | str
     }
 }
 
+const editProfile = async (req: Request, res: Response): Promise<object> => {
+    try {
+        const {
+            profilePic,
+            coverPhoto, 
+            name,
+            bio,
+            location,
+            website,
+            birthdate,
+        } = req.body;
+
+        const user = await User.findById(req.user?._id).exec();
+
+        if (!name) {
+            return res.status(UNPROCESSABLE_ENTITY).json({
+                message: 'Name cannot be blank.'
+            });
+        }
+
+        user.profilePic = profilePic || user.profilePic;
+        user.coverPhoto = coverPhoto || user.coverPhoto;
+        user.name = name || user.name;
+
+        const updatedUser = await user.save();
+        
+        return res.json({
+            _id: updatedUser._id,
+            profilePic: updatedUser.profilePic,
+            coverPhoto: updatedUser.coverPhoto, 
+            name: updatedUser.name,
+            bio,
+            location,
+            website,
+            birthdate,
+        });
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
+            message: error.message,
+        });
+    }
+}
+
 export {
     signUp,
     signIn,
     getCurrentUser,
+    editProfile,
 }

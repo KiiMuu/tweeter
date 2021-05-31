@@ -7,6 +7,16 @@ export const centerElement = () => {
     `;
 }
 
+export const centerElementAlt = () => {
+    return`
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    `;
+}
+
 export const bounceAnimation = () => {
     return`
         @keyframes bounce {
@@ -28,7 +38,7 @@ export const bounceAnimation = () => {
 
 export const customMUIButton = () => {
     return`
-        font-size: 14px;
+        font-size: 17px;
         text-transform: lowercase;
         border-radius: 50%;
         padding: 5px;
@@ -37,5 +47,16 @@ export const customMUIButton = () => {
         svg {
             margin-right: 3px;
         }
+    `;
+}
+
+export const overlay = () => {
+    return `
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0 0 0 / 30%);
     `;
 }

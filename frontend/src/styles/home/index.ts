@@ -3,6 +3,7 @@ import { customMUIButton } from '../../theme/mixins';
 
 export const NewsFeedContainer = styled.div`
     border-right: 1px solid var(--borderColor);
+    border-left: 1px solid var(--borderColor);
 `;
 
 export const TweetForm = styled.form`
@@ -157,14 +158,19 @@ export const SingleTweeta = styled.div`
     .tweetaWrapper { 
         flex: 1; 
         .retweetText {
-            color: var(--darkColor);
+            color: var(--textGray);
             font-size: 14px;
             margin-bottom: 5px;
+            opacity: .7;
+            display: flex;
+            align-items: center;
             span {
-                vertical-align: middle;
+                margin-right: 5px;
+                display: flex;
             }
             a {
                 color: inherit;
+                margin-right: 4px;
             }
         }
         .tweetaHeader {

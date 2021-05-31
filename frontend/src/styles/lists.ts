@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 export const Sider = styled.div`
     height: 100vh;
-    border-right: 1px solid var(--borderColor);
     display: flex;
     align-items: start;
     justify-content: center;

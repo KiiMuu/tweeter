@@ -117,6 +117,8 @@ const Tweeta: React.FC<TweetaProps> = ({
 
     const replyDialog = () => (
         <Dialog 
+            fullWidth={true}
+            maxWidth='sm'
             open={dialogOpen} 
             onClose={() => setDialogOpen(false)} 
             aria-labelledby='form-dialog-title'>
@@ -128,7 +130,6 @@ const Tweeta: React.FC<TweetaProps> = ({
                     id='name'
                     label='Type your reply'
                     type='text'
-                    fullWidth={true}
                     value={content}
                     onChange={e => setContent(e.target.value)}
                 />

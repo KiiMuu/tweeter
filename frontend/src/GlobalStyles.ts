@@ -9,6 +9,7 @@ const GlobalStyles = createGlobalStyle`
         --lightColor: #FFF;
         --darkColor: #111827;
         --grayDark: #bdb9b9;
+        --textGray: rgb(91, 112, 131);
 
         // * spaces
         // * common
