@@ -1,3 +1,3 @@
 export interface IDataStoredInToken {
-    id: string;
+	id: string;
 }

@@ -16,146 +16,157 @@ import { VscClose } from 'react-icons/vsc';
 import UserContext from '../../context/contexts/userContext';
 
 interface Image {
-    public_id: string,
-    url: string,
+	public_id: string;
+	url: string;
 }
 
 const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
-    const [content, setContent] = useState<string>('');
-    const [images, setImages] = useState<Image[]>([]);
-    const [pickerVisible, setPickerVisible] = useState<boolean>(false);
-    
-    const { open, setOpen, handleClose } = useSnackBar();
-    const { user } = useContext(UserContext);
-    const { 
-        tweetaCreateError, 
-        tweetaCreateSuccess, 
-        tweetaCreateLoading,
-        removeTweetaImgs,
-    } = useContext(TweetaContext);
+	const [content, setContent] = useState<string>('');
+	const [images, setImages] = useState<Image[]>([]);
+	const [pickerVisible, setPickerVisible] = useState<boolean>(false);
 
-    const setInput = (setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setter(e.currentTarget.value);
-    }
+	const { open, setOpen, handleClose } = useSnackBar();
+	const { user } = useContext(UserContext);
+	const {
+		tweetaCreateError,
+		tweetaCreateSuccess,
+		tweetaCreateLoading,
+		removeTweetaImgs,
+	} = useContext(TweetaContext);
 
-    const handleCreateTweet = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+	const setInput =
+		(setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+			setter(e.currentTarget.value);
+		};
 
-        createTweeta({ content, images });
-    }
+	const handleCreateTweet = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 
-    const handleRemove = (id: string) => {
-        removeTweetaImgs(id);
+		createTweeta({ content, images });
+	};
 
-        let filteredImgs = images.filter(img => img.public_id !== id);
+	const handleRemove = (id: string) => {
+		removeTweetaImgs(id);
 
-        setImages(filteredImgs);
-    }
+		let filteredImgs = images.filter(img => img.public_id !== id);
 
-    const onEmojiClick = (e: React.MouseEvent<Element, MouseEvent>, emojiObject: any) => {
-        e.preventDefault();
-        setPickerVisible(false);
-        setContent(`${content}${emojiObject.emoji}`);
-    }
+		setImages(filteredImgs);
+	};
 
-    useEffect(() => {
-        if (tweetaCreateError) {
-            setOpen(prev => !prev)
-        }
+	const onEmojiClick = (
+		e: React.MouseEvent<Element, MouseEvent>,
+		emojiObject: any
+	) => {
+		e.preventDefault();
+		setPickerVisible(false);
+		setContent(`${content}${emojiObject.emoji}`);
+	};
 
-        if (tweetaCreateSuccess) {
-            setContent('');
-            setImages([]);
-            setOpen(prev => !prev)
-        }
+	useEffect(() => {
+		if (tweetaCreateError) {
+			setOpen(prev => !prev);
+		}
 
-        // eslint-disable-next-line
-    }, [tweetaCreateError, tweetaCreateSuccess]);
+		if (tweetaCreateSuccess) {
+			setContent('');
+			setImages([]);
+			setOpen(prev => !prev);
+		}
 
-    return (
-        <TweetForm onSubmit={handleCreateTweet}>
-            <Snackbar 
-                open={open}
-                handleClose={handleClose}
-                autoHideDuration={3000}
-                message='Tweet has been posted'
-            />
-            <div className='userPhoto'>
-                <Link to='/profile'>
-                    <img 
-                        src={user?.user?.profilePic} 
-                        alt={user?.user?.username} 
-                    />
-                </Link>
-            </div>
-            <div className='formContent'>
-                <div className='formBox'>
-                    <textarea 
-                        placeholder="What's happening?" 
-                        value={content}
-                        onChange={setInput(setContent)}
-                    />
-                </div>
-                <div className='tweetaImages'>
-                    {tweetaCreateLoading && images?.length ? <div className='spinner'><Spin></Spin></div> : (
-                        images?.map(img => (
-                            <div className='imgBox' key={img.public_id}>
-                                <span>
-                                    <VscClose 
-                                        onClick={() => handleRemove(img.public_id)} 
-                                    />
-                                </span>
-                                <img
-                                    src={img.url}
-                                    alt={img.url}
-                                />
-                            </div>
-                        ))
-                    )}
-                </div>
-                <Divider />
-                <div className='formOptions'>
-                    <div className='options'>
-                        <div className='upload'>
-                            <FileUpload images={images} setImages={setImages} />
-                        </div>
-                        <div className='addEmoji'>
-                            <Button
-                                variant='text'
-                                size='small' 
-                                onClick={() => {
-                                    setPickerVisible(!pickerVisible);
-                                }}
-                            >
-                                <FaSmile />
-                            </Button>
-                            {pickerVisible ? (
-                                <div className='EmojiPicker'>
-                                    <Picker native={true} onEmojiClick={onEmojiClick} />
-                                </div>
-                            ) : null}
-                        </div>
-                    </div>
-                    <div className='submitButton'>
-                        <Button 
-                            style={{ 
-                                color: '#fff', 
-                                borderRadius: '50px',
-                                textTransform: 'capitalize'
-                            }}
-                            variant='contained' 
-                            disableElevation
-                            size='small'
-                            color='primary'
-                            type='submit'
-                            disabled={!content.trim() && !images.length}>
-                            Tweet
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </TweetForm>
-    )
-}
+		// eslint-disable-next-line
+	}, [tweetaCreateError, tweetaCreateSuccess]);
+
+	return (
+		<TweetForm onSubmit={handleCreateTweet}>
+			<Snackbar
+				open={open}
+				handleClose={handleClose}
+				autoHideDuration={3000}
+				message='Tweet has been posted'
+			/>
+			<div className='userPhoto'>
+				<Link to='/profile'>
+					<img
+						src={user?.user?.profilePic}
+						alt={user?.user?.username}
+					/>
+				</Link>
+			</div>
+			<div className='formContent'>
+				<div className='formBox'>
+					<textarea
+						placeholder="What's happening?"
+						value={content}
+						onChange={setInput(setContent)}
+					/>
+				</div>
+				<div className='tweetaImages'>
+					{tweetaCreateLoading && images?.length ? (
+						<div className='spinner'>
+							<Spin></Spin>
+						</div>
+					) : (
+						images?.map(img => (
+							<div className='imgBox' key={img.public_id}>
+								<span>
+									<VscClose
+										onClick={() =>
+											handleRemove(img.public_id)
+										}
+									/>
+								</span>
+								<img src={img.url} alt={img.url} />
+							</div>
+						))
+					)}
+				</div>
+				<Divider />
+				<div className='formOptions'>
+					<div className='options'>
+						<div className='upload'>
+							<FileUpload images={images} setImages={setImages} />
+						</div>
+						<div className='addEmoji'>
+							<Button
+								variant='text'
+								size='small'
+								onClick={() => {
+									setPickerVisible(!pickerVisible);
+								}}
+							>
+								<FaSmile />
+							</Button>
+							{pickerVisible ? (
+								<div className='EmojiPicker'>
+									<Picker
+										native={true}
+										onEmojiClick={onEmojiClick}
+									/>
+								</div>
+							) : null}
+						</div>
+					</div>
+					<div className='submitButton'>
+						<Button
+							style={{
+								color: '#fff',
+								borderRadius: '50px',
+								textTransform: 'capitalize',
+							}}
+							variant='contained'
+							disableElevation
+							size='small'
+							color='primary'
+							type='submit'
+							disabled={!content.trim() && !images.length}
+						>
+							Tweet
+						</Button>
+					</div>
+				</div>
+			</div>
+		</TweetForm>
+	);
+};
 
 export default CreateTweet;

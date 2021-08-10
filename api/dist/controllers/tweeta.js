@@ -3,20 +3,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeReply = exports.createReply = exports.tweetaRetweet = exports.tweetaLike = exports.removeTweeta = exports.getSingleTweeta = exports.getTweets = exports.createTweeta = void 0;
+exports.tweetaRetweet = exports.tweetaLike = exports.removeTweeta = exports.getSingleTweeta = exports.getTweets = exports.createTweeta = void 0;
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
 const User_1 = __importDefault(require("../models/User"));
 const constants_1 = require("../constants");
+// import { IReply } from '../interfaces/tweeta';
 const createTweeta = async (req, res) => {
     var _a;
     try {
-        const { content, images, } = req.body;
-        let newTweeta = await Tweeta_1.default.create({
+        const { content, images, replyTo } = req.body;
+        let tweetaData = {
             content,
             images,
+            replyTo,
             postedBy: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id,
+        };
+        if (replyTo) {
+            tweetaData.replyTo = replyTo;
+        }
+        let newTweeta = await Tweeta_1.default.create(tweetaData);
+        await User_1.default.populate(newTweeta, {
+            path: 'postedBy',
+            select: '-password',
         });
-        await User_1.default.populate(newTweeta, { path: 'postedBy', select: '-password', });
+        await Tweeta_1.default.populate(newTweeta, { path: 'replyTo' });
         return res.status(constants_1.CREATED).json(newTweeta);
     }
     catch (error) {
@@ -28,19 +38,13 @@ const createTweeta = async (req, res) => {
 exports.createTweeta = createTweeta;
 const getTweets = async (req, res) => {
     try {
-        const tweets = await Tweeta_1.default
-            .find({})
+        let tweets = await Tweeta_1.default.find({})
             .sort({ createdAt: -1 })
             .populate('postedBy', '_id profilePic name username email')
             .populate('retweetData')
-            .populate({
-            path: 'retweetData replies',
-            populate: {
-                path: 'postedBy',
-                select: '_id profilePic name username email',
-                model: 'User',
-            },
-        });
+            .populate('replyTo');
+        tweets = await User_1.default.populate(tweets, { path: 'replyTo.postedBy' });
+        await User_1.default.populate(tweets, { path: 'retweetData.postedBy' });
         return res.status(constants_1.OK).json(tweets);
     }
     catch (error) {
@@ -53,19 +57,24 @@ exports.getTweets = getTweets;
 const getSingleTweeta = async (req, res) => {
     try {
         const tweetaId = req.params.id;
-        const tweeta = await Tweeta_1.default
-            .findOne({ _id: tweetaId })
+        let tweeta = await Tweeta_1.default.findOne({ _id: tweetaId })
             .populate('postedBy', '-password')
+            .populate('retweetData');
+        let results = {
+            tweeta: tweeta,
+            replyTo: {},
+        };
+        if (tweeta.replyTo !== undefined) {
+            results.replyTo = tweeta.replyTo;
+        }
+        results.replies = await Tweeta_1.default.find({ replyTo: tweetaId })
+            .sort({ createdAt: -1 })
+            .populate('postedBy', '_id profilePic name username email')
             .populate('retweetData')
-            .populate({
-            path: 'retweetData replies',
-            populate: {
-                path: 'postedBy',
-                select: '_id profilePic name username email',
-                model: 'User',
-            },
-        });
-        return res.status(constants_1.OK).json(tweeta);
+            .populate('replyTo');
+        results = await User_1.default.populate(results, { path: 'replyTo.postedBy' });
+        await User_1.default.populate(results, { path: 'retweetData.postedBy' });
+        return res.status(constants_1.OK).json(results);
     }
     catch (error) {
         return res.status(constants_1.BAD_REQUEST).json({
@@ -98,12 +107,12 @@ const tweetaLike = async (req, res) => {
             [option]: {
                 likes: tweetaId,
             },
-        }, { new: true, });
+        }, { new: true });
         const tweeta = await Tweeta_1.default.findByIdAndUpdate(tweetaId, {
             [option]: {
                 likes: user._id,
             },
-        }, { new: true, });
+        }, { new: true });
         await User_1.default.populate(tweeta, {
             path: 'postedBy',
             select: '-password',
@@ -138,18 +147,18 @@ const tweetaRetweet = async (req, res) => {
             [option]: {
                 retweets: retweet._id,
             },
-        }, { new: true, });
+        }, { new: true });
         const tweeta = await Tweeta_1.default.findByIdAndUpdate(tweetaId, {
             [option]: {
                 retweeters: user._id,
             },
-        }, { new: true, });
+        }, { new: true });
         await User_1.default.populate(tweeta, {
             path: 'postedBy',
             select: '_id profilePic name username email',
         });
         await Tweeta_1.default.populate(tweeta, {
-            path: 'retweetData',
+            path: 'retweetData replyTo',
         });
         return res.status(constants_1.OK).json(tweeta);
     }
@@ -160,47 +169,3 @@ const tweetaRetweet = async (req, res) => {
     }
 };
 exports.tweetaRetweet = tweetaRetweet;
-const createReply = async (req, res) => {
-    var _a, _b;
-    try {
-        const { content, images, } = req.body;
-        const tweeta = await Tweeta_1.default.findById(req.params.id).exec();
-        let newReply = {
-            content,
-            images,
-            postedBy: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id,
-        };
-        await User_1.default.populate(newReply, { path: 'postedBy', select: '-password', });
-        (_b = tweeta === null || tweeta === void 0 ? void 0 : tweeta.replies) === null || _b === void 0 ? void 0 : _b.unshift(newReply);
-        await (tweeta === null || tweeta === void 0 ? void 0 : tweeta.save());
-        return res.status(constants_1.CREATED).json(newReply);
-    }
-    catch (error) {
-        return res.status(constants_1.BAD_REQUEST).json({
-            message: error.message,
-        });
-    }
-};
-exports.createReply = createReply;
-const removeReply = async (req, res) => {
-    var _a;
-    try {
-        const tweetaId = req.params.id;
-        const replyId = req.params.replyId;
-        const tweeta = await Tweeta_1.default.findById(tweetaId).exec();
-        const reply = tweeta.replies.find((reply) => reply._id == replyId);
-        if (!reply) {
-            return res.status(constants_1.NOT_FOUND).json({ message: 'Reply does not exist.' });
-        }
-        const removedIndex = tweeta.replies.map((reply) => reply.postedBy).indexOf((_a = req.user) === null || _a === void 0 ? void 0 : _a._id);
-        tweeta.replies.splice(removedIndex, 1);
-        await tweeta.save();
-        return res.status(constants_1.OK).json(reply);
-    }
-    catch (error) {
-        return res.status(constants_1.BAD_REQUEST).json({
-            message: error.message,
-        });
-    }
-};
-exports.removeReply = removeReply;

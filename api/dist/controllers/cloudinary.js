@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeTweetaImages = exports.addTweetaImages = void 0;
+exports.handleCoverPhoto = exports.handleProfilePic = exports.removeTweetaImages = exports.addTweetaImages = void 0;
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const constants_1 = require("../constants");
 cloudinary_1.default.v2.config({
@@ -30,6 +30,44 @@ const addTweetaImages = async (req, res) => {
     }
 };
 exports.addTweetaImages = addTweetaImages;
+const handleProfilePic = async (req, res) => {
+    try {
+        const { profilePic, coverPhoto } = req.body;
+        const result = await cloudinary_1.default.v2.uploader.upload(profilePic, {
+            public_id: `${Date.now()}`,
+            resource_type: 'auto',
+        });
+        return res.status(constants_1.OK).json({
+            public_id: result.public_id,
+            url: result.secure_url,
+        });
+    }
+    catch (error) {
+        return res.status(constants_1.BAD_REQUEST).json({
+            message: error.message,
+        });
+    }
+};
+exports.handleProfilePic = handleProfilePic;
+const handleCoverPhoto = async (req, res) => {
+    try {
+        const { coverPhoto } = req.body;
+        const result = await cloudinary_1.default.v2.uploader.upload(coverPhoto, {
+            public_id: `${Date.now()}`,
+            resource_type: 'auto',
+        });
+        return res.status(constants_1.OK).json({
+            public_id: result.public_id,
+            url: result.secure_url,
+        });
+    }
+    catch (error) {
+        return res.status(constants_1.BAD_REQUEST).json({
+            message: error.message,
+        });
+    }
+};
+exports.handleCoverPhoto = handleCoverPhoto;
 const removeTweetaImages = async (req, res) => {
     try {
         const image_id = req.body.public_id;

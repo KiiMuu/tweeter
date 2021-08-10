@@ -28,11 +28,11 @@ app.use(compression());
 // use routes
 app.use('/api', userRoutes);
 app.use('/api', tweetaRoutes);
-app.use('/api', cloudinaryRoutes)
+app.use('/api', cloudinaryRoutes);
 
 // app launching!
 const port: string | number = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    console.log(`App is up on port: ${port}`);
+	console.log(`App is up on port: ${port}`);
 });

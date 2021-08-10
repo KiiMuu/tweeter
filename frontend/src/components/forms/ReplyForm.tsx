@@ -8,77 +8,75 @@ import { Spin } from '../../styles/spinners';
 import { VscClose } from 'react-icons/vsc';
 
 interface Image {
-    public_id: string,
-    url: string,
+	public_id: string;
+	url: string;
 }
 
 const ReplyForm: React.FC<CreateTweetaProps> = ({ singleTweeta }) => {
-    const [content, setContent] = useState<string>('');
-    const [images, setImages] = useState<Image[]>([]);
+	const [content, setContent] = useState<string>('');
+	const [images, setImages] = useState<Image[]>([]);
 
-    const { 
-        createTweeta,
-        tweetaCreateLoading,
-        tweetaCreateSuccess,
-        removeTweetaImgs,
-    } = useContext(TweetaContext);
+	const {
+		createTweeta,
+		tweetaCreateLoading,
+		tweetaCreateSuccess,
+		removeTweetaImgs,
+	} = useContext(TweetaContext);
 
-    const handleCreateReply = () => {
-        createTweeta({ content, images, replyTo: singleTweeta?.tweeta?._id });
-    }
+	const handleCreateReply = () => {
+		createTweeta({ content, images, replyTo: singleTweeta?.tweeta?._id });
+	};
 
-    const handleRemove = (id: string) => {
-        removeTweetaImgs(id);
+	const handleRemove = (id: string) => {
+		removeTweetaImgs(id);
 
-        let filteredImgs = images.filter(img => img.public_id !== id);
+		let filteredImgs = images.filter(img => img.public_id !== id);
 
-        setImages(filteredImgs);
-    }
+		setImages(filteredImgs);
+	};
 
-    useEffect(() => {
-        if (tweetaCreateSuccess) {
-            setContent('');
-            setImages([]);
-        }
-    }, [tweetaCreateSuccess]);
+	useEffect(() => {
+		if (tweetaCreateSuccess) {
+			setContent('');
+			setImages([]);
+		}
+	}, [tweetaCreateSuccess]);
 
-    return (
-        <Reply>
-            <input 
-                placeholder='Tweet your reply' 
-                value={content}
-                onChange={e => setContent(e.target.value)}
-            />
-            <div className='tweetaImages'>
-                {images?.map(img => (
-                    <div className='imgBox' key={img.public_id}>
-                        <span>
-                            <VscClose
-                                onClick={() => handleRemove(img.public_id)} 
-                            />
-                        </span>
-                        <img
-                            src={img.url}
-                            alt={img.url}
-                        />
-                    </div>
-                ))}
-            </div>
-            <FileUpload images={images} setImages={setImages} />
-            <Button 
-                style={{ 
-                    color: '#fff', 
-                    textTransform: 'capitalize'
-                }}
-                color='primary' 
-                variant='contained' 
-                disableElevation
-                onClick={handleCreateReply}
-                disabled={!content.trim() && !images.length}>
-                {tweetaCreateLoading ? <Spin></Spin> : 'Tweet'}
-            </Button>
-        </Reply>
-    )
-}
+	return (
+		<Reply>
+			<input
+				placeholder='Tweet your reply'
+				value={content}
+				onChange={e => setContent(e.target.value)}
+			/>
+			<div className='tweetaImages'>
+				{images?.map(img => (
+					<div className='imgBox' key={img.public_id}>
+						<span>
+							<VscClose
+								onClick={() => handleRemove(img.public_id)}
+							/>
+						</span>
+						<img src={img.url} alt={img.url} />
+					</div>
+				))}
+			</div>
+			<FileUpload images={images} setImages={setImages} />
+			<Button
+				style={{
+					color: '#fff',
+					textTransform: 'capitalize',
+				}}
+				color='primary'
+				variant='contained'
+				disableElevation
+				onClick={handleCreateReply}
+				disabled={!content.trim() && !images.length}
+			>
+				{tweetaCreateLoading ? <Spin></Spin> : 'Tweet'}
+			</Button>
+		</Reply>
+	);
+};
 
 export default ReplyForm;

@@ -31,16 +31,33 @@ const UserSchema = new mongoose_1.Schema({
         default: 'https://res.cloudinary.com/ndsnvf0/image/upload/v1619469737/tweeter/17317730_tephvk.jpg',
     },
     coverPhoto: {
-        type: String
+        type: String,
+        default: 'https://media.sproutsocial.com/uploads/2018/04/Facebook-Cover-Photo-Size.png',
     },
-    likes: [{
+    bio: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    website: {
+        type: String,
+    },
+    birthdate: {
+        type: Date,
+    },
+    likes: [
+        {
             type: ObjectId,
             ref: 'Tweeta',
-        }],
-    retweets: [{
+        },
+    ],
+    retweets: [
+        {
             type: ObjectId,
             ref: 'Tweeta',
-        }],
+        },
+    ],
 }, {
     timestamps: true,
 });

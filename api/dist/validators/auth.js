@@ -26,7 +26,7 @@ const validateSignUp = [
         .withMessage('Invalid email format, try again.'),
     express_validator_1.check('password')
         .isLength({ min: 6 })
-        .withMessage('Password must has at least 6 characters long.')
+        .withMessage('Password must has at least 6 characters long.'),
 ];
 exports.validateSignUp = validateSignUp;
 const validateSignIn = [
@@ -38,6 +38,6 @@ const validateSignIn = [
         .withMessage('Invalid email format, try again.'),
     express_validator_1.check('password')
         .isLength({ min: 6 })
-        .withMessage('Password must has at least 6 characters long.')
+        .withMessage('Password must has at least 6 characters long.'),
 ];
 exports.validateSignIn = validateSignIn;

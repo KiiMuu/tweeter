@@ -2,30 +2,30 @@ import styled from 'styled-components';
 import { centerElement, bounceAnimation } from '../theme/mixins';
 
 export const FallbackScreen = styled.div`
-    ${centerElement};
-    img {
-        width: 5rem;
-        height: 5rem;
-        animation: bounce 1s infinite ease-in-out;
-    }
-    ${bounceAnimation};
+	${centerElement};
+	img {
+		width: 5rem;
+		height: 5rem;
+		animation: bounce 1s infinite ease-in-out;
+	}
+	${bounceAnimation};
 `;
 
 export const Spin = styled.div`
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: var(--mainColor) var(--mainColor) transparent;
-    border-radius: 50%;
-    animation: spin .56s linear infinite;
+	width: 18px;
+	height: 18px;
+	border-width: 2px;
+	border-style: solid;
+	border-color: var(--mainColor) var(--mainColor) transparent;
+	border-radius: 50%;
+	animation: spin 0.56s linear infinite;
 
-    @keyframes spin {
-        from {
-           transform: rotate(0deg); 
-        }
-        to {
-           transform: rotate(360deg); 
-        }
-    }
+	@keyframes spin {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
 `;

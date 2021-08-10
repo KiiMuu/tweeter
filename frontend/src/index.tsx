@@ -7,13 +7,13 @@ import TweetaState from './context/action-creators/tweetaActions';
 import UserState from './context/action-creators/userCreators';
 
 ReactDOM.render(
-    <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <UserState>
-            <TweetaState>
-                <App />
-            </TweetaState>
-        </UserState>
-    </ThemeProvider>,
-    document.getElementById('root')
+	<ThemeProvider theme={theme}>
+		<GlobalStyles />
+		<UserState>
+			<TweetaState>
+				<App />
+			</TweetaState>
+		</UserState>
+	</ThemeProvider>,
+	document.getElementById('root')
 );

@@ -9,7 +9,8 @@ const User_1 = __importDefault(require("../models/User"));
 const constants_1 = require("../constants");
 const isAuth = async (req, res, next) => {
     let token;
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    if (req.headers.authorization &&
+        req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
             // decoded => { id: '123456', iat: 3213123, exp: 3213432 }

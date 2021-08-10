@@ -1,148 +1,149 @@
-import { 
-    CreateTweetaType, 
-    RemoveTweetaImgType, 
-    GetTweetsType,
-    GetSingleTweetaType,
-    AddTweetaImgType,
-    RemoveTweetaType,
-    LikeTweetaType,
-    RetweetTweetaType,
+import {
+	CreateTweetaType,
+	RemoveTweetaImgType,
+	GetTweetsType,
+	GetSingleTweetaType,
+	AddTweetaImgType,
+	RemoveTweetaType,
+	LikeTweetaType,
+	RetweetTweetaType,
 } from '../types/tweeta';
 import { TweetaProps } from '../../typings';
 
 interface CreateTweetaActionRequest {
-    type: CreateTweetaType.TWEETA_CREATE_REQUEST,
+	type: CreateTweetaType.TWEETA_CREATE_REQUEST;
 }
 
 interface CreateTweetaActionSuccess {
-    type: CreateTweetaType.TWEETA_CREATE_SUCCESS,
-    payload: object,
+	type: CreateTweetaType.TWEETA_CREATE_SUCCESS;
+	payload: object;
 }
 
 interface CreateTweetaActionFail {
-    type: CreateTweetaType.TWEETA_CREATE_FAIL,
-    payload: string,
+	type: CreateTweetaType.TWEETA_CREATE_FAIL;
+	payload: string;
 }
 
 interface TweetsListActionRequest {
-    type: GetTweetsType.TWEETS_LIST_REQUEST,
+	type: GetTweetsType.TWEETS_LIST_REQUEST;
 }
 
 interface TweetsListActionSuccess {
-    type: GetTweetsType.TWEETS_LIST_SUCCESS,
-    payload: object[],
+	type: GetTweetsType.TWEETS_LIST_SUCCESS;
+	payload: object[];
 }
 
 interface TweetsListActionFail {
-    type: GetTweetsType.TWEETS_LIST_FAIL,
-    payload: string,
+	type: GetTweetsType.TWEETS_LIST_FAIL;
+	payload: string;
 }
 
 interface SingleTweetaActionRequest {
-    type: GetSingleTweetaType.GET_SINGLE_TWEETA_REQUEST,
+	type: GetSingleTweetaType.GET_SINGLE_TWEETA_REQUEST;
 }
 
 interface SingleTweetaActionSuccess {
-    type: GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS,
-    payload: TweetaProps,
+	type: GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS;
+	payload: TweetaProps;
 }
 
 interface SingleTweetaActionFail {
-    type: GetSingleTweetaType.GET_SINGLE_TWEETA_FAIL,
-    payload: string,
+	type: GetSingleTweetaType.GET_SINGLE_TWEETA_FAIL;
+	payload: string;
 }
 
 interface TweetaImgAddActionRequest {
-    type: AddTweetaImgType.TWEETA_IMG_ADD_REQUEST,
+	type: AddTweetaImgType.TWEETA_IMG_ADD_REQUEST;
 }
 
 interface TweetaImgAddActionSuccess {
-    type: AddTweetaImgType.TWEETA_IMG_ADD_SUCCESS,
-    payload: object,
+	type: AddTweetaImgType.TWEETA_IMG_ADD_SUCCESS;
+	payload: object;
 }
 
 interface TweetaImgAddActionFail {
-    type: AddTweetaImgType.TWEETA_IMG_ADD_FAIL,
-    payload: string,
+	type: AddTweetaImgType.TWEETA_IMG_ADD_FAIL;
+	payload: string;
 }
 
 interface TweetaImgRemveActionRequest {
-    type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_REQUEST,
+	type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_REQUEST;
 }
 
 interface TweetaImgRemveActionSuccess {
-    type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_SUCCESS,
-    payload: object,
+	type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_SUCCESS;
+	payload: object;
 }
 
 interface TweetaImgRemveActionFail {
-    type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_FAIL,
-    payload: string,
+	type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_FAIL;
+	payload: string;
 }
 
 interface TweetaRemveActionRequest {
-    type: RemoveTweetaType.TWEETA_REMOVE_REQUEST,
+	type: RemoveTweetaType.TWEETA_REMOVE_REQUEST;
 }
 
 interface TweetaRemveActionSuccess {
-    type: RemoveTweetaType.TWEETA_REMOVE_SUCCESS,
-    payload: TweetaProps,
+	type: RemoveTweetaType.TWEETA_REMOVE_SUCCESS;
+	payload: TweetaProps;
 }
 
 interface TweetaRemveActionFail {
-    type: RemoveTweetaType.TWEETA_REMOVE_FAIL,
-    payload: string,
+	type: RemoveTweetaType.TWEETA_REMOVE_FAIL;
+	payload: string;
 }
 
 interface TweetaLikeActionRequest {
-    type: LikeTweetaType.LIKE_TWEETA_REQUEST,
+	type: LikeTweetaType.LIKE_TWEETA_REQUEST;
 }
 
 interface TweetaLikeActionSuccess {
-    type: LikeTweetaType.LIKE_TWEETA_SUCCESS,
-    payload: TweetaProps,
+	type: LikeTweetaType.LIKE_TWEETA_SUCCESS;
+	payload: TweetaProps;
 }
 
 interface TweetaLikeActionFail {
-    type: LikeTweetaType.LIKE_TWEETA_FAIL,
-    payload: string,
+	type: LikeTweetaType.LIKE_TWEETA_FAIL;
+	payload: string;
 }
 
 interface TweetaRetweetActionRequest {
-    type: RetweetTweetaType.RETWEET_TWEETA_REQUEST,
+	type: RetweetTweetaType.RETWEET_TWEETA_REQUEST;
 }
 
 interface TweetaRetweetActionSuccess {
-    type: RetweetTweetaType.RETWEET_TWEETA_SUCCESS,
-    payload: TweetaProps,
+	type: RetweetTweetaType.RETWEET_TWEETA_SUCCESS;
+	payload: TweetaProps;
 }
 
 interface TweetaRetweetActionFail {
-    type: RetweetTweetaType.RETWEET_TWEETA_FAIL,
-    payload: string,
+	type: RetweetTweetaType.RETWEET_TWEETA_FAIL;
+	payload: string;
 }
 
-export type Action = CreateTweetaActionRequest 
-    | CreateTweetaActionSuccess 
-    | CreateTweetaActionFail
-    | TweetsListActionRequest
-    | TweetsListActionSuccess
-    | TweetsListActionFail
-    | SingleTweetaActionRequest
-    | SingleTweetaActionSuccess
-    | SingleTweetaActionFail
-    | TweetaImgRemveActionRequest
-    | TweetaImgAddActionRequest
-    | TweetaImgAddActionSuccess
-    | TweetaImgAddActionFail
-    | TweetaImgRemveActionSuccess
-    | TweetaImgRemveActionFail
-    | TweetaRemveActionRequest
-    | TweetaRemveActionSuccess
-    | TweetaRemveActionFail
-    | TweetaLikeActionRequest
-    | TweetaLikeActionSuccess
-    | TweetaLikeActionFail
-    | TweetaRetweetActionRequest
-    | TweetaRetweetActionSuccess
-    | TweetaRetweetActionFail
+export type Action =
+	| CreateTweetaActionRequest
+	| CreateTweetaActionSuccess
+	| CreateTweetaActionFail
+	| TweetsListActionRequest
+	| TweetsListActionSuccess
+	| TweetsListActionFail
+	| SingleTweetaActionRequest
+	| SingleTweetaActionSuccess
+	| SingleTweetaActionFail
+	| TweetaImgRemveActionRequest
+	| TweetaImgAddActionRequest
+	| TweetaImgAddActionSuccess
+	| TweetaImgAddActionFail
+	| TweetaImgRemveActionSuccess
+	| TweetaImgRemveActionFail
+	| TweetaRemveActionRequest
+	| TweetaRemveActionSuccess
+	| TweetaRemveActionFail
+	| TweetaLikeActionRequest
+	| TweetaLikeActionSuccess
+	| TweetaLikeActionFail
+	| TweetaRetweetActionRequest
+	| TweetaRetweetActionSuccess
+	| TweetaRetweetActionFail;

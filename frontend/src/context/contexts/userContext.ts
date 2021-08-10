@@ -6,41 +6,51 @@ const userInfoFromLS = localStorage.getItem('tweeterUser')
 	: null;
 
 type userContextType = {
-    loading: boolean,
-    error: string | null,
-    user: any,
-    addProfilePicLoading: boolean,
-    addProfilePicError: string | null,
-    addProfilePicSuccess: boolean,
-    profilePic: any,
-    editProfileLoading: boolean,
-    editProfileSuccess: boolean,
-    editProfileError: string | null,
-    signUp: (user: ISignUp) => any;
-    signIn: (user: ISignIn) => any;
-    // getCurrentUser: () => any;
-    logout: () => void;
-    addUserPic: (profilePic: object) => any,
-    editUserProfile: (userInfo: IUserInfo) => any;
-}
+	loading: boolean;
+	error: string | null;
+	user: any;
+	addProfilePicLoading: boolean;
+	addProfilePicError: string | null;
+	addProfilePicSuccess: boolean;
+	profilePic: any;
+	addCoverPicLoading: boolean;
+	addCoverPicError: string | null;
+	addCoverPicSuccess: boolean;
+	coverPhoto: any;
+	editProfileLoading: boolean;
+	editProfileSuccess: boolean;
+	editProfileError: string | null;
+	signUp: (user: ISignUp) => any;
+	signIn: (user: ISignIn) => any;
+	// getCurrentUser: () => any;
+	logout: () => void;
+	addUserPic: (profilePic: object) => any;
+	addUserCover: (coverPhoto: object) => any;
+	editUserProfile: (userInfo: IUserInfo) => any;
+};
 
 const userContextDefaultValues: userContextType = {
-    loading: false,
-    error: null,
-    user: userInfoFromLS,
-    signUp: () => {},
-    signIn: () => {},
-    // getCurrentUser: () => {},
-    logout: () => {},
-    addProfilePicLoading: false,
-    addProfilePicError: null,
-    addProfilePicSuccess: false,
-    profilePic: {},
-    editProfileLoading: false,
-    editProfileSuccess: false,
-    editProfileError: null,
-    addUserPic: () => {},
-    editUserProfile: () => {},
+	loading: false,
+	error: null,
+	user: userInfoFromLS,
+	signUp: () => {},
+	signIn: () => {},
+	// getCurrentUser: () => {},
+	logout: () => {},
+	addProfilePicLoading: false,
+	addProfilePicError: null,
+	addProfilePicSuccess: false,
+	profilePic: {},
+	addCoverPicLoading: false,
+	addCoverPicError: null,
+	addCoverPicSuccess: false,
+	coverPhoto: {},
+	editProfileLoading: false,
+	editProfileSuccess: false,
+	editProfileError: null,
+	addUserPic: () => {},
+	addUserCover: () => {},
+	editUserProfile: () => {},
 };
 
 const UserContext = createContext<userContextType>(userContextDefaultValues);

@@ -6,4 +6,6 @@ const cloudinary_1 = require("../controllers/cloudinary");
 const isAuth_1 = require("../middlewares/isAuth");
 router.post('/tweeta/addTweetaImgs', isAuth_1.isAuth, cloudinary_1.addTweetaImages);
 router.post('/tweeta/removeTweetaImgs', isAuth_1.isAuth, cloudinary_1.removeTweetaImages);
+router.post('/user/profilePic', isAuth_1.isAuth, cloudinary_1.handleProfilePic);
+router.post('/user/coverPhoto', isAuth_1.isAuth, cloudinary_1.handleCoverPhoto);
 exports.default = router;

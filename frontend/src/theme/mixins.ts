@@ -1,24 +1,24 @@
 export const centerElement = () => {
-    return`
+	return `
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
     `;
-}
+};
 
 export const centerElementAlt = () => {
-    return`
+	return `
         margin: 0;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     `;
-}
+};
 
 export const bounceAnimation = () => {
-    return`
+	return `
         @keyframes bounce {
             0% {
                 transform: scale(1);
@@ -34,10 +34,10 @@ export const bounceAnimation = () => {
             }
         }
     `;
-}
+};
 
 export const customMUIButton = () => {
-    return`
+	return `
         font-size: 17px;
         text-transform: lowercase;
         border-radius: 50%;
@@ -48,10 +48,10 @@ export const customMUIButton = () => {
             margin-right: 3px;
         }
     `;
-}
+};
 
 export const overlay = () => {
-    return `
+	return `
         position: absolute;
         top: 0;
         right: 0;
@@ -59,4 +59,4 @@ export const overlay = () => {
         left: 0;
         background: rgba(0 0 0 / 30%);
     `;
-}
+};

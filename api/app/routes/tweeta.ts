@@ -2,15 +2,15 @@ import { Router } from 'express';
 
 const router: Router = Router();
 
-import { 
-    createTweeta,
-    getTweets, 
-    getSingleTweeta,
-    removeTweeta,
-    tweetaLike, 
-    tweetaRetweet,
-    // createReply,
-    // removeReply,
+import {
+	createTweeta,
+	getTweets,
+	getSingleTweeta,
+	removeTweeta,
+	tweetaLike,
+	tweetaRetweet,
+	// createReply,
+	// removeReply,
 } from '../controllers/tweeta';
 import { isAuth } from '../middlewares/isAuth';
 

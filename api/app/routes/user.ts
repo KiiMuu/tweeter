@@ -2,7 +2,12 @@ import { Router } from 'express';
 
 const router: Router = Router();
 
-import { signUp, signIn, getCurrentUser, editProfile } from '../controllers/user';
+import {
+	signUp,
+	signIn,
+	getCurrentUser,
+	editProfile,
+} from '../controllers/user';
 import { isAuth } from '../middlewares/isAuth';
 import runValidation from '../validators';
 import { validateSignUp, validateSignIn } from '../validators/auth';
