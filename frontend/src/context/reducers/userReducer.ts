@@ -4,12 +4,16 @@ import {
 	SignInType,
 	LogoutType,
 	EditProfileType,
+	GetUserProfileType,
 } from '../types/user';
 
 interface UserState {
 	loading: boolean;
 	error: string | null;
 	user: object;
+	userProfile: object;
+	userProfileLoading: boolean;
+	userProfileError: string | null;
 	addProfilePicLoading: boolean;
 	addProfilePicError: string | null;
 	addProfilePicSuccess: boolean;
@@ -31,6 +35,9 @@ export const initialUserState: UserState = {
 	loading: false,
 	error: null,
 	user: userInfoFromLS,
+	userProfile: {},
+	userProfileLoading: false,
+	userProfileError: null,
 	addProfilePicLoading: false,
 	addProfilePicError: null,
 	addProfilePicSuccess: false,
@@ -79,6 +86,24 @@ export const userReducer = (
 				loading: false,
 				error: null,
 				user: {},
+			};
+		// * user profile
+		case GetUserProfileType.GET_USER_REQUEST:
+			return {
+				...state,
+				userProfileLoading: true,
+			};
+		case GetUserProfileType.GET_USER_SUCCESS:
+			return {
+				...state,
+				userProfile: action.payload,
+				userProfileLoading: false,
+			};
+		case GetUserProfileType.GET_USER_FAIL:
+			return {
+				...state,
+				userProfile: {},
+				userProfileError: action.payload,
 			};
 		// * user pic
 		case EditProfileType.ADD_USER_PIC_REQUEST:

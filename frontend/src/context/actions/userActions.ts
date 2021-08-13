@@ -4,6 +4,7 @@ import {
 	SignUpType,
 	SignInType,
 	LogoutType,
+	GetUserProfileType,
 } from '../types/user';
 
 // * user auth
@@ -41,6 +42,20 @@ interface LogoutAction {
 }
 
 // * user profile
+interface GetUserProfileActionRequest {
+	type: GetUserProfileType.GET_USER_REQUEST;
+}
+
+interface GetUserProfileActionSuccess {
+	type: GetUserProfileType.GET_USER_SUCCESS;
+	payload: object;
+}
+
+interface GetUserProfileActionFail {
+	type: GetUserProfileType.GET_USER_FAIL;
+	payload: string;
+}
+
 interface AddUserPicActionRequest {
 	type: EditProfileType.ADD_USER_PIC_REQUEST;
 }
@@ -84,6 +99,9 @@ interface EditProfileActionFail {
 }
 
 export type Action =
+	| GetUserProfileActionRequest
+	| GetUserProfileActionSuccess
+	| GetUserProfileActionFail
 	| EditProfileActionRequest
 	| EditProfileActionSuccess
 	| EditProfileActionFail

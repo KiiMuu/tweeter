@@ -61,7 +61,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 		tweetaCreateLoading,
 		removeTweetaError,
 	} = useContext(TweetaContext);
-	const { user } = useUserInfo();
+	const { currentUser } = useUserInfo();
 	const { open, setOpen, handleClose } = useSnackBar();
 	const location = useLocation();
 	const history = useHistory();
@@ -220,10 +220,12 @@ const Tweeta: React.FC<TweetaProps> = ({
 				<div className='tweetaHeader'>
 					<div className='userInfo'>
 						<h4>
-							<Link to='/profile'>{tweeta?.postedBy?.name}</Link>
+							<Link to={`/profile/${tweeta?.postedBy?.username}`}>
+								{tweeta?.postedBy?.name}
+							</Link>
 						</h4>
 						<span>
-							<Link to='/profile'>
+							<Link to={`/profile/${tweeta?.postedBy?.username}`}>
 								{`@${tweeta?.postedBy?.username}`}
 							</Link>
 						</span>
@@ -282,7 +284,8 @@ const Tweeta: React.FC<TweetaProps> = ({
 										Unfollow @{tweeta?.postedBy?.username}
 									</span>
 								</MenuItem>
-								{tweeta?.postedBy?._id === user?.user._id && (
+								{tweeta?.postedBy?._id ===
+									currentUser?.user._id && (
 									<MenuItem
 										onClick={() =>
 											handleTweetaRemove(tweeta?._id)
@@ -366,7 +369,9 @@ const Tweeta: React.FC<TweetaProps> = ({
 					>
 						<AiOutlineRetweet
 							className={
-								tweeta?.retweeters?.includes(user?.user._id)
+								tweeta?.retweeters?.includes(
+									currentUser?.user._id
+								)
 									? 'retweeted'
 									: ''
 							}
@@ -378,7 +383,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 						variant='text'
 						size='small'
 					>
-						{tweeta?.likes?.includes(user?.user._id) ? (
+						{tweeta?.likes?.includes(currentUser?.user._id) ? (
 							<AiFillHeart className='loved' />
 						) : (
 							<AiOutlineHeart />

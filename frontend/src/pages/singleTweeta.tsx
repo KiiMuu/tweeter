@@ -9,10 +9,10 @@ import { PageTitle } from '../styles/headings';
 import { AlertStyles } from '../styles/notifiers';
 import { Spin } from '../styles/spinners';
 import { TweetaPage } from '../styles/tweeta';
+import { TweetaType } from '../typings';
 
 const SingleTweeta: React.FC = () => {
-	// @ts-ignore
-	const { id } = useParams<string>();
+	const { id } = useParams<TweetaType>();
 
 	const {
 		getSingleTweeta,

@@ -33,9 +33,11 @@ const ImageCropper: React.FC<ChildProps> = ({
 					crop={crop}
 					zoom={zoom}
 					aspect={4 / 3}
+					restrictPosition={false}
 					onCropChange={setCrop}
 					onCropComplete={onCropComplete}
 					onZoomChange={setZoom}
+					objectFit='contain'
 				/>
 				<Slider
 					value={zoom}

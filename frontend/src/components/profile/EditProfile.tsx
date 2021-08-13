@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
-import FileResizer from 'react-image-file-resizer';
 import { BiCamera } from 'react-icons/bi';
 import useUserInfo from '../../hooks/useUserInfo';
 import { UserEdit } from '../../styles/profile';
@@ -51,7 +50,7 @@ const EditProfile: React.FC<ChildProps> = ({
 	birthdate,
 	setBirthdate,
 }) => {
-	const { user } = useUserInfo();
+	const { currentUser } = useUserInfo();
 	const [croppedImage, setCroppedImage] = useState<any>(null);
 	const [profileSrc, setProfileSrc] = useState<string>('');
 	const [coverSrc, setCoverSrc] = useState<string>('');
@@ -78,18 +77,9 @@ const EditProfile: React.FC<ChildProps> = ({
 		let coverFiles = e.target.files;
 
 		if (coverFiles) {
-			FileResizer.imageFileResizer(
-				coverFiles[0],
-				1366,
-				1366,
-				'JPEG',
-				100,
-				0,
-				(uri: any) => {
-					setCoverSrc(uri);
-				},
-				'base64'
-			);
+			let img = new Image();
+			img.src = URL.createObjectURL(coverFiles[0]);
+			setCoverSrc(img.src);
 		}
 	};
 
@@ -97,18 +87,9 @@ const EditProfile: React.FC<ChildProps> = ({
 		let picFiles = e.target.files;
 
 		if (picFiles) {
-			FileResizer.imageFileResizer(
-				picFiles[0],
-				1366,
-				1366,
-				'JPEG',
-				100,
-				0,
-				(uri: any) => {
-					setProfileSrc(uri);
-				},
-				'base64'
-			);
+			let img = new Image();
+			img.src = URL.createObjectURL(picFiles[0]);
+			setProfileSrc(img.src);
 		}
 	};
 
@@ -188,9 +169,11 @@ const EditProfile: React.FC<ChildProps> = ({
 				<div id='overlay'></div>
 				<img
 					src={
-						coverPhoto?.url ? croppedImage : user?.user?.coverPhoto
+						coverPhoto?.url
+							? croppedImage
+							: currentUser?.user?.coverPhoto
 					}
-					alt={user?.user?.username}
+					alt={currentUser?.user?.username}
 				/>
 				<div className='coverActions'>
 					<input
@@ -232,9 +215,9 @@ const EditProfile: React.FC<ChildProps> = ({
 					src={
 						profilePhoto?.url
 							? croppedImage
-							: user?.user?.profilePic
+							: currentUser?.user?.profilePic
 					}
-					alt={user?.user?.username}
+					alt={currentUser?.user?.username}
 				/>
 				<div className='picActions'>
 					<input

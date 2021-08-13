@@ -6,6 +6,7 @@ import {
 	signUp,
 	signIn,
 	getCurrentUser,
+	getUser,
 	editProfile,
 } from '../controllers/user';
 import { isAuth } from '../middlewares/isAuth';
@@ -15,6 +16,7 @@ import { validateSignUp, validateSignIn } from '../validators/auth';
 router.post('/user/signup', validateSignUp, runValidation, signUp);
 router.post('/user/signin', validateSignIn, runValidation, signIn);
 router.get('/user/current', isAuth, getCurrentUser);
+router.get('/user/:username', isAuth, getUser);
 router.put('/user/editProfile', isAuth, editProfile);
 
 export default router;

@@ -17,7 +17,7 @@ import useUserInfo from '../../hooks/useUserInfo';
 
 const TweetaState = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(tweetaReducer, initialTweetaState);
-	const { user } = useUserInfo();
+	const { currentUser } = useUserInfo();
 
 	// * actions
 	const createTweeta = async (tweeta: ICreateTweeta) => {
@@ -28,7 +28,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -56,7 +56,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -88,7 +88,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -120,7 +120,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -150,7 +150,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -178,7 +178,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -209,7 +209,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -237,7 +237,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 

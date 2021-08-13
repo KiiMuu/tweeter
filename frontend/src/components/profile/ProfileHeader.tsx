@@ -1,3 +1,4 @@
+import { useContext, useEffect, useState } from 'react';
 import {
 	Button,
 	Dialog,
@@ -6,7 +7,6 @@ import {
 	DialogTitle,
 	Snackbar,
 } from '@material-ui/core';
-import { useContext, useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import useUserInfo from '../../hooks/useUserInfo';
 import { ProfileHeadContainer } from '../../styles/profile';
@@ -20,14 +20,15 @@ import {
 import UserContext from '../../context/contexts/userContext';
 import useSnackBar from '../../hooks/useSnackBar';
 import { Spin } from '../../styles/spinners';
+import { UserInfoProps } from '../../typings';
 
 interface Image {
 	public_id: string;
 	url: string;
 }
 
-const ProfileHeader: React.FC = () => {
-	const { user } = useUserInfo();
+const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
+	const { currentUser } = useUserInfo();
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<Image>({
 		public_id: '',
@@ -37,13 +38,11 @@ const ProfileHeader: React.FC = () => {
 		public_id: '',
 		url: '',
 	});
-	const [name, setName] = useState<string>(user.user.name);
-	const [bio, setBio] = useState<string>(user.user.bio);
-	const [location, setLocation] = useState<string>(user.user.location);
-	const [website, setWebsite] = useState<string>(user.user.website);
-	const [birthdate, setBirthdate] = useState<Date | undefined>(
-		new Date('2000-08-18T21:11:54')
-	);
+	const [name, setName] = useState<string>(user?.user?.name);
+	const [bio, setBio] = useState<string>(user?.user?.bio);
+	const [location, setLocation] = useState<string>(user?.user?.location);
+	const [website, setWebsite] = useState<string>(user?.user?.website);
+	const [birthdate, setBirthdate] = useState<Date | undefined>(undefined);
 	const [profileModal, setProfileModal] = useState<boolean>(false);
 	const [coverModal, setCoverModal] = useState<boolean>(false);
 	const { open, setOpen, handleClose } = useSnackBar();
@@ -176,16 +175,32 @@ const ProfileHeader: React.FC = () => {
 							<span>@{user?.user?.username}</span>
 						</div>
 					</div>
-					<div className='editProfile'>
-						<Button
-							onClick={() => setOpenDialog(true)}
-							variant='outlined'
-							color='primary'
-						>
-							Edit Profile
-						</Button>
-						{editUserProfileDialog()}
-					</div>
+					{currentUser?.user?._id === user?.user?._id ? (
+						<div className='editProfileBtn'>
+							<Button
+								onClick={() => setOpenDialog(true)}
+								variant='outlined'
+								color='primary'
+							>
+								Edit Profile
+							</Button>
+							{editUserProfileDialog()}
+						</div>
+					) : (
+						<div className='followBtn'>
+							<Button
+								variant='outlined'
+								color='primary'
+								onClick={() =>
+									console.log(
+										'handle following function here!'
+									)
+								}
+							>
+								Follow
+							</Button>
+						</div>
+					)}
 				</div>
 				{bio && <div className='userBio'>{bio}</div>}
 				<div className='userInfo'>

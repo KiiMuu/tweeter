@@ -102,6 +102,23 @@ const getCurrentUser = async (
 	}
 };
 
+const getUser = async (
+	req: Request,
+	res: Response
+): Promise<object | string> => {
+	const username: string = req.params.username;
+
+	try {
+		const user = await User.findOne({ username }).select('-password');
+
+		return res.json({ user });
+	} catch (error) {
+		return res.status(SERVER_ERROR).json({
+			message: error.message,
+		});
+	}
+};
+
 const editProfile = async (req: Request, res: Response): Promise<object> => {
 	try {
 		const {
@@ -140,4 +157,4 @@ const editProfile = async (req: Request, res: Response): Promise<object> => {
 	}
 };
 
-export { signUp, signIn, getCurrentUser, editProfile };
+export { signUp, signIn, getCurrentUser, getUser, editProfile };

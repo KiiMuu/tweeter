@@ -9,6 +9,9 @@ type userContextType = {
 	loading: boolean;
 	error: string | null;
 	user: any;
+	userProfile: object;
+	userProfileLoading: boolean;
+	userProfileError: string | null;
 	addProfilePicLoading: boolean;
 	addProfilePicError: string | null;
 	addProfilePicSuccess: boolean;
@@ -22,7 +25,7 @@ type userContextType = {
 	editProfileError: string | null;
 	signUp: (user: ISignUp) => any;
 	signIn: (user: ISignIn) => any;
-	// getCurrentUser: () => any;
+	getUserProfile: (username: string) => any;
 	logout: () => void;
 	addUserPic: (profilePic: object) => any;
 	addUserCover: (coverPhoto: object) => any;
@@ -33,9 +36,12 @@ const userContextDefaultValues: userContextType = {
 	loading: false,
 	error: null,
 	user: userInfoFromLS,
+	userProfile: {},
+	userProfileLoading: false,
+	userProfileError: null,
 	signUp: () => {},
 	signIn: () => {},
-	// getCurrentUser: () => {},
+	getUserProfile: () => {},
 	logout: () => {},
 	addProfilePicLoading: false,
 	addProfilePicError: null,

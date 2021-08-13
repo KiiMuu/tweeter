@@ -10,12 +10,13 @@ import {
 	LogoutType,
 	SignInType,
 	SignUpType,
+	GetUserProfileType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 
 const UserState = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(userReducer, initialUserState);
-	const { user } = useUserInfo();
+	const { currentUser } = useUserInfo();
 
 	// * actions
 	const signUp = async (user: ISignUp) => {
@@ -87,6 +88,34 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		});
 	};
 
+	const getUserProfile = async (username: string) => {
+		try {
+			dispatch({
+				type: GetUserProfileType.GET_USER_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.get(`/user/${username}`, config);
+
+			dispatch({
+				type: GetUserProfileType.GET_USER_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: GetUserProfileType.GET_USER_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	const addUserPic = async (profilePic: object) => {
 		try {
 			dispatch({
@@ -95,7 +124,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -127,7 +156,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -159,7 +188,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 
 			const config = {
 				headers: {
-					Authorization: `Bearer ${user?.token}`,
+					Authorization: `Bearer ${currentUser?.token}`,
 				},
 			};
 
@@ -174,14 +203,17 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				payload: data,
 			});
 
-			user.user.profilePic = data?.profilePic;
-			user.user.coverPhoto = data?.coverPhoto;
-			user.user.name = data?.name;
-			user.user.bio = data?.bio;
-			user.user.location = data?.location;
-			user.user.website = data?.website;
-			user.user.birthdate = data?.birthdate;
-			window.localStorage.setItem('tweeterUser', JSON.stringify(user));
+			currentUser.user.profilePic = data?.profilePic;
+			currentUser.user.coverPhoto = data?.coverPhoto;
+			currentUser.user.name = data?.name;
+			currentUser.user.bio = data?.bio;
+			currentUser.user.location = data?.location;
+			currentUser.user.website = data?.website;
+			currentUser.user.birthdate = data?.birthdate;
+			window.localStorage.setItem(
+				'tweeterUser',
+				JSON.stringify(currentUser)
+			);
 		} catch (error) {
 			dispatch({
 				type: EditProfileType.EDIT_PROFILE_FAIL,
@@ -198,6 +230,9 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				loading: state.loading,
 				error: state.error,
 				user: state.user,
+				userProfile: state.userProfile,
+				userProfileLoading: state.userProfileLoading,
+				userProfileError: state.userProfileError,
 				addProfilePicLoading: state.addProfilePicLoading,
 				addProfilePicError: state.addProfilePicError,
 				addProfilePicSuccess: state.addProfilePicSuccess,
@@ -211,7 +246,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				editProfileError: state.editProfileError,
 				signUp,
 				signIn,
-				// getCurrentUser,
+				getUserProfile,
 				logout,
 				addUserPic,
 				addUserCover,

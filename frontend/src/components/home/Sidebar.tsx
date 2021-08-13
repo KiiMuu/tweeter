@@ -21,7 +21,7 @@ const Sidebar: React.FC = () => {
 	const { logout } = authContext;
 
 	const history = useHistory();
-	const { user } = useUserInfo();
+	const { currentUser } = useUserInfo();
 
 	const handleLogout = () => {
 		logout();
@@ -92,7 +92,7 @@ const Sidebar: React.FC = () => {
 						TransitionComponent={Zoom}
 					>
 						<Button variant='text' color='primary'>
-							<Link to={`/profile/${user?.user.username}`}>
+							<Link to={`/profile/${currentUser?.user.username}`}>
 								<AiOutlineUser />
 								<span className='linkTitle'>My Profile</span>
 							</Link>
