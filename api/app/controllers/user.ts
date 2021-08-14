@@ -5,11 +5,12 @@ import generateToken from '../helpers/generateToken';
 import {
 	BAD_REQUEST,
 	CREATED,
+	NOT_FOUND,
 	OK,
 	SERVER_ERROR,
 	UNPROCESSABLE_ENTITY,
 } from '../constants';
-import { handleProfilePic } from './cloudinary';
+import { IUserInfo } from '../interfaces/user';
 
 const signUp = async (
 	req: Request,
@@ -18,7 +19,7 @@ const signUp = async (
 	try {
 		const { name, username, email, password } = req.body;
 
-		const isUserExists = await User.findOne({
+		const isUserExists: boolean = await User.findOne({
 			$or: [{ email }, { username }],
 		});
 
@@ -28,9 +29,9 @@ const signUp = async (
 			});
 		}
 
-		const hashedPassword = await bcrypt.hash(password, 10);
+		const hashedPassword: string = await bcrypt.hash(password, 10);
 
-		const user = await new User({
+		const user: IUserInfo = await new User({
 			name,
 			username,
 			email,
@@ -55,7 +56,7 @@ const signIn = async (
 	try {
 		const { email, password } = req.body;
 
-		const user = await User.findOne({ email });
+		const user: IUserInfo = await User.findOne({ email });
 
 		if (!user) {
 			return res.status(BAD_REQUEST).json({
@@ -63,7 +64,7 @@ const signIn = async (
 			});
 		}
 
-		const isMatch = await bcrypt.compare(password, user?.password);
+		const isMatch: boolean = await bcrypt.compare(password, user?.password);
 
 		if (isMatch) {
 			return res.status(OK).json({
@@ -87,9 +88,9 @@ const getCurrentUser = async (
 	res: Response
 ): Promise<object | string> => {
 	try {
-		const user = await User.findOne({ email: req.user?.email }).select(
-			'-password'
-		);
+		const user: IUserInfo = await User.findOne({
+			email: req.user?.email,
+		}).select('-password');
 
 		return res.json({
 			user,
@@ -109,7 +110,9 @@ const getUser = async (
 	const username: string = req.params.username;
 
 	try {
-		const user = await User.findOne({ username }).select('-password');
+		const user: IUserInfo = await User.findOne({ username }).select(
+			'-password'
+		);
 
 		return res.json({ user });
 	} catch (error) {
@@ -131,7 +134,7 @@ const editProfile = async (req: Request, res: Response): Promise<object> => {
 			birthdate,
 		} = req.body;
 
-		const user = await User.findById(req.user?._id).exec();
+		const user: IUserInfo = await User.findById(req.user?._id).exec();
 
 		if (!name) {
 			return res.status(UNPROCESSABLE_ENTITY).json({
@@ -157,4 +160,45 @@ const editProfile = async (req: Request, res: Response): Promise<object> => {
 	}
 };
 
-export { signUp, signIn, getCurrentUser, getUser, editProfile };
+const follow = async (req: Request, res: Response): Promise<object> => {
+	try {
+		const userId: string = req.params.userId;
+		const user: IUserInfo = await User.findById(userId);
+
+		if (user === null)
+			return res.status(NOT_FOUND).json({
+				message: 'User not found',
+			});
+
+		const isFollowing: boolean = user?.followers?.includes(req.user?._id);
+		let option: string = isFollowing ? '$pull' : '$addToSet';
+
+		await User.findByIdAndUpdate(
+			req.user?._id,
+			{
+				[option]: {
+					following: userId,
+				},
+			},
+			{ new: true }
+		);
+
+		await User.findByIdAndUpdate(
+			userId,
+			{
+				[option]: {
+					followers: req.user?._id,
+				},
+			},
+			{ new: true }
+		);
+
+		return res.status(OK).json(req.user);
+	} catch (error) {
+		return res.status(SERVER_ERROR).json({
+			message: error.message,
+		});
+	}
+};
+
+export { signUp, signIn, getCurrentUser, getUser, editProfile, follow };

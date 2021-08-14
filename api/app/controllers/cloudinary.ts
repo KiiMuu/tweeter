@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import cloudinary from 'cloudinary';
 import { BAD_REQUEST, OK } from '../constants';
-import User from '../models/User';
 
 cloudinary.v2.config({
 	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
