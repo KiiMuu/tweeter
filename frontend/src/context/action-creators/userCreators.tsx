@@ -11,6 +11,7 @@ import {
 	SignInType,
 	SignUpType,
 	GetUserProfileType,
+	FollowType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 
@@ -224,6 +225,45 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const follow = async (userId: string) => {
+		try {
+			dispatch({
+				type: FollowType.FOLLOW_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.put(
+				`/user/${userId}/follow`,
+				{},
+				config
+			);
+
+			dispatch({
+				type: FollowType.FOLLOW_SUCCESS,
+				payload: data,
+			});
+
+			currentUser.user.following = data?.following;
+			currentUser.user.followers = data?.followers;
+			window.localStorage.setItem(
+				'tweeterUser',
+				JSON.stringify(currentUser)
+			);
+		} catch (error) {
+			dispatch({
+				type: FollowType.FOLLOW_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -244,6 +284,9 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				editProfileLoading: state.editProfileLoading,
 				editProfileSuccess: state.editProfileSuccess,
 				editProfileError: state.editProfileError,
+				followLoading: state.followLoading,
+				followSuccess: state.followSuccess,
+				followError: state.followError,
 				signUp,
 				signIn,
 				getUserProfile,
@@ -251,6 +294,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				addUserPic,
 				addUserCover,
 				editUserProfile,
+				follow,
 			}}
 		>
 			{children}

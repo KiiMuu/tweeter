@@ -163,17 +163,17 @@ const editProfile = async (req: Request, res: Response): Promise<object> => {
 const follow = async (req: Request, res: Response): Promise<object> => {
 	try {
 		const userId: string = req.params.userId;
-		const user: IUserInfo = await User.findById(userId);
+		let user: IUserInfo = await User.findById(userId).select('-password');
 
 		if (user === null)
 			return res.status(NOT_FOUND).json({
 				message: 'User not found',
 			});
 
-		const isFollowing: boolean = user?.followers?.includes(req.user?._id);
+		const isFollowing: boolean = user.followers?.includes(req.user?._id);
 		let option: string = isFollowing ? '$pull' : '$addToSet';
 
-		await User.findByIdAndUpdate(
+		req.user = await User.findByIdAndUpdate(
 			req.user?._id,
 			{
 				[option]: {
@@ -183,7 +183,7 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 			{ new: true }
 		);
 
-		await User.findByIdAndUpdate(
+		user = await User.findByIdAndUpdate(
 			userId,
 			{
 				[option]: {

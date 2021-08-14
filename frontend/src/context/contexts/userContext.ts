@@ -23,6 +23,9 @@ type userContextType = {
 	editProfileLoading: boolean;
 	editProfileSuccess: boolean;
 	editProfileError: string | null;
+	followLoading: boolean;
+	followSuccess: boolean;
+	followError: string | null;
 	signUp: (user: ISignUp) => any;
 	signIn: (user: ISignIn) => any;
 	getUserProfile: (username: string) => any;
@@ -30,6 +33,7 @@ type userContextType = {
 	addUserPic: (profilePic: object) => any;
 	addUserCover: (coverPhoto: object) => any;
 	editUserProfile: (userInfo: IUserInfo) => any;
+	follow: (userId: string) => any;
 };
 
 const userContextDefaultValues: userContextType = {
@@ -39,10 +43,6 @@ const userContextDefaultValues: userContextType = {
 	userProfile: {},
 	userProfileLoading: false,
 	userProfileError: null,
-	signUp: () => {},
-	signIn: () => {},
-	getUserProfile: () => {},
-	logout: () => {},
 	addProfilePicLoading: false,
 	addProfilePicError: null,
 	addProfilePicSuccess: false,
@@ -54,9 +54,17 @@ const userContextDefaultValues: userContextType = {
 	editProfileLoading: false,
 	editProfileSuccess: false,
 	editProfileError: null,
+	followLoading: false,
+	followSuccess: false,
+	followError: null,
+	signUp: () => {},
+	signIn: () => {},
 	addUserPic: () => {},
 	addUserCover: () => {},
+	getUserProfile: () => {},
 	editUserProfile: () => {},
+	follow: () => {},
+	logout: () => {},
 };
 
 const UserContext = createContext<userContextType>(userContextDefaultValues);

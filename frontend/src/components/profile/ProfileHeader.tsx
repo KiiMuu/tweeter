@@ -53,6 +53,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 		editProfileLoading,
 		editProfileSuccess,
 		editUserProfile,
+		follow,
 	} = useContext(UserContext);
 
 	const handleEditProfile = () => {
@@ -189,15 +190,29 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 					) : (
 						<div className='followBtn'>
 							<Button
-								variant='outlined'
-								color='primary'
-								onClick={() =>
-									console.log(
-										'handle following function here!'
+								variant={
+									currentUser?.user?.following?.includes(
+										user?.user._id
 									)
+										? 'contained'
+										: 'outlined'
 								}
+								disableElevation
+								color='primary'
+								style={{
+									color: currentUser?.user?.following?.includes(
+										user?.user._id
+									)
+										? '#fff'
+										: '',
+								}}
+								onClick={() => follow(user?.user?._id)}
 							>
-								Follow
+								{currentUser?.user?.following?.includes(
+									user?.user._id
+								)
+									? 'Following'
+									: 'Follow'}
 							</Button>
 						</div>
 					)}
@@ -253,10 +268,20 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 				</div>
 				<div className='following'>
 					<p>
-						<span>44</span> Following
+						<span>
+							{currentUser?.user?._id === user?.user?._id
+								? currentUser?.user?.following?.length
+								: user?.user?.following?.length}
+						</span>{' '}
+						Following
 					</p>
 					<p>
-						<span>86</span> Followers
+						<span>
+							{currentUser?.user?._id === user?.user?._id
+								? currentUser?.user?.followers?.length
+								: user?.user?.followers?.length}
+						</span>{' '}
+						Followers
 					</p>
 				</div>
 			</div>

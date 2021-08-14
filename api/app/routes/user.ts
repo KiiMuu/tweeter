@@ -8,7 +8,7 @@ import {
 	getCurrentUser,
 	getUser,
 	editProfile,
-    follow,
+	follow,
 } from '../controllers/user';
 import { isAuth } from '../middlewares/isAuth';
 import runValidation from '../validators';
@@ -19,6 +19,6 @@ router.post('/user/signin', validateSignIn, runValidation, signIn);
 router.get('/user/current', isAuth, getCurrentUser);
 router.get('/user/:username', isAuth, getUser);
 router.put('/user/editProfile', isAuth, editProfile);
-router.put('user/:userId/follow', isAuth, follow);
+router.put('/user/:userId/follow', isAuth, follow);
 
 export default router;

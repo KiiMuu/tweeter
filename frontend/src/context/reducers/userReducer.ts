@@ -5,29 +5,34 @@ import {
 	LogoutType,
 	EditProfileType,
 	GetUserProfileType,
+	FollowType,
+	IUserInfo,
 } from '../types/user';
 
 interface UserState {
 	loading: boolean;
 	error: string | null;
-	user: object;
+	user: IUserInfo;
 	userProfile: object;
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
 	addProfilePicError: string | null;
 	addProfilePicSuccess: boolean;
-	profilePic: object;
+	profilePic: {};
 	addCoverPicLoading: boolean;
 	addCoverPicError: string | null;
 	addCoverPicSuccess: boolean;
-	coverPhoto: object;
+	coverPhoto: {};
 	editProfileLoading: boolean;
 	editProfileSuccess: boolean;
 	editProfileError: string | null;
+	followLoading: boolean;
+	followSuccess: boolean;
+	followError: string | null;
 }
 
-const userInfoFromLS = localStorage.getItem('tweeterUser')
+const userInfoFromLS: IUserInfo = localStorage.getItem('tweeterUser')
 	? JSON.parse(localStorage.getItem('tweeterUser') as string)
 	: null;
 
@@ -49,6 +54,9 @@ export const initialUserState: UserState = {
 	editProfileLoading: false,
 	editProfileSuccess: false,
 	editProfileError: null,
+	followLoading: false,
+	followSuccess: false,
+	followError: null,
 };
 
 export const userReducer = (
@@ -63,7 +71,6 @@ export const userReducer = (
 				...state,
 				loading: true,
 				error: null,
-				// token: null,
 			};
 		case SignUpType.SIGNUP_SUCCESS:
 		case SignInType.SIGNIN_SUCCESS:
@@ -170,6 +177,29 @@ export const userReducer = (
 				...state,
 				editProfileError: action.payload,
 				editProfileLoading: false,
+			};
+		// * follow handling
+		case FollowType.FOLLOW_REQUEST:
+			return {
+				...state,
+				followLoading: true,
+			};
+		case FollowType.FOLLOW_SUCCESS:
+			return {
+				...state,
+				followLoading: false,
+				user: {
+					user: {
+						...action.payload,
+						following: action.payload.following,
+					},
+				},
+			};
+		case FollowType.FOLLOW_FAIL:
+			return {
+				...state,
+				followError: action.payload,
+				followLoading: false,
 			};
 		default:
 			return state;

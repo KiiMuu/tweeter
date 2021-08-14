@@ -51,3 +51,8 @@ export interface ICreateTweeta {
 	images: object;
 	replyTo?: string;
 }
+
+export interface ITweetaImg {
+	public_id: string;
+	url: string;
+}

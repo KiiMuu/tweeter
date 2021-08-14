@@ -5,6 +5,7 @@ import {
 	SignInType,
 	LogoutType,
 	GetUserProfileType,
+	FollowType,
 } from '../types/user';
 
 // * user auth
@@ -98,6 +99,20 @@ interface EditProfileActionFail {
 	payload: string;
 }
 
+interface FollowActionRequest {
+	type: FollowType.FOLLOW_REQUEST;
+}
+
+interface FollowActionSuccess {
+	type: FollowType.FOLLOW_SUCCESS;
+	payload: IUserInfo;
+}
+
+interface FollowActionFail {
+	type: FollowType.FOLLOW_FAIL;
+	payload: string;
+}
+
 export type Action =
 	| GetUserProfileActionRequest
 	| GetUserProfileActionSuccess
@@ -117,4 +132,7 @@ export type Action =
 	| SignInActionRequest
 	| SignInActionSuccess
 	| SignInActionFail
-	| LogoutAction;
+	| LogoutAction
+	| FollowActionRequest
+	| FollowActionSuccess
+	| FollowActionFail;

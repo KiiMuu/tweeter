@@ -28,6 +28,12 @@ export enum EditProfileType {
 	EDIT_PROFILE_FAIL = 'EDIT_PROFILE_FAIL',
 }
 
+export enum FollowType {
+	FOLLOW_REQUEST = 'FOLLOW_REQUEST',
+	FOLLOW_SUCCESS = 'FOLLOW_SUCCESS',
+	FOLLOW_FAIL = 'FOLLOW_FAIL',
+}
+
 export enum LogoutType {
 	USER_LOGOUT = 'USER_LOGOUT',
 }
@@ -45,7 +51,8 @@ export interface ISignIn {
 }
 
 export interface IUserInfo {
-	// user: object,
+	_id?: string;
+	user?: object;
 	profilePic?: string;
 	coverPhoto?: string;
 	name?: string;
@@ -53,4 +60,7 @@ export interface IUserInfo {
 	location?: string;
 	website?: string;
 	birthdate?: Date;
+	likes?: string[];
+	following?: string[];
+	followers?: string[];
 }
