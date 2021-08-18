@@ -193,7 +193,10 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 			{ new: true }
 		);
 
-		return res.status(OK).json(req.user);
+		return res.status(OK).json({
+			user: req.user,
+			userProfile: user,
+		});
 	} catch (error) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,

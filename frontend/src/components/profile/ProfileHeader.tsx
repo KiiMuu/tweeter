@@ -68,6 +68,9 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 		});
 	};
 
+	console.log('CURR', currentUser?.user);
+	console.log('User', user?.user);
+
 	useEffect(() => {
 		if (editProfileSuccess) {
 			setOpenDialog(false);

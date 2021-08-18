@@ -13,7 +13,7 @@ interface UserState {
 	loading: boolean;
 	error: string | null;
 	user: IUserInfo;
-	userProfile: object;
+	userProfile: IUserInfo;
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -190,8 +190,14 @@ export const userReducer = (
 				followLoading: false,
 				user: {
 					user: {
-						...action.payload,
-						following: action.payload.following,
+						...action.payload.user,
+						following: action.payload.user?.following,
+					},
+				},
+				userProfile: {
+					user: {
+						...action.payload.userProfile,
+						followers: action.payload.userProfile?.followers,
 					},
 				},
 			};

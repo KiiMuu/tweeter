@@ -52,7 +52,8 @@ export interface ISignIn {
 
 export interface IUserInfo {
 	_id?: string;
-	user?: object;
+	user?: IUserInfo;
+	userProfile?: IUserInfo;
 	profilePic?: string;
 	coverPhoto?: string;
 	name?: string;
