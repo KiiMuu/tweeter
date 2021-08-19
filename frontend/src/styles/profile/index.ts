@@ -80,14 +80,16 @@ export const ProfileHeadContainer = styled.div`
 	}
 	.following {
 		display: flex;
-		p {
-			&:not(:first-child) {
+		button {
+			/* &:not(:first-child) {
 				margin-left: 15px;
 			}
-			margin: 0;
-			span {
+			margin: 0; */
+			span.followersLength,
+			span.followingLength {
 				color: var(--darkColor);
 				font-weight: bold;
+				margin-right: 5px;
 			}
 		}
 	}

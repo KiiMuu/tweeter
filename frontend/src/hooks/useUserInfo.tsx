@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import UserContext from '../context/contexts/userContext';
 
 const useUserInfo = () => {
-	const { user: currentUser } = useContext(UserContext);
+	const { currentUser } = useContext(UserContext);
 
 	return { currentUser };
 };

@@ -90,7 +90,10 @@ const getCurrentUser = async (
 	try {
 		const user: IUserInfo = await User.findOne({
 			email: req.user?.email,
-		}).select('-password');
+		})
+			.select('-password')
+			.populate('following', '-password')
+			.populate('followers', '-password');
 
 		return res.json({
 			user,
@@ -110,9 +113,25 @@ const getUser = async (
 	const username: string = req.params.username;
 
 	try {
-		const user: IUserInfo = await User.findOne({ username }).select(
-			'-password'
-		);
+		const user: IUserInfo = await User.findOne({ username })
+			.select('-password')
+			.populate(
+				'following',
+				'profilePic name username followers following'
+			)
+			.populate(
+				'followers',
+				'profilePic name username followers following'
+			);
+
+		await User.populate(user, {
+			path: 'following',
+			select: 'profilePic name username followers following',
+		});
+		await User.populate(user, {
+			path: 'followers',
+			select: 'profilePic name username followers following',
+		});
 
 		return res.json({ user });
 	} catch (error) {
@@ -193,9 +212,18 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 			{ new: true }
 		);
 
+		await User.populate(user, {
+			path: 'following',
+			select: 'profilePic name username followers following',
+		});
+		await User.populate(user, {
+			path: 'followers',
+			select: 'profilePic name username followers following',
+		});
+
 		return res.status(OK).json({
-			user: req.user,
-			userProfile: user,
+			following: req.user?.following,
+			followers: user.followers,
 		});
 	} catch (error) {
 		return res.status(SERVER_ERROR).json({

@@ -6,14 +6,15 @@ import {
 	EditProfileType,
 	GetUserProfileType,
 	FollowType,
-	IUserInfo,
+	IUserProfile,
+	ICurrentUser,
 } from '../types/user';
 
 interface UserState {
 	loading: boolean;
 	error: string | null;
-	user: IUserInfo;
-	userProfile: IUserInfo;
+	currentUser: ICurrentUser;
+	userProfile: IUserProfile;
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -32,14 +33,14 @@ interface UserState {
 	followError: string | null;
 }
 
-const userInfoFromLS: IUserInfo = localStorage.getItem('tweeterUser')
+const userInfoFromLS: ICurrentUser = localStorage.getItem('tweeterUser')
 	? JSON.parse(localStorage.getItem('tweeterUser') as string)
 	: null;
 
 export const initialUserState: UserState = {
 	loading: false,
 	error: null,
-	user: userInfoFromLS,
+	currentUser: userInfoFromLS,
 	userProfile: {},
 	userProfileLoading: false,
 	userProfileError: null,
@@ -78,7 +79,7 @@ export const userReducer = (
 				...state,
 				loading: false,
 				error: null,
-				user: action.payload,
+				currentUser: action.payload,
 			};
 		case SignUpType.SIGNUP_FAIL:
 		case SignInType.SIGNIN_FAIL:
@@ -92,7 +93,9 @@ export const userReducer = (
 				...state,
 				loading: false,
 				error: null,
-				user: {},
+				currentUser: {
+					user: {},
+				},
 			};
 		// * user profile
 		case GetUserProfileType.GET_USER_REQUEST:
@@ -161,15 +164,18 @@ export const userReducer = (
 				...state,
 				editProfileLoading: false,
 				editProfileSuccess: true,
-				user: {
-					...state.user,
-					profilePic: action.payload.profilePic,
-					coverPhoto: action.payload.coverPhoto,
-					name: action.payload.name,
-					bio: action.payload.bio,
-					location: action.payload.location,
-					website: action.payload.website,
-					birthdate: action.payload.birthdate,
+				currentUser: {
+					// ...state.currentUser,
+					user: {
+						...state.currentUser.user,
+						profilePic: action.payload.profilePic,
+						coverPhoto: action.payload.coverPhoto,
+						name: action.payload.name,
+						bio: action.payload.bio,
+						location: action.payload.location,
+						website: action.payload.website,
+						birthdate: action.payload.birthdate,
+					},
 				},
 			};
 		case EditProfileType.EDIT_PROFILE_FAIL:
@@ -188,16 +194,16 @@ export const userReducer = (
 			return {
 				...state,
 				followLoading: false,
-				user: {
+				currentUser: {
 					user: {
-						...action.payload.user,
-						following: action.payload.user?.following,
+						...state.currentUser.user,
+						following: action.payload.following,
 					},
 				},
 				userProfile: {
 					user: {
-						...action.payload.userProfile,
-						followers: action.payload.userProfile?.followers,
+						...state.userProfile.user,
+						followers: action.payload.followers,
 					},
 				},
 			};

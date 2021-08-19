@@ -26,7 +26,7 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 	const [pickerVisible, setPickerVisible] = useState<boolean>(false);
 
 	const { open, setOpen, handleClose } = useSnackBar();
-	const { user } = useContext(UserContext);
+	const { currentUser } = useContext(UserContext);
 	const {
 		tweetaCreateError,
 		tweetaCreateSuccess,
@@ -87,8 +87,8 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 			<div className='userPhoto'>
 				<Link to='/profile'>
 					<img
-						src={user?.user?.profilePic}
-						alt={user?.user?.username}
+						src={currentUser?.user?.profilePic}
+						alt={currentUser?.user?.username}
 					/>
 				</Link>
 			</div>

@@ -6,13 +6,13 @@ const ProtectRoute = ({ component: Component, ...rest }: any) => {
 	const history = useHistory();
 
 	const authContext = useContext(UserContext);
-	const { user } = authContext;
+	const { currentUser } = authContext;
 
 	return (
 		<Route
 			{...rest}
 			render={props =>
-				user ? <Component {...props} /> : history.push('/signin')
+				currentUser ? <Component {...props} /> : history.push('/signin')
 			}
 		/>
 	);

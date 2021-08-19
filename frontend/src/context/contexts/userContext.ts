@@ -8,7 +8,7 @@ const userInfoFromLS = localStorage.getItem('tweeterUser')
 type userContextType = {
 	loading: boolean;
 	error: string | null;
-	user: any;
+	currentUser: any;
 	userProfile: object;
 	userProfileLoading: boolean;
 	userProfileError: string | null;
@@ -39,7 +39,7 @@ type userContextType = {
 const userContextDefaultValues: userContextType = {
 	loading: false,
 	error: null,
-	user: userInfoFromLS,
+	currentUser: userInfoFromLS,
 	userProfile: {},
 	userProfileLoading: false,
 	userProfileError: null,

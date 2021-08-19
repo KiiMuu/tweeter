@@ -52,8 +52,6 @@ export interface ISignIn {
 
 export interface IUserInfo {
 	_id?: string;
-	user?: IUserInfo;
-	userProfile?: IUserInfo;
 	profilePic?: string;
 	coverPhoto?: string;
 	name?: string;
@@ -62,6 +60,14 @@ export interface IUserInfo {
 	website?: string;
 	birthdate?: Date;
 	likes?: string[];
-	following?: string[];
-	followers?: string[];
+	following?: IUserInfo[];
+	followers?: IUserInfo[];
+}
+
+export interface ICurrentUser {
+	user?: IUserInfo;
+}
+
+export interface IUserProfile {
+	user?: IUserInfo;
 }

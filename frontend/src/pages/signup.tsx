@@ -24,7 +24,7 @@ const Signup: React.FC = () => {
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 
-	const { loading, error, signUp, user } = useContext(UserContext);
+	const { loading, error, signUp, currentUser } = useContext(UserContext);
 
 	const history = useHistory();
 
@@ -44,10 +44,10 @@ const Signup: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if (user?.user) {
+		if (currentUser?.user) {
 			history.push('/');
 		}
-	}, [user?.user, history]);
+	}, [currentUser?.user, history]);
 
 	return (
 		<div style={{ overflow: 'hidden' }}>

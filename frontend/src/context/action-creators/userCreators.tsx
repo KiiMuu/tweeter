@@ -269,7 +269,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 			value={{
 				loading: state.loading,
 				error: state.error,
-				user: state.user,
+				currentUser: state.currentUser,
 				userProfile: state.userProfile,
 				userProfileLoading: state.userProfileLoading,
 				userProfileError: state.userProfileError,

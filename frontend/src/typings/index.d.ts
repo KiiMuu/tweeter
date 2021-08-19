@@ -33,6 +33,15 @@ declare module 'myTypes' {
 		website?: string;
 		birthdate?: Date;
 	}
+
+	interface FollowerUser {
+		_id: string;
+		profilePic: string;
+		name: string;
+		username: string;
+		followers: object[];
+		following: object[];
+	}
 }
 
 export {
@@ -41,4 +50,5 @@ export {
 	TweetsProps,
 	CreateTweetaProps,
 	UserInfoProps,
+	FollowerUser,
 };

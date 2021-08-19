@@ -11,6 +11,8 @@ import { format } from 'date-fns';
 import useUserInfo from '../../hooks/useUserInfo';
 import { ProfileHeadContainer } from '../../styles/profile';
 import EditProfile from './EditProfile';
+import Following from './Following';
+import Followers from './Followers';
 import {
 	HiOutlineLocationMarker,
 	HiOutlineLink,
@@ -30,6 +32,10 @@ interface Image {
 const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 	const { currentUser } = useUserInfo();
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
+	const [areFollowingVisible, setAreFollowingVisible] =
+		useState<boolean>(false);
+	const [areFollowersVisible, setAreFollowersVisible] =
+		useState<boolean>(false);
 	const [profilePic, setProfilePic] = useState<Image>({
 		public_id: '',
 		url: '',
@@ -67,9 +73,6 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 			birthdate,
 		});
 	};
-
-	console.log('CURR', currentUser?.user);
-	console.log('User', user?.user);
 
 	useEffect(() => {
 		if (editProfileSuccess) {
@@ -270,22 +273,40 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 					</ul>
 				</div>
 				<div className='following'>
-					<p>
-						<span>
-							{currentUser?.user?._id === user?.user?._id
-								? currentUser?.user?.following?.length
-								: user?.user?.following?.length}
+					<Button
+						variant='text'
+						onClick={() => setAreFollowingVisible(true)}
+					>
+						<span className='followingLength'>
+							{user?.user?.following?.length}
 						</span>{' '}
 						Following
-					</p>
-					<p>
-						<span>
-							{currentUser?.user?._id === user?.user?._id
-								? currentUser?.user?.followers?.length
-								: user?.user?.followers?.length}
+					</Button>
+					<Button
+						variant='text'
+						onClick={() => setAreFollowersVisible(true)}
+					>
+						<span className='followersLength'>
+							{user?.user?.followers?.length}
 						</span>{' '}
 						Followers
-					</p>
+					</Button>
+					<Following
+						areFollowingVisible={areFollowingVisible}
+						setAreFollowingVisible={setAreFollowingVisible}
+						following={user?.user?.following}
+						name={user?.user?.name}
+						// currentUserFollowing={currentUser?.user?.following}
+						follow={follow}
+					/>
+					<Followers
+						areFollowersVisible={areFollowersVisible}
+						setAreFollowersVisible={setAreFollowersVisible}
+						followers={user?.user?.followers}
+						name={user?.user?.name}
+						// currentUserFollowing={currentUser?.user?.following}
+						follow={follow}
+					/>
 				</div>
 			</div>
 		</ProfileHeadContainer>
