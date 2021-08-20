@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import ScreenDialog from '../layout/ScreenDialog';
-import { FollowerUser } from '../../typings';
+import { ICurrentUser, IUserProfile, UserInfoProps } from '../../typings';
 import {
 	Container,
 	SnackbarContent,
@@ -17,15 +17,6 @@ import {
 	makeStyles,
 	Theme,
 } from '@material-ui/core';
-
-interface FollowersProps {
-	areFollowersVisible: boolean;
-	setAreFollowersVisible: Function;
-	followers: FollowerUser[];
-	name: string;
-	// currentUserFollowing?: FollowerUser[];
-	follow: Function;
-}
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -46,17 +37,22 @@ const useStyles = makeStyles((theme: Theme) =>
 	})
 );
 
+interface FollowersProps {
+	areFollowersVisible: boolean;
+	setAreFollowersVisible: Function;
+	user?: IUserProfile;
+	currentUser?: ICurrentUser;
+	follow: Function;
+}
+
 const Followers: React.FC<FollowersProps> = ({
 	areFollowersVisible,
 	setAreFollowersVisible,
-	followers,
-	name,
-	// currentUserFollowing,
+	user,
+	currentUser,
 	follow,
 }) => {
 	const classes = useStyles();
-
-	// console.log(currentUserFollowing);
 
 	return (
 		<ScreenDialog
@@ -64,57 +60,69 @@ const Followers: React.FC<FollowersProps> = ({
 			open={areFollowersVisible}
 			onClose={setAreFollowersVisible}
 			okButton='Ok'
-			title={`${name}'s Followers`}
+			title={`${user?.user.name}'s Followers`}
 		>
-			{followers.length === 0 ? (
+			{user?.user?.followers.length === 0 ? (
 				<Container maxWidth='xl'>
 					<SnackbarContent
 						className={classes.snackBarContent}
-						message={`${name} has no followers`}
+						message={`${user?.user.name} has no followers`}
 					/>
 				</Container>
 			) : (
 				<Grid item xs={12}>
 					<div className={classes.followersList}>
 						<List dense={false}>
-							{followers.map(follower => (
-								<ListItem
-									button
-									component={Link}
-									to={follower.username}
-									key={follower._id}
-								>
-									<ListItemAvatar>
-										<Avatar>
-											<img
-												src={follower.profilePic}
-												alt={follower.name}
-												width={40}
-												height={40}
-											/>
-										</Avatar>
-									</ListItemAvatar>
-									<ListItemText
-										primary={follower.name}
-										secondary={`@${follower.username}`}
-									/>
-									<ListItemSecondaryAction>
-										<Button
-											size='small'
-											variant='outlined'
-											color='primary'
-											onClick={() => follow(follower._id)}
-										>
-											{/* {currentUserFollowing?.includes(
-												follower._id
-											)
-												? 'Following'
-												: 'Follow'} */}
-											Follow
-										</Button>
-									</ListItemSecondaryAction>
-								</ListItem>
-							))}
+							{user?.user?.followers.map(
+								(follower: UserInfoProps) => (
+									<ListItem
+										button
+										component={Link}
+										to={follower.username}
+										key={follower._id}
+									>
+										<ListItemAvatar>
+											<Avatar>
+												<img
+													src={follower.profilePic}
+													alt={follower.name}
+													width={40}
+													height={40}
+												/>
+											</Avatar>
+										</ListItemAvatar>
+										<ListItemText
+											primary={follower.name}
+											secondary={`@${follower.username} ${
+												follower.following.includes(
+													currentUser.user._id
+												)
+													? 'Follows you'
+													: ''
+											}`}
+										/>
+										{currentUser.user._id ===
+										follower._id ? null : (
+											<ListItemSecondaryAction>
+												<Button
+													size='small'
+													variant='outlined'
+													color='primary'
+													onClick={() =>
+														follow(follower._id)
+													}
+												>
+													{currentUser.user.following.includes(
+														follower._id
+													)
+														? 'Following'
+														: 'Follow'}
+												</Button>
+											</ListItemSecondaryAction>
+										)}
+									</ListItem>
+								)
+							)}
 						</List>
 					</div>
 				</Grid>

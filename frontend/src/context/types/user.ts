@@ -55,6 +55,7 @@ export interface IUserInfo {
 	profilePic?: string;
 	coverPhoto?: string;
 	name?: string;
+	username?: string;
 	bio?: string;
 	location?: string;
 	website?: string;
@@ -62,9 +63,11 @@ export interface IUserInfo {
 	likes?: string[];
 	following?: IUserInfo[];
 	followers?: IUserInfo[];
+	followedUserId?: string;
 }
 
 export interface ICurrentUser {
+	token?: string | null;
 	user?: IUserInfo;
 }
 

@@ -188,6 +188,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 								onClick={() => setOpenDialog(true)}
 								variant='outlined'
 								color='primary'
+								size='small'
 							>
 								Edit Profile
 							</Button>
@@ -205,6 +206,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 								}
 								disableElevation
 								color='primary'
+								size='small'
 								style={{
 									color: currentUser?.user?.following?.includes(
 										user?.user._id
@@ -276,6 +278,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 					<Button
 						variant='text'
 						onClick={() => setAreFollowingVisible(true)}
+						size='small'
 					>
 						<span className='followingLength'>
 							{user?.user?.following?.length}
@@ -285,6 +288,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 					<Button
 						variant='text'
 						onClick={() => setAreFollowersVisible(true)}
+						size='small'
 					>
 						<span className='followersLength'>
 							{user?.user?.followers?.length}
@@ -294,17 +298,15 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 					<Following
 						areFollowingVisible={areFollowingVisible}
 						setAreFollowingVisible={setAreFollowingVisible}
-						following={user?.user?.following}
-						name={user?.user?.name}
-						// currentUserFollowing={currentUser?.user?.following}
+						user={user}
+						currentUser={currentUser}
 						follow={follow}
 					/>
 					<Followers
 						areFollowersVisible={areFollowersVisible}
 						setAreFollowersVisible={setAreFollowersVisible}
-						followers={user?.user?.followers}
-						name={user?.user?.name}
-						// currentUserFollowing={currentUser?.user?.following}
+						user={user}
+						currentUser={currentUser}
 						follow={follow}
 					/>
 				</div>

@@ -224,6 +224,7 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 		return res.status(OK).json({
 			following: req.user?.following,
 			followers: user.followers,
+			followedUserId: user._id,
 		});
 	} catch (error) {
 		return res.status(SERVER_ERROR).json({

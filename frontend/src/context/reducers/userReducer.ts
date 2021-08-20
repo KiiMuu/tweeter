@@ -79,7 +79,10 @@ export const userReducer = (
 				...state,
 				loading: false,
 				error: null,
-				currentUser: action.payload,
+				currentUser: {
+					token: action.payload.token,
+					user: action.payload.user,
+				},
 			};
 		case SignUpType.SIGNUP_FAIL:
 		case SignInType.SIGNIN_FAIL:
@@ -94,6 +97,7 @@ export const userReducer = (
 				loading: false,
 				error: null,
 				currentUser: {
+					token: null,
 					user: {},
 				},
 			};
@@ -165,7 +169,6 @@ export const userReducer = (
 				editProfileLoading: false,
 				editProfileSuccess: true,
 				currentUser: {
-					// ...state.currentUser,
 					user: {
 						...state.currentUser.user,
 						profilePic: action.payload.profilePic,
@@ -191,6 +194,9 @@ export const userReducer = (
 				followLoading: true,
 			};
 		case FollowType.FOLLOW_SUCCESS:
+			let isUserProfile =
+				state.userProfile?.user?._id === action.payload.followedUserId;
+
 			return {
 				...state,
 				followLoading: false,
@@ -201,10 +207,12 @@ export const userReducer = (
 					},
 				},
 				userProfile: {
-					user: {
-						...state.userProfile.user,
-						followers: action.payload.followers,
-					},
+					user: isUserProfile
+						? {
+								...state.userProfile.user,
+								followers: action.payload.followers,
+						  }
+						: { ...state.userProfile.user },
 				},
 			};
 		case FollowType.FOLLOW_FAIL:

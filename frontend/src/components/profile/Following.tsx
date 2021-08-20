@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import ScreenDialog from '../layout/ScreenDialog';
-import { FollowerUser } from '../../typings';
+import { ICurrentUser, IUserProfile, UserInfoProps } from '../../typings';
 import {
 	Container,
 	SnackbarContent,
@@ -40,23 +40,19 @@ const useStyles = makeStyles((theme: Theme) =>
 interface FollowingProps {
 	areFollowingVisible: boolean;
 	setAreFollowingVisible: Function;
-	following: FollowerUser[];
-	name: string;
-	// currentUserFollowing?: FollowerUser[];
+	user: IUserProfile;
+	currentUser?: ICurrentUser;
 	follow: Function;
 }
 
 const Following: React.FC<FollowingProps> = ({
 	areFollowingVisible,
 	setAreFollowingVisible,
-	following,
-	name,
-	// currentUserFollowing,
+	user,
+	currentUser,
 	follow,
 }) => {
 	const classes = useStyles();
-
-	// console.log(currentUserFollowing);
 
 	return (
 		<ScreenDialog
@@ -64,57 +60,69 @@ const Following: React.FC<FollowingProps> = ({
 			open={areFollowingVisible}
 			onClose={setAreFollowingVisible}
 			okButton='Ok'
-			title={`${name}'s Following`}
+			title={`${user?.user.name}'s Following`}
 		>
-			{following.length === 0 ? (
+			{user?.user?.following.length === 0 ? (
 				<Container maxWidth='xl'>
 					<SnackbarContent
 						className={classes.snackBarContent}
-						message={`${name} isn't following anyone`}
+						message={`${user?.user.name} isn't following anyone`}
 					/>
 				</Container>
 			) : (
 				<Grid item xs={12}>
 					<div className={classes.followingList}>
 						<List dense={false}>
-							{following.map(follower => (
-								<ListItem
-									button
-									component={Link}
-									to={follower.username}
-									key={follower._id}
-								>
-									<ListItemAvatar>
-										<Avatar>
-											<img
-												src={follower.profilePic}
-												alt={follower.name}
-												width={40}
-												height={40}
-											/>
-										</Avatar>
-									</ListItemAvatar>
-									<ListItemText
-										primary={follower.name}
-										secondary={`@${follower.username}`}
-									/>
-									<ListItemSecondaryAction>
-										<Button
-											size='small'
-											variant='outlined'
-											color='primary'
-											onClick={() => follow(follower._id)}
-										>
-											{/* {currentUserFollowing?.includes(
-												follower._id
-											)
-												? 'Following'
-												: 'Follow'} */}
-											Follow
-										</Button>
-									</ListItemSecondaryAction>
-								</ListItem>
-							))}
+							{user?.user?.following.map(
+								(follower: UserInfoProps) => (
+									<ListItem
+										button
+										component={Link}
+										to={follower.username}
+										key={follower._id}
+									>
+										<ListItemAvatar>
+											<Avatar>
+												<img
+													src={follower.profilePic}
+													alt={follower.name}
+													width={40}
+													height={40}
+												/>
+											</Avatar>
+										</ListItemAvatar>
+										<ListItemText
+											primary={follower.name}
+											secondary={`@${follower.username} ${
+												follower.following.includes(
+													currentUser.user._id
+												)
+													? 'Follows you'
+													: ''
+											}`}
+										/>
+										{currentUser.user._id ===
+										follower._id ? null : (
+											<ListItemSecondaryAction>
+												<Button
+													size='small'
+													variant='outlined'
+													color='primary'
+													onClick={() =>
+														follow(follower._id)
+													}
+												>
+													{currentUser.user.following.includes(
+														follower._id
+													)
+														? 'Following'
+														: 'Follow'}
+												</Button>
+											</ListItemSecondaryAction>
+										)}
+									</ListItem>
+								)
+							)}
 						</List>
 					</div>
 				</Grid>

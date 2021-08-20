@@ -25,6 +25,7 @@ declare module 'myTypes' {
 	}
 
 	interface UserInfoProps {
+		_id?: string;
 		profilePic?: string;
 		coverPhoto?: string;
 		name?: string;
@@ -32,6 +33,9 @@ declare module 'myTypes' {
 		location?: string;
 		website?: string;
 		birthdate?: Date;
+		likes?: string[];
+		following?: UserInfoProps[];
+		followers?: UserInfoProps[];
 	}
 
 	interface FollowerUser {
@@ -39,8 +43,16 @@ declare module 'myTypes' {
 		profilePic: string;
 		name: string;
 		username: string;
-		followers: object[];
-		following: object[];
+		followers: UserInfoProps[];
+		following: UserInfoProps[];
+	}
+
+	interface ICurrentUser {
+		user?: UserInfoProps;
+	}
+
+	interface IUserProfile {
+		user?: UserInfoProps;
 	}
 }
 
@@ -51,4 +63,7 @@ export {
 	CreateTweetaProps,
 	UserInfoProps,
 	FollowerUser,
+	ICurrentUser,
+	UserInfoProps,
+	IUserProfile,
 };

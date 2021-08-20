@@ -6,6 +6,8 @@ import {
 	LogoutType,
 	GetUserProfileType,
 	FollowType,
+	ICurrentUser,
+	IUserProfile,
 } from '../types/user';
 
 // * user auth
@@ -15,7 +17,7 @@ interface SignUpActionRequest {
 
 interface SignUpActionSuccess {
 	type: SignUpType.SIGNUP_SUCCESS;
-	payload: object;
+	payload: ICurrentUser;
 }
 
 interface SignUpActionFail {
@@ -29,7 +31,7 @@ interface SignInActionRequest {
 
 interface SignInActionSuccess {
 	type: SignInType.SIGNIN_SUCCESS;
-	payload: object;
+	payload: ICurrentUser;
 }
 
 interface SignInActionFail {
@@ -49,7 +51,7 @@ interface GetUserProfileActionRequest {
 
 interface GetUserProfileActionSuccess {
 	type: GetUserProfileType.GET_USER_SUCCESS;
-	payload: object;
+	payload: IUserProfile;
 }
 
 interface GetUserProfileActionFail {

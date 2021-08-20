@@ -43,10 +43,10 @@ const Signin: React.FC = () => {
 	};
 
 	useEffect(() => {
-		if (currentUser?.user) {
+		if (currentUser?.token) {
 			history.push('/');
 		}
-	}, [currentUser?.user, history]);
+	}, [currentUser?.token, history]);
 
 	return (
 		<SignInScreen>
