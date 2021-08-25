@@ -58,6 +58,18 @@ const UserSchema = new mongoose_1.Schema({
             ref: 'Tweeta',
         },
     ],
+    following: [
+        {
+            type: ObjectId,
+            ref: 'User',
+        },
+    ],
+    followers: [
+        {
+            type: ObjectId,
+            ref: 'User',
+        },
+    ],
 }, {
     timestamps: true,
 });

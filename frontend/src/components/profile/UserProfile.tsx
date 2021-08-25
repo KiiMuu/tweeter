@@ -1,6 +1,7 @@
 import { PageTitle } from '../../styles/headings';
 import { ProfileContainer } from '../../styles/profile';
 import ProfileHeader from './ProfileHeader';
+import ProfileTabs from './profileTabs/ProfileTabs';
 import { UserInfoProps } from '../../typings';
 import { Spin } from '../../styles/spinners';
 
@@ -41,6 +42,7 @@ const UserProfile: React.FC<UserInfoProps> = ({
 		<ProfileContainer>
 			<PageTitle>{user?.user?.name.split(' ')[0]}</PageTitle>
 			<ProfileHeader user={user} />
+			<ProfileTabs />
 		</ProfileContainer>
 	);
 };

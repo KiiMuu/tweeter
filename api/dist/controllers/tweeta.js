@@ -7,7 +7,6 @@ exports.tweetaRetweet = exports.tweetaLike = exports.removeTweeta = exports.getS
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
 const User_1 = __importDefault(require("../models/User"));
 const constants_1 = require("../constants");
-// import { IReply } from '../interfaces/tweeta';
 const createTweeta = async (req, res) => {
     var _a;
     try {
@@ -100,7 +99,9 @@ const tweetaLike = async (req, res) => {
     var _a, _b;
     try {
         const tweetaId = req.params.id;
-        const user = await User_1.default.findOne({ email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email }).exec();
+        const user = await User_1.default.findOne({
+            email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email,
+        }).exec();
         const isLiked = (_b = user.likes) === null || _b === void 0 ? void 0 : _b.includes(tweetaId);
         const option = isLiked ? '$pull' : '$addToSet';
         await User_1.default.findByIdAndUpdate(user._id, {
@@ -130,7 +131,9 @@ const tweetaRetweet = async (req, res) => {
     var _a;
     try {
         const tweetaId = req.params.id;
-        const user = await User_1.default.findOne({ email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email }).exec();
+        const user = await User_1.default.findOne({
+            email: (_a = req.user) === null || _a === void 0 ? void 0 : _a.email,
+        }).exec();
         let deletedTweeta = await Tweeta_1.default.findOneAndDelete({
             postedBy: user._id,
             retweetData: tweetaId,

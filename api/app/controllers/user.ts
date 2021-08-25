@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/User';
+import Tweeta from '../models/Tweeta';
 import generateToken from '../helpers/generateToken';
 import {
 	BAD_REQUEST,
@@ -11,6 +12,7 @@ import {
 	UNPROCESSABLE_ENTITY,
 } from '../constants';
 import { IUserInfo } from '../interfaces/user';
+import { ITweeta, IMedia } from '../interfaces/tweeta';
 
 const signUp = async (
 	req: Request,
@@ -114,7 +116,7 @@ const getUser = async (
 
 	try {
 		const user: IUserInfo = await User.findOne({ username })
-			.select('-password')
+			.select('-password -likes -retweets')
 			.populate(
 				'following',
 				'profilePic name username followers following'
@@ -233,4 +235,63 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 	}
 };
 
-export { signUp, signIn, getCurrentUser, getUser, editProfile, follow };
+const getUserProfileData = async (
+	req: Request,
+	res: Response
+): Promise<object> => {
+	try {
+		const user: IUserInfo = await User.findById(req.user?._id).exec();
+
+		const userTweets: ITweeta[] = await Tweeta.find({
+			postedBy: user?._id,
+		}).populate('postedBy', 'name username email');
+		const userLikes: ITweeta[] = await Tweeta.find({
+			likes: user?._id,
+		}).populate('postedBy', 'name username email');
+
+		let tweets = [] as ITweeta[];
+		let replies = [] as ITweeta[];
+		let media = [] as IMedia[];
+
+		for (let item of userTweets) {
+			if (item.replyTo) {
+				replies.push(item);
+			} else {
+				tweets.push(item);
+			}
+
+			if (item.images.length) {
+				media.push({
+					images: item.images,
+					content: item.content,
+					postedBy: {
+						name: item.postedBy.name,
+						username: item.postedBy.username,
+						email: item.postedBy.email,
+					},
+				});
+			}
+		}
+
+		return res.status(OK).json({
+			tweets,
+			replies,
+			likes: userLikes,
+			media,
+		});
+	} catch (error) {
+		return res.status(SERVER_ERROR).json({
+			message: error.message,
+		});
+	}
+};
+
+export {
+	signUp,
+	signIn,
+	getCurrentUser,
+	getUser,
+	editProfile,
+	follow,
+	getUserProfileData,
+};

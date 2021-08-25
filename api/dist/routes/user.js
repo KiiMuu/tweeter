@@ -12,5 +12,8 @@ const auth_1 = require("../validators/auth");
 router.post('/user/signup', auth_1.validateSignUp, validators_1.default, user_1.signUp);
 router.post('/user/signin', auth_1.validateSignIn, validators_1.default, user_1.signIn);
 router.get('/user/current', isAuth_1.isAuth, user_1.getCurrentUser);
+router.get('/user/:username', isAuth_1.isAuth, user_1.getUser);
 router.put('/user/editProfile', isAuth_1.isAuth, user_1.editProfile);
+router.put('/user/:userId/follow', isAuth_1.isAuth, user_1.follow);
+router.get('/user/:userId/tabs', isAuth_1.isAuth, user_1.getUserProfileData);
 exports.default = router;
