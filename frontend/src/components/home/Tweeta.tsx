@@ -182,7 +182,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 				message='Copied'
 			/>
 			<div className='userPhoto'>
-				<Link to='/profile'>
+				<Link to={`/profile/${tweeta?.postedBy?.username}`}>
 					<img
 						src={tweeta?.postedBy?.profilePic}
 						alt={tweeta?.postedBy?.username}

@@ -1,14 +1,31 @@
 declare module 'myTypes' {
+	type TweetaImg = {
+		public_id: string;
+		url: string;
+	};
+
 	type TweetaType = {
 		content: string;
-		images: object[];
-		postedBy: object;
-		likes: string[];
-		retweetData: object[];
+		images: TweetaImg[];
+		postedBy: UserInfoProps;
+		isPinned: boolean;
+		likes: TweetaType[];
 		retweeters: object[];
+		retweetData: TweetaType;
+		replyTo: TweetaType;
 		createdAt: string;
 		updatedAt: string;
 		_id: string;
+	};
+
+	type TweetaMedia = {
+		images: TweetaImg[];
+		content: string;
+		postedBy: {
+			name: string;
+			username: string;
+			email: string;
+		};
 	};
 
 	interface TweetaProps {
@@ -24,11 +41,16 @@ declare module 'myTypes' {
 		images: object;
 	}
 
+	interface MediaProps {
+		media: TweetaMedia;
+	}
+
 	interface UserInfoProps {
 		_id?: string;
 		profilePic?: string;
 		coverPhoto?: string;
 		name?: string;
+		username?: string;
 		bio?: string;
 		location?: string;
 		website?: string;
@@ -66,4 +88,6 @@ export {
 	ICurrentUser,
 	UserInfoProps,
 	IUserProfile,
+	MediaProps,
+	TweetaMedia,
 };

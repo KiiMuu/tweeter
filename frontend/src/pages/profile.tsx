@@ -6,7 +6,7 @@ import UserContext from '../context/contexts/userContext';
 import { UserInfoProps } from '../typings';
 
 const Profile = () => {
-	const { username } = useParams<UserInfoProps>();
+	const { username } = useParams<UserInfoProps['username']>();
 	const {
 		getUserProfile,
 		userProfile,

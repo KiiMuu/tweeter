@@ -12,8 +12,10 @@ import {
 	SignUpType,
 	GetUserProfileType,
 	FollowType,
+	GetUserProfileDataType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
+import { IMedia, ITweeta } from '../types/tweeta';
 
 const UserState = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(userReducer, initialUserState);
@@ -89,7 +91,9 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		});
 	};
 
-	const getUserProfile = async (username: string) => {
+	const getUserProfile = async (
+		username: string
+	): Promise<IUserInfo | void> => {
 		try {
 			dispatch({
 				type: GetUserProfileType.GET_USER_REQUEST,
@@ -264,6 +268,41 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const getUserProfileData = async (
+		username: string
+	): Promise<{
+		tweets: ITweeta[];
+		replies: ITweeta[];
+		likes: ITweeta[];
+		media: IMedia[];
+	} | void> => {
+		try {
+			dispatch({
+				type: GetUserProfileDataType.GET_USER_PROFILE_DATA_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.get(`/user/${username}/tabs`, config);
+
+			dispatch({
+				type: GetUserProfileDataType.GET_USER_PROFILE_DATA_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: GetUserProfileDataType.GET_USER_PROFILE_DATA_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -271,6 +310,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				error: state.error,
 				currentUser: state.currentUser,
 				userProfile: state.userProfile,
+				userProfileData: state.userProfileData,
 				userProfileLoading: state.userProfileLoading,
 				userProfileError: state.userProfileError,
 				addProfilePicLoading: state.addProfilePicLoading,
@@ -287,6 +327,8 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				followLoading: state.followLoading,
 				followSuccess: state.followSuccess,
 				followError: state.followError,
+				userProfileDataLoading: state.userProfileDataLoading,
+				userProfileDataError: state.userProfileDataError,
 				signUp,
 				signIn,
 				getUserProfile,
@@ -295,6 +337,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				addUserCover,
 				editUserProfile,
 				follow,
+				getUserProfileData,
 			}}
 		>
 			{children}

@@ -1,3 +1,5 @@
+import { IUserInfo } from './user';
+
 export enum CreateTweetaType {
 	TWEETA_CREATE_REQUEST = 'TWEETA_CREATE_REQUEST',
 	TWEETA_CREATE_SUCCESS = 'TWEETA_CREATE_SUCCESS',
@@ -55,4 +57,26 @@ export interface ICreateTweeta {
 export interface ITweetaImg {
 	public_id: string;
 	url: string;
+}
+
+export interface ITweeta {
+	_id: string;
+	content: string;
+	images: ITweetaImg[];
+	postedBy: IUserInfo;
+	isPinned: boolean;
+	likes: object[];
+	retweeters: object[];
+	retweetData: ITweeta;
+	replyTo: ITweeta;
+}
+
+export interface IMedia {
+	images: ITweetaImg[];
+	content: string;
+	postedBy: {
+		name: string;
+		username: string;
+		email: string;
+	};
 }

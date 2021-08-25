@@ -239,15 +239,21 @@ const getUserProfileData = async (
 	req: Request,
 	res: Response
 ): Promise<object> => {
+	const username: string = req.params.username;
+
 	try {
-		const user: IUserInfo = await User.findById(req.user?._id).exec();
+		const user: IUserInfo = await User.findOne({ username }).exec();
 
 		const userTweets: ITweeta[] = await Tweeta.find({
 			postedBy: user?._id,
-		}).populate('postedBy', 'name username email');
+		})
+			.populate('postedBy', 'name username profilePic')
+			.populate('replyTo', '_id');
 		const userLikes: ITweeta[] = await Tweeta.find({
 			likes: user?._id,
-		}).populate('postedBy', 'name username email');
+		})
+			.populate('postedBy', 'name username profilePic')
+			.populate('replyTo', '_id');
 
 		let tweets = [] as ITweeta[];
 		let replies = [] as ITweeta[];

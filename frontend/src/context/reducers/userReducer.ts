@@ -1,4 +1,5 @@
 import { Action } from '../actions/userActions';
+import { IMedia, ITweeta } from '../types/tweeta';
 import {
 	SignUpType,
 	SignInType,
@@ -8,6 +9,7 @@ import {
 	FollowType,
 	IUserProfile,
 	ICurrentUser,
+	GetUserProfileDataType,
 } from '../types/user';
 
 interface UserState {
@@ -15,6 +17,12 @@ interface UserState {
 	error: string | null;
 	currentUser: ICurrentUser;
 	userProfile: IUserProfile;
+	userProfileData: {
+		tweets: ITweeta[];
+		replies: ITweeta[];
+		likes: ITweeta[];
+		media: IMedia[];
+	};
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -31,6 +39,8 @@ interface UserState {
 	followLoading: boolean;
 	followSuccess: boolean;
 	followError: string | null;
+	userProfileDataLoading: boolean;
+	userProfileDataError: string | null;
 }
 
 const userInfoFromLS: ICurrentUser = localStorage.getItem('tweeterUser')
@@ -42,6 +52,12 @@ export const initialUserState: UserState = {
 	error: null,
 	currentUser: userInfoFromLS,
 	userProfile: {},
+	userProfileData: {
+		tweets: [],
+		replies: [],
+		likes: [],
+		media: [],
+	},
 	userProfileLoading: false,
 	userProfileError: null,
 	addProfilePicLoading: false,
@@ -58,6 +74,8 @@ export const initialUserState: UserState = {
 	followLoading: false,
 	followSuccess: false,
 	followError: null,
+	userProfileDataLoading: false,
+	userProfileDataError: null,
 };
 
 export const userReducer = (
@@ -220,6 +238,30 @@ export const userReducer = (
 				...state,
 				followError: action.payload,
 				followLoading: false,
+			};
+
+		// * get user profile data -> tweets, replies, etc.
+		case GetUserProfileDataType.GET_USER_PROFILE_DATA_REQUEST:
+			return {
+				...state,
+				userProfileDataLoading: true,
+			};
+		case GetUserProfileDataType.GET_USER_PROFILE_DATA_SUCCESS:
+			return {
+				...state,
+				userProfileDataLoading: false,
+				userProfileData: {
+					tweets: action.payload.tweets,
+					replies: action.payload.replies,
+					likes: action.payload.likes,
+					media: action.payload.media,
+				},
+			};
+		case GetUserProfileDataType.GET_USER_PROFILE_DATA_FAIL:
+			return {
+				...state,
+				userProfileDataError: action.payload,
+				userProfileDataLoading: false,
 			};
 		default:
 			return state;

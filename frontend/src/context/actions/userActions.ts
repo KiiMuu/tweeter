@@ -8,7 +8,9 @@ import {
 	FollowType,
 	ICurrentUser,
 	IUserProfile,
+	GetUserProfileDataType,
 } from '../types/user';
+import { IMedia, ITweeta } from '../types/tweeta';
 
 // * user auth
 interface SignUpActionRequest {
@@ -115,6 +117,25 @@ interface FollowActionFail {
 	payload: string;
 }
 
+interface UserDataActionRequest {
+	type: GetUserProfileDataType.GET_USER_PROFILE_DATA_REQUEST;
+}
+
+interface UserDataActionSuccess {
+	type: GetUserProfileDataType.GET_USER_PROFILE_DATA_SUCCESS;
+	payload: {
+		tweets: ITweeta[];
+		replies: ITweeta[];
+		likes: ITweeta[];
+		media: IMedia[];
+	};
+}
+
+interface UserDataActionFail {
+	type: GetUserProfileDataType.GET_USER_PROFILE_DATA_FAIL;
+	payload: string;
+}
+
 export type Action =
 	| GetUserProfileActionRequest
 	| GetUserProfileActionSuccess
@@ -137,4 +158,7 @@ export type Action =
 	| LogoutAction
 	| FollowActionRequest
 	| FollowActionSuccess
-	| FollowActionFail;
+	| FollowActionFail
+	| UserDataActionRequest
+	| UserDataActionSuccess
+	| UserDataActionFail;
