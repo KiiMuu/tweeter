@@ -90,4 +90,5 @@ export {
 	IUserProfile,
 	MediaProps,
 	TweetaMedia,
+	TweetaImg,
 };

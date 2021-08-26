@@ -8,7 +8,7 @@ export const FallbackScreen = styled.div`
 		height: 5rem;
 		animation: bounce 1s infinite ease-in-out;
 	}
-	${bounceAnimation};
+	/* ${bounceAnimation}; */
 `;
 
 export const Spin = styled.div`

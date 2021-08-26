@@ -244,16 +244,29 @@ const getUserProfileData = async (
 	try {
 		const user: IUserInfo = await User.findOne({ username }).exec();
 
-		const userTweets: ITweeta[] = await Tweeta.find({
+		let userTweets: ITweeta[] = await Tweeta.find({
 			postedBy: user?._id,
 		})
+			.sort({ createdAt: -1 })
 			.populate('postedBy', 'name username profilePic')
-			.populate('replyTo', '_id');
+			.populate('replyTo')
+			.populate('retweetData');
 		const userLikes: ITweeta[] = await Tweeta.find({
 			likes: user?._id,
 		})
+			.sort({ createdAt: -1 })
 			.populate('postedBy', 'name username profilePic')
-			.populate('replyTo', '_id');
+			.populate('replyTo')
+			.populate('retweetData');
+
+		userTweets = await User.populate(userTweets, {
+			path: 'replyTo.postedBy',
+			select: '-password',
+		});
+		await User.populate(userTweets, {
+			path: 'retweetData.postedBy',
+			select: '-password',
+		});
 
 		let tweets = [] as ITweeta[];
 		let replies = [] as ITweeta[];

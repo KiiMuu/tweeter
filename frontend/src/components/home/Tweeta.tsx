@@ -1,12 +1,12 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import TweetaContext from '../../context/contexts/tweetaContext';
+import UserContext from '../../context/contexts/userContext';
 import { TweetaProps } from '../../typings';
 import { SingleTweeta } from '../../styles/home';
 import getTimeDifference from '../../helpers/geTimeDifference';
 import useUserInfo from '../../hooks/useUserInfo';
 import useSnackBar from '../../hooks/useSnackBar';
-
 import {
 	Button,
 	Dialog,
@@ -61,6 +61,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 		tweetaCreateLoading,
 		removeTweetaError,
 	} = useContext(TweetaContext);
+	const { follow } = useContext(UserContext);
 	const { currentUser } = useUserInfo();
 	const { open, setOpen, handleClose } = useSnackBar();
 	const location = useLocation();
@@ -198,7 +199,10 @@ const Tweeta: React.FC<TweetaProps> = ({
 							<span>
 								<AiOutlineRetweet />{' '}
 							</span>
-							<Link to='/profile'>{retweetedBy}</Link> retweeted
+							<Link to={`/profile/${retweetedBy}`}>
+								{retweetedBy}
+							</Link>{' '}
+							retweeted
 						</Fragment>
 					) : (
 						''
@@ -210,8 +214,10 @@ const Tweeta: React.FC<TweetaProps> = ({
 							<span>
 								<AiOutlineComment />{' '}
 							</span>
-							<Link to='/profile'>{repliedBy}</Link> tweeted this
-							reply
+							<Link to={`/profile/${repliedBy}`}>
+								{repliedBy}
+							</Link>{' '}
+							tweeted this reply
 						</Fragment>
 					) : (
 						''
@@ -276,14 +282,26 @@ const Tweeta: React.FC<TweetaProps> = ({
 									/>
 									<span>{`Copy @${tweeta?.postedBy?.username}'s tweet`}</span>
 								</MenuItem>
-								<MenuItem onClick={handleMenuClose}>
-									<AiOutlineUserDelete
-										style={{ marginRight: '10px' }}
-									/>
-									<span>
-										Unfollow @{tweeta?.postedBy?.username}
-									</span>
-								</MenuItem>
+								{tweeta?.postedBy?._id !==
+								currentUser?.user?._id ? (
+									<MenuItem
+										onClick={() =>
+											follow(tweeta?.postedBy?._id)
+										}
+									>
+										<AiOutlineUserDelete
+											style={{ marginRight: '10px' }}
+										/>
+										<span>
+											{currentUser?.user?.following?.includes(
+												tweeta?.postedBy?._id
+											)
+												? 'Unfollow'
+												: 'Follow'}{' '}
+											@{tweeta?.postedBy?.username}
+										</span>
+									</MenuItem>
+								) : null}
 								{tweeta?.postedBy?._id ===
 									currentUser?.user._id && (
 									<MenuItem

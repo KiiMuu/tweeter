@@ -1,16 +1,41 @@
-import { MediaProps, TweetaMedia } from '../../../typings';
+import { useParams } from 'react-router-dom';
+import {
+	MediaProps,
+	TweetaMedia,
+	TweetaImg,
+	UserInfoProps,
+} from '../../../typings';
 import { Spin } from '../../../styles/spinners';
+import { Card, CardMedia, CardActions, makeStyles } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { AlertStyles } from '../../../styles/notifiers';
+
+const useStyles = makeStyles({
+	root: {
+		makeWidth: 345,
+	},
+});
 
 const Media: React.FC<MediaProps> = ({ media, loading, error }) => {
-	const showMedia = () => (
-		<div style={{ padding: '20px' }}>
-			{media?.map((media: TweetaMedia) => (
-				<p>{JSON.stringify(media)}</p>
-			))}
-		</div>
-	);
+	const classes = useStyles();
+	const { username } = useParams<UserInfoProps['username']>();
 
-	console.log({ media });
+	const showMedia = () =>
+		media?.map((media: TweetaMedia) => (
+			<Card key={media._id} className={classes.root}>
+				<CardActions>
+					{media.images?.map((img: TweetaImg) => (
+						<CardMedia
+							component='img'
+							key={img.public_id}
+							image={img.url}
+							title={media.content.substring(0, 30)}
+							alt={img.url}
+						/>
+					))}
+				</CardActions>
+			</Card>
+		));
 
 	return loading ? (
 		<span
@@ -26,7 +51,11 @@ const Media: React.FC<MediaProps> = ({ media, loading, error }) => {
 	) : error ? (
 		<h4>{error}</h4>
 	) : !media?.length ? (
-		<p>No media</p>
+		<AlertStyles style={{ marginTop: '20px' }}>
+			<Alert severity='info' icon={false}>
+				No media created by {username}.
+			</Alert>
+		</AlertStyles>
 	) : (
 		showMedia()
 	);

@@ -37,7 +37,10 @@ const createTweeta = async (req: Request, res: Response): Promise<object> => {
 
 const getTweets = async (req: Request, res: Response): Promise<object> => {
 	try {
-		let tweets = await Tweeta.find({})
+		// fetch tweets from user following only
+		let tweets = await Tweeta.find({
+			postedBy: { $in: req.user?.following },
+		})
 			.sort({ createdAt: -1 })
 			.populate('postedBy', '_id profilePic name username email')
 			.populate('retweetData')

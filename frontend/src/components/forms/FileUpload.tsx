@@ -2,7 +2,6 @@ import { Fragment, useContext, useEffect } from 'react';
 import FileResizer from 'react-image-file-resizer';
 import TweetaContext from '../../context/contexts/tweetaContext';
 import { BsImageFill } from 'react-icons/bs';
-
 import { Button } from '@material-ui/core';
 
 interface Image {
@@ -35,7 +34,7 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 					'JPEG',
 					100,
 					0,
-					uri => {
+					(uri: any) => {
 						addTweetaImgs({ images: uri });
 					},
 					'base64'

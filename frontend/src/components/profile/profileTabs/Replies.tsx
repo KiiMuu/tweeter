@@ -1,9 +1,14 @@
-import { TweetaProps, TweetaType } from '../../../typings';
+import { useParams } from 'react-router-dom';
+import { TweetaProps, TweetaType, UserInfoProps } from '../../../typings';
 import Tweeta from '../../home/Tweeta';
 import { TweetaList } from '../../../styles/home';
 import { Spin } from '../../../styles/spinners';
+import { Alert } from '@material-ui/lab';
+import { AlertStyles } from '../../../styles/notifiers';
 
 const Replies: React.FC<TweetaProps> = ({ replies, loading, error }) => {
+	const { username } = useParams<UserInfoProps['username']>();
+
 	const showReplies = () => (
 		<TweetaList>
 			{replies?.map((tweeta: TweetaType) => (
@@ -11,8 +16,6 @@ const Replies: React.FC<TweetaProps> = ({ replies, loading, error }) => {
 			))}
 		</TweetaList>
 	);
-
-	console.log({ replies });
 
 	return loading ? (
 		<span
@@ -28,7 +31,11 @@ const Replies: React.FC<TweetaProps> = ({ replies, loading, error }) => {
 	) : error ? (
 		<h4>{error}</h4>
 	) : !replies?.length ? (
-		<p>No replies</p>
+		<AlertStyles style={{ marginTop: '20px' }}>
+			<Alert severity='info' icon={false}>
+				Replies by {username} will be listed here.
+			</Alert>
+		</AlertStyles>
 	) : (
 		showReplies()
 	);

@@ -1,9 +1,14 @@
-import { TweetaProps, TweetaType } from '../../../typings';
+import { useParams } from 'react-router-dom';
+import { TweetaProps, TweetaType, UserInfoProps } from '../../../typings';
 import Tweeta from '../../home/Tweeta';
 import { TweetaList } from '../../../styles/home';
 import { Spin } from '../../../styles/spinners';
+import { Alert } from '@material-ui/lab';
+import { AlertStyles } from '../../../styles/notifiers';
 
 const Tweets: React.FC<TweetaProps> = ({ tweets, loading, error }) => {
+	const { username } = useParams<UserInfoProps['username']>();
+
 	const showTweets = () => (
 		<TweetaList>
 			{tweets?.map((tweeta: TweetaType) => (
@@ -11,8 +16,6 @@ const Tweets: React.FC<TweetaProps> = ({ tweets, loading, error }) => {
 			))}
 		</TweetaList>
 	);
-
-	console.log({ tweets });
 
 	return loading ? (
 		<span
@@ -28,7 +31,11 @@ const Tweets: React.FC<TweetaProps> = ({ tweets, loading, error }) => {
 	) : error ? (
 		<h4>{error}</h4>
 	) : !tweets?.length ? (
-		<p>No tweets</p>
+		<AlertStyles style={{ marginTop: '20px' }}>
+			<Alert severity='info' icon={false}>
+				Tweets by {username} will be listed here.
+			</Alert>
+		</AlertStyles>
 	) : (
 		showTweets()
 	);
