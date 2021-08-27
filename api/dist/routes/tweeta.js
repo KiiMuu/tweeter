@@ -10,4 +10,5 @@ router.get('/tweeta/getSingleTweeta/:id', isAuth_1.isAuth, tweeta_1.getSingleTwe
 router.delete('/tweeta/remove/:id', isAuth_1.isAuth, tweeta_1.removeTweeta);
 router.put('/tweeta/:id/like', isAuth_1.isAuth, tweeta_1.tweetaLike);
 router.post('/tweeta/:id/retweet', isAuth_1.isAuth, tweeta_1.tweetaRetweet);
+router.put('/tweeta/:id/pin', isAuth_1.isAuth, tweeta_1.handlePin);
 exports.default = router;

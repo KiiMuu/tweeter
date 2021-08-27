@@ -15,7 +15,7 @@ interface TweetaState {
 	// * get tweets
 	tweetsLoading?: boolean;
 	tweetsError?: string | null;
-	tweets: object[];
+	tweets: TweetaProps[];
 
 	// * create tweet
 	tweetaCreateLoading?: boolean;
@@ -25,13 +25,13 @@ interface TweetaState {
 	// * get single tweet
 	getSingleTweetaLoading?: boolean;
 	getSingleTweetaError?: string | null;
-	singleTweeta: object;
+	singleTweeta: TweetaProps;
 
 	// * remove tweeta
 	removeTweetaLoading?: boolean;
 	removeTweetaError?: string | null;
 	removeTweetaSuccess?: boolean;
-	removedTweeta?: object;
+	removedTweeta?: TweetaProps;
 
 	// * add tweeta img
 	addTweetaImgLoading?: boolean;

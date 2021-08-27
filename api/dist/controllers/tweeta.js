@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.tweetaRetweet = exports.tweetaLike = exports.removeTweeta = exports.getSingleTweeta = exports.getTweets = exports.createTweeta = void 0;
+exports.handlePin = exports.tweetaRetweet = exports.tweetaLike = exports.removeTweeta = exports.getSingleTweeta = exports.getTweets = exports.createTweeta = void 0;
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
 const User_1 = __importDefault(require("../models/User"));
 const constants_1 = require("../constants");
@@ -36,8 +36,12 @@ const createTweeta = async (req, res) => {
 };
 exports.createTweeta = createTweeta;
 const getTweets = async (req, res) => {
+    var _a;
     try {
-        let tweets = await Tweeta_1.default.find({})
+        // fetch tweets from user following only
+        let tweets = await Tweeta_1.default.find({
+            postedBy: { $in: (_a = req.user) === null || _a === void 0 ? void 0 : _a.following },
+        })
             .sort({ createdAt: -1 })
             .populate('postedBy', '_id profilePic name username email')
             .populate('retweetData')
@@ -172,3 +176,24 @@ const tweetaRetweet = async (req, res) => {
     }
 };
 exports.tweetaRetweet = tweetaRetweet;
+const handlePin = async (req, res) => {
+    try {
+        const tweetaId = req.params.id;
+        if (req.body.isPinned) {
+            await Tweeta_1.default.updateMany({ postedBy: req.user }, { isPinned: false });
+        }
+        let result = await Tweeta_1.default.findByIdAndUpdate(tweetaId, {
+            isPinned: req.body.isPinned,
+        }, { new: true });
+        await Tweeta_1.default.populate(result, {
+            path: 'retweetData replyTo postedBy',
+        });
+        return res.status(constants_1.OK).json(result);
+    }
+    catch (error) {
+        return res.status(constants_1.BAD_REQUEST).json({
+            message: error.message,
+        });
+    }
+};
+exports.handlePin = handlePin;

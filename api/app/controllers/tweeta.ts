@@ -3,6 +3,7 @@ import Tweeta from '../models/Tweeta';
 import User from '../models/User';
 import { BAD_REQUEST, CREATED, OK } from '../constants';
 import { IUserInfo } from '../interfaces/user';
+import { ITweeta } from '../interfaces/tweeta';
 
 const createTweeta = async (req: Request, res: Response): Promise<object> => {
 	try {
@@ -210,6 +211,37 @@ const tweetaRetweet = async (req: Request, res: Response): Promise<object> => {
 	}
 };
 
+const handlePin = async (req: Request, res: Response): Promise<object> => {
+	try {
+		const tweetaId: string = req.params.id;
+
+		if (req.body.isPinned) {
+			await Tweeta.updateMany(
+				{ postedBy: req.user },
+				{ isPinned: false }
+			);
+		}
+
+		let result: { isPinned: boolean } = await Tweeta.findByIdAndUpdate(
+			tweetaId,
+			{
+				isPinned: req.body.isPinned,
+			},
+			{ new: true }
+		);
+
+		await Tweeta.populate(result, {
+			path: 'retweetData replyTo postedBy',
+		});
+
+		return res.status(OK).json(result);
+	} catch (error) {
+		return res.status(BAD_REQUEST).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	createTweeta,
 	getTweets,
@@ -217,4 +249,5 @@ export {
 	removeTweeta,
 	tweetaLike,
 	tweetaRetweet,
+	handlePin,
 };

@@ -29,6 +29,7 @@ import {
 	AiOutlineUserDelete,
 	AiOutlineDelete,
 	AiFillHeart,
+	AiOutlinePushpin,
 } from 'react-icons/ai';
 import { Spin } from '../../styles/spinners';
 
@@ -46,6 +47,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 }) => {
 	const [content, setContent] = useState<string>('');
 	const [images] = useState<Image[]>([]);
+	const [isPin] = useState<boolean>(tweeta?.isPinned);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [selectedImg, setSelectedImg] = useState<null | string>(null);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -61,7 +63,8 @@ const Tweeta: React.FC<TweetaProps> = ({
 		tweetaCreateLoading,
 		removeTweetaError,
 	} = useContext(TweetaContext);
-	const { follow } = useContext(UserContext);
+	const { follow, handleTweetaPin, pinTweetaLoading } =
+		useContext(UserContext);
 	const { currentUser } = useUserInfo();
 	const { open, setOpen, handleClose } = useSnackBar();
 	const location = useLocation();
@@ -182,232 +185,266 @@ const Tweeta: React.FC<TweetaProps> = ({
 				autoHideDuration={3000}
 				message='Copied'
 			/>
-			<div className='userPhoto'>
-				<Link to={`/profile/${tweeta?.postedBy?.username}`}>
-					<img
-						src={tweeta?.postedBy?.profilePic}
-						alt={tweeta?.postedBy?.username}
-						width={50}
-						height={50}
-					/>
-				</Link>
+			<div className='headerText'>
+				{tweeta?.isPinned ? (
+					<Fragment>
+						<span>
+							<AiOutlinePushpin />
+						</span>
+						pinned
+					</Fragment>
+				) : null}
 			</div>
-			<div className='tweetaWrapper'>
-				<div className='retweetText'>
-					{isRetweeted ? (
-						<Fragment>
-							<span>
-								<AiOutlineRetweet />{' '}
-							</span>
-							<Link to={`/profile/${retweetedBy}`}>
-								{retweetedBy}
-							</Link>{' '}
-							retweeted
-						</Fragment>
-					) : (
-						''
-					)}
-				</div>
-				<div className='retweetText'>
-					{isReply && !isTweetaPage ? (
-						<Fragment>
-							<span>
-								<AiOutlineComment />{' '}
-							</span>
-							<Link to={`/profile/${repliedBy}`}>
-								{repliedBy}
-							</Link>{' '}
-							tweeted this reply
-						</Fragment>
-					) : (
-						''
-					)}
-				</div>
-				<div className='tweetaHeader'>
-					<div className='userInfo'>
-						<h4>
-							<Link to={`/profile/${tweeta?.postedBy?.username}`}>
-								{tweeta?.postedBy?.name}
-							</Link>
-						</h4>
+			<div className='headerText'>
+				{isRetweeted ? (
+					<Fragment>
 						<span>
-							<Link to={`/profile/${tweeta?.postedBy?.username}`}>
-								{`@${tweeta?.postedBy?.username}`}
-							</Link>
+							<AiOutlineRetweet />{' '}
 						</span>
+						<Link to={`/profile/${retweetedBy}`}>
+							{retweetedBy}
+						</Link>{' '}
+						retweeted
+					</Fragment>
+				) : null}
+			</div>
+			<div className='headerText'>
+				{isReply && !isTweetaPage ? (
+					<Fragment>
 						<span>
-							{getTimeDifference(
-								new Date(),
-								new Date(tweeta?.createdAt)
-							)}
+							<AiOutlineComment />{' '}
 						</span>
-					</div>
-					<div className='tweetaOption'>
-						<Button
-							aria-controls='simple-menu'
-							aria-haspopup='true'
-							variant='text'
-							size='small'
-							onClick={handleClick}
-						>
-							<AiOutlineMore />
-						</Button>
-						<div className='optionsMenu'>
-							<Menu
-								id='simple-menu'
-								anchorEl={anchorEl}
-								keepMounted
-								open={Boolean(anchorEl)}
-								onClose={handleMenuClose}
+						<Link to={`/profile/${repliedBy}`}>{repliedBy}</Link>{' '}
+						tweeted this reply
+					</Fragment>
+				) : null}
+			</div>
+			<div className='container'>
+				<div className='userPhoto'>
+					<Link to={`/profile/${tweeta?.postedBy?.username}`}>
+						<img
+							src={tweeta?.postedBy?.profilePic}
+							alt={tweeta?.postedBy?.username}
+							width={50}
+							height={50}
+						/>
+					</Link>
+				</div>
+				<div className='tweetaWrapper'>
+					<div className='tweetaHeader'>
+						<div className='userInfo'>
+							<h4>
+								<Link
+									to={`/profile/${tweeta?.postedBy?.username}`}
+								>
+									{tweeta?.postedBy?.name}
+								</Link>
+							</h4>
+							<span>
+								<Link
+									to={`/profile/${tweeta?.postedBy?.username}`}
+								>
+									{`@${tweeta?.postedBy?.username}`}
+								</Link>
+							</span>
+							<span>
+								{getTimeDifference(
+									new Date(),
+									new Date(tweeta?.createdAt)
+								)}
+							</span>
+						</div>
+						<div className='tweetaOption'>
+							<Button
+								aria-controls='simple-menu'
+								aria-haspopup='true'
+								variant='text'
+								size='small'
+								onClick={handleClick}
 							>
-								{isViewThisTweet && (
-									<MenuItem onClick={handleMenuClose}>
-										<AiOutlineEye
-											style={{ marginRight: '10px' }}
-										/>
-										<Link
-											to={`/tweeta/${tweeta?._id}`}
-											style={{
-												textDecoration: 'none',
-												color: 'inherit',
-											}}
+								<AiOutlineMore />
+							</Button>
+							<div className='optionsMenu'>
+								<Menu
+									id='simple-menu'
+									anchorEl={anchorEl}
+									keepMounted
+									open={Boolean(anchorEl)}
+									onClose={handleMenuClose}
+								>
+									{isViewThisTweet && (
+										<MenuItem onClick={handleMenuClose}>
+											<AiOutlineEye
+												style={{ marginRight: '10px' }}
+											/>
+											<Link
+												to={`/tweeta/${tweeta?._id}`}
+												style={{
+													textDecoration: 'none',
+													color: 'inherit',
+												}}
+											>
+												View this tweet
+											</Link>
+										</MenuItem>
+									)}
+									{tweeta?.postedBy?._id ===
+									currentUser?.user?._id ? (
+										<MenuItem
+											onClick={() =>
+												handleTweetaPin(
+													tweeta?._id,
+													!isPin
+												)
+											}
 										>
-											View this tweet
-										</Link>
-									</MenuItem>
-								)}
-								<MenuItem onClick={handleTweetaCopy}>
-									<AiOutlineCopy
-										style={{ marginRight: '10px' }}
-									/>
-									<span>{`Copy @${tweeta?.postedBy?.username}'s tweet`}</span>
-								</MenuItem>
-								{tweeta?.postedBy?._id !==
-								currentUser?.user?._id ? (
-									<MenuItem
-										onClick={() =>
-											follow(tweeta?.postedBy?._id)
-										}
-									>
-										<AiOutlineUserDelete
-											style={{ marginRight: '10px' }}
-										/>
-										<span>
-											{currentUser?.user?.following?.includes(
-												tweeta?.postedBy?._id
-											)
-												? 'Unfollow'
-												: 'Follow'}{' '}
-											@{tweeta?.postedBy?.username}
-										</span>
-									</MenuItem>
-								) : null}
-								{tweeta?.postedBy?._id ===
-									currentUser?.user._id && (
-									<MenuItem
-										onClick={() =>
-											handleTweetaRemove(tweeta?._id)
-										}
-									>
-										<AiOutlineDelete
-											style={{ marginRight: '10px' }}
-										/>
-										<span>
-											{removeTweetaLoading ? (
+											<AiOutlinePushpin
+												style={{ marginRight: '10px' }}
+											/>
+											{pinTweetaLoading ? (
 												<Spin></Spin>
+											) : tweeta?.isPinned ? (
+												'Unpin this tweet'
 											) : (
-												'Delete this tweet'
+												'Pin this tweet'
 											)}
-										</span>
+										</MenuItem>
+									) : null}
+									<MenuItem onClick={handleTweetaCopy}>
+										<AiOutlineCopy
+											style={{ marginRight: '10px' }}
+										/>
+										<span>{`Copy @${tweeta?.postedBy?.username}'s tweet`}</span>
 									</MenuItem>
-								)}
-							</Menu>
+									{tweeta?.postedBy?._id !==
+									currentUser?.user?._id ? (
+										<MenuItem
+											onClick={() =>
+												follow(tweeta?.postedBy?._id)
+											}
+										>
+											<AiOutlineUserDelete
+												style={{ marginRight: '10px' }}
+											/>
+											<span>
+												{currentUser?.user?.following?.includes(
+													tweeta?.postedBy?._id
+												)
+													? 'Unfollow'
+													: 'Follow'}{' '}
+												@{tweeta?.postedBy?.username}
+											</span>
+										</MenuItem>
+									) : null}
+									{tweeta?.postedBy?._id ===
+										currentUser?.user._id && (
+										<MenuItem
+											onClick={() =>
+												handleTweetaRemove(tweeta?._id)
+											}
+										>
+											<AiOutlineDelete
+												style={{ marginRight: '10px' }}
+											/>
+											<span>
+												{removeTweetaLoading ? (
+													<Spin></Spin>
+												) : (
+													'Delete this tweet'
+												)}
+											</span>
+										</MenuItem>
+									)}
+								</Menu>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className='tweetaContent'>
-					{isLinkContent ? (
-						<Link
-							to={`/tweeta/${
-								isReply ? tweeta?.replyTo?._id : tweeta?._id
-							}`}
-						>
-							<span>{tweeta?.content}</span>
-						</Link>
-					) : (
-						<span>{tweeta?.content}</span>
-					)}
-					<div className='tweetaImgs'>
-						{tweeta?.images?.map((img: Image) => (
-							<div className='modalImg' key={img.public_id}>
-								<img
-									key={img.public_id}
-									src={img.url}
-									alt={img.public_id}
-									onClick={() =>
-										handleClickOpen(img.public_id)
-									}
-								/>
-								{selectedImg === img.public_id && (
-									<Dialog
-										open={selectedImg !== null}
-										onClose={handleModalClose}
-									>
-										<img
-											src={img.url}
-											alt={img.public_id}
-										/>
-										<DialogContent>
-											<DialogContentText
-												style={{ marginBottom: '0' }}
-											>
-												{tweeta?.content}
-											</DialogContentText>
-										</DialogContent>
-									</Dialog>
-								)}
-							</div>
-						))}
-					</div>
-				</div>
-				<div className='tweetaFooter'>
-					<Button
-						variant='text'
-						size='small'
-						onClick={() => setDialogOpen(true)}
-					>
-						<AiOutlineComment />
-						<span>{replies?.length || ''}</span>
-					</Button>
-					{replyDialog()}
-					<Button
-						onClick={() => handleTweetaRetweet(tweeta?._id)}
-						variant='text'
-						size='small'
-					>
-						<AiOutlineRetweet
-							className={
-								tweeta?.retweeters?.includes(
-									currentUser?.user._id
-								)
-									? 'retweeted'
-									: ''
-							}
-						/>
-						<span>{tweeta?.retweeters?.length || ''}</span>
-					</Button>
-					<Button
-						onClick={() => handleTweetaLike(tweeta?._id)}
-						variant='text'
-						size='small'
-					>
-						{tweeta?.likes?.includes(currentUser?.user._id) ? (
-							<AiFillHeart className='loved' />
+					<div className='tweetaContent'>
+						{isLinkContent ? (
+							<Link
+								to={`/tweeta/${
+									isReply ? tweeta?.replyTo?._id : tweeta?._id
+								}`}
+							>
+								<span>{tweeta?.content}</span>
+							</Link>
 						) : (
-							<AiOutlineHeart />
+							<span>{tweeta?.content}</span>
 						)}
-						<span>{tweeta?.likes?.length || ''}</span>
-					</Button>
+						<div className='tweetaImgs'>
+							{tweeta?.images?.map((img: Image) => (
+								<div className='modalImg' key={img.public_id}>
+									<img
+										key={img.public_id}
+										src={img.url}
+										alt={img.public_id}
+										onClick={() =>
+											handleClickOpen(img.public_id)
+										}
+									/>
+									{selectedImg === img.public_id && (
+										<Dialog
+											open={selectedImg !== null}
+											onClose={handleModalClose}
+										>
+											<img
+												src={img.url}
+												alt={img.public_id}
+											/>
+											<DialogContent>
+												<DialogContentText
+													style={{
+														marginBottom: '0',
+													}}
+												>
+													{tweeta?.content}
+												</DialogContentText>
+											</DialogContent>
+										</Dialog>
+									)}
+								</div>
+							))}
+						</div>
+					</div>
+					<div className='tweetaFooter'>
+						<Button
+							variant='text'
+							size='small'
+							onClick={() => setDialogOpen(true)}
+						>
+							<AiOutlineComment />
+							<span>{replies?.length || ''}</span>
+						</Button>
+						{replyDialog()}
+						<Button
+							onClick={() => handleTweetaRetweet(tweeta?._id)}
+							variant='text'
+							size='small'
+						>
+							<AiOutlineRetweet
+								className={
+									tweeta?.retweeters?.includes(
+										currentUser?.user._id
+									)
+										? 'retweeted'
+										: ''
+								}
+							/>
+							<span>{tweeta?.retweeters?.length || ''}</span>
+						</Button>
+						<Button
+							onClick={() => handleTweetaLike(tweeta?._id)}
+							variant='text'
+							size='small'
+						>
+							{tweeta?.likes?.includes(currentUser?.user._id) ? (
+								<AiFillHeart className='loved' />
+							) : (
+								<AiOutlineHeart />
+							)}
+							<span>{tweeta?.likes?.length || ''}</span>
+						</Button>
+					</div>
 				</div>
 			</div>
 		</SingleTweeta>

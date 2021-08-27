@@ -9,6 +9,7 @@ import {
 	ICurrentUser,
 	IUserProfile,
 	GetUserProfileDataType,
+	PinTweetaType,
 } from '../types/user';
 import { IMedia, ITweeta } from '../types/tweeta';
 
@@ -136,6 +137,20 @@ interface UserDataActionFail {
 	payload: string;
 }
 
+interface PinTweetaActionRequest {
+	type: PinTweetaType.PIN_TWEETA_REQUEST;
+}
+
+interface PinTweetaActionSuccess {
+	type: PinTweetaType.PIN_TWEETA_SUCCESS;
+	payload: ITweeta;
+}
+
+interface PinTweetaActionFail {
+	type: PinTweetaType.PIN_TWEETA_FAIL;
+	payload: string;
+}
+
 export type Action =
 	| GetUserProfileActionRequest
 	| GetUserProfileActionSuccess
@@ -161,4 +176,7 @@ export type Action =
 	| FollowActionFail
 	| UserDataActionRequest
 	| UserDataActionSuccess
-	| UserDataActionFail;
+	| UserDataActionFail
+	| PinTweetaActionRequest
+	| PinTweetaActionSuccess
+	| PinTweetaActionFail;

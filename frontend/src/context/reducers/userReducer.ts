@@ -10,6 +10,7 @@ import {
 	IUserProfile,
 	ICurrentUser,
 	GetUserProfileDataType,
+	PinTweetaType,
 } from '../types/user';
 
 interface UserState {
@@ -41,6 +42,9 @@ interface UserState {
 	followError: string | null;
 	userProfileDataLoading: boolean;
 	userProfileDataError: string | null;
+	pinTweetaLoading: boolean;
+	pinTweetaError: string | null;
+	pinTweetaSuccess: boolean;
 }
 
 const userInfoFromLS: ICurrentUser = localStorage.getItem('tweeterUser')
@@ -76,6 +80,9 @@ export const initialUserState: UserState = {
 	followError: null,
 	userProfileDataLoading: false,
 	userProfileDataError: null,
+	pinTweetaLoading: false,
+	pinTweetaError: null,
+	pinTweetaSuccess: false,
 };
 
 export const userReducer = (
@@ -258,6 +265,37 @@ export const userReducer = (
 				},
 			};
 		case GetUserProfileDataType.GET_USER_PROFILE_DATA_FAIL:
+			return {
+				...state,
+				userProfileDataError: action.payload,
+				userProfileDataLoading: false,
+			};
+
+		// * pin user tweeta
+		case PinTweetaType.PIN_TWEETA_REQUEST:
+			return {
+				...state,
+				pinTweetaLoading: true,
+			};
+		case PinTweetaType.PIN_TWEETA_SUCCESS:
+			return {
+				...state,
+				pinTweetaLoading: false,
+				userProfileData: {
+					...state.userProfileData,
+					tweets: state.userProfileData.tweets.map(
+						(tweeta: ITweeta) => {
+							return tweeta._id === action.payload._id
+								? {
+										...action.payload,
+										isPinned: action.payload.isPinned,
+								  }
+								: tweeta;
+						}
+					),
+				},
+			};
+		case PinTweetaType.PIN_TWEETA_FAIL:
 			return {
 				...state,
 				userProfileDataError: action.payload,

@@ -13,6 +13,7 @@ import {
 	GetUserProfileType,
 	FollowType,
 	GetUserProfileDataType,
+	PinTweetaType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 import { IMedia, ITweeta } from '../types/tweeta';
@@ -303,6 +304,41 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const handleTweetaPin = async (
+		id: string,
+		isPinned: boolean
+	): Promise<ITweeta | void> => {
+		try {
+			dispatch({
+				type: PinTweetaType.PIN_TWEETA_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.put(
+				`/tweeta/${id}/pin`,
+				{ isPinned },
+				config
+			);
+
+			dispatch({
+				type: PinTweetaType.PIN_TWEETA_SUCCESS,
+				payload: data,
+			});
+		} catch (error) {
+			dispatch({
+				type: PinTweetaType.PIN_TWEETA_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -329,6 +365,9 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				followError: state.followError,
 				userProfileDataLoading: state.userProfileDataLoading,
 				userProfileDataError: state.userProfileDataError,
+				pinTweetaLoading: state.pinTweetaLoading,
+				pinTweetaError: state.pinTweetaError,
+				pinTweetaSuccess: state.pinTweetaSuccess,
 				signUp,
 				signIn,
 				getUserProfile,
@@ -338,6 +377,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				editUserProfile,
 				follow,
 				getUserProfileData,
+				handleTweetaPin,
 			}}
 		>
 			{children}

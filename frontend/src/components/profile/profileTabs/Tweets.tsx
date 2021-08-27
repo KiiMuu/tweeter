@@ -11,11 +11,20 @@ const Tweets: React.FC<TweetaProps> = ({ tweets, loading, error }) => {
 
 	const showTweets = () => (
 		<TweetaList>
-			{tweets?.map((tweeta: TweetaType) => (
-				<Tweeta tweeta={tweeta} key={tweeta._id} />
-			))}
+			{tweets?.map((tweeta: TweetaType) =>
+				!tweeta.isPinned ? (
+					<Tweeta tweeta={tweeta} key={tweeta._id} />
+				) : null
+			)}
 		</TweetaList>
 	);
+
+	const showPinneTweet = () =>
+		tweets?.map((tweeta: TweetaType) => {
+			return tweeta.isPinned ? (
+				<Tweeta tweeta={tweeta} key={tweeta._id} />
+			) : null;
+		});
 
 	return loading ? (
 		<span
@@ -37,7 +46,10 @@ const Tweets: React.FC<TweetaProps> = ({ tweets, loading, error }) => {
 			</Alert>
 		</AlertStyles>
 	) : (
-		showTweets()
+		<>
+			{showPinneTweet()}
+			{showTweets()}
+		</>
 	);
 };
 

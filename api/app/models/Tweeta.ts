@@ -14,7 +14,10 @@ const TweetaSchema: Schema = new Schema(
 			type: ObjectId,
 			ref: 'User',
 		},
-		isPinned: Boolean,
+		isPinned: {
+			type: Boolean,
+			default: false,
+		},
 		likes: [
 			{
 				type: ObjectId,

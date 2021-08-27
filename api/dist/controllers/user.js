@@ -183,15 +183,31 @@ const follow = async (req, res) => {
 };
 exports.follow = follow;
 const getUserProfileData = async (req, res) => {
-    var _a;
+    const username = req.params.username;
     try {
-        const user = await User_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a._id).exec();
-        const userTweets = await Tweeta_1.default.find({
+        const user = await User_1.default.findOne({ username }).exec();
+        let userTweets = await Tweeta_1.default.find({
             postedBy: user === null || user === void 0 ? void 0 : user._id,
-        }).populate('postedBy', 'name username email');
+        })
+            .sort({ createdAt: -1 })
+            .populate('postedBy', 'name username profilePic')
+            .populate('replyTo')
+            .populate('retweetData');
         const userLikes = await Tweeta_1.default.find({
             likes: user === null || user === void 0 ? void 0 : user._id,
-        }).populate('postedBy', 'name username email');
+        })
+            .sort({ createdAt: -1 })
+            .populate('postedBy', 'name username profilePic')
+            .populate('replyTo')
+            .populate('retweetData');
+        userTweets = await User_1.default.populate(userTweets, {
+            path: 'replyTo.postedBy',
+            select: '-password',
+        });
+        await User_1.default.populate(userTweets, {
+            path: 'retweetData.postedBy',
+            select: '-password',
+        });
         let tweets = [];
         let replies = [];
         let media = [];

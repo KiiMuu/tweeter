@@ -15,5 +15,5 @@ router.get('/user/current', isAuth_1.isAuth, user_1.getCurrentUser);
 router.get('/user/:username', isAuth_1.isAuth, user_1.getUser);
 router.put('/user/editProfile', isAuth_1.isAuth, user_1.editProfile);
 router.put('/user/:userId/follow', isAuth_1.isAuth, user_1.follow);
-router.get('/user/:userId/tabs', isAuth_1.isAuth, user_1.getUserProfileData);
+router.get('/user/:username/tabs', isAuth_1.isAuth, user_1.getUserProfileData);
 exports.default = router;

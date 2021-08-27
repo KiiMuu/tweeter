@@ -13,7 +13,10 @@ const TweetaSchema = new mongoose_1.Schema({
         type: ObjectId,
         ref: 'User',
     },
-    isPinned: Boolean,
+    isPinned: {
+        type: Boolean,
+        default: false,
+    },
     likes: [
         {
             type: ObjectId,

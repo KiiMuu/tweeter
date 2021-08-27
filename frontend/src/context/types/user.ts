@@ -40,6 +40,12 @@ export enum GetUserProfileDataType {
 	GET_USER_PROFILE_DATA_FAIL = 'GET_USER_PROFILE_DATA_FAIL',
 }
 
+export enum PinTweetaType {
+	PIN_TWEETA_REQUEST = 'PIN_TWEETA_REQUEST',
+	PIN_TWEETA_SUCCESS = 'PIN_TWEETA_SUCCESS',
+	PIN_TWEETA_FAIL = 'PIN_TWEETA_FAIL',
+}
+
 export enum LogoutType {
 	USER_LOGOUT = 'USER_LOGOUT',
 }

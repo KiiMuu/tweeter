@@ -1,6 +1,26 @@
 import styled from 'styled-components';
 import { customMUIButton } from '../../theme/mixins';
 
+const tweetaHeaderText = () => {
+	return `
+        padding: 0 60px;
+        color: var(--textGray);
+        font-size: 14px;
+        opacity: 0.7;
+        display: flex;
+        align-items: center;
+        span {
+            margin-right: 5px;
+            display: flex;
+        }
+        a {
+            color: inherit;
+            margin-right: 4px;
+            text-decoration: none;
+        }
+    `;
+};
+
 export const NewsFeedContainer = styled.div`
 	border-right: 1px solid var(--borderColor);
 	border-left: 1px solid var(--borderColor);
@@ -142,152 +162,141 @@ export const SingleTweeta = styled.div`
 	&:not(:last-child) {
 		border-bottom: 10px solid var(--grayColor);
 	}
-	padding: var(--paddingLeftRight);
-	display: flex;
+	padding: 15px var(--paddingLeftRight);
 	&:hover {
 		background: #f5f5f6;
 	}
-	.userPhoto {
-		padding-right: 15px;
-		img {
-			width: 50px;
-			height: 50px;
-			border-radius: 50%;
-		}
+	.headerText {
+		${tweetaHeaderText()}
 	}
-	.tweetaWrapper {
-		flex: 1;
-		.retweetText {
-			color: var(--textGray);
-			font-size: 14px;
-			margin-bottom: 5px;
-			opacity: 0.7;
-			display: flex;
-			align-items: center;
-			span {
-				margin-right: 5px;
-				display: flex;
-			}
-			a {
-				color: inherit;
-				margin-right: 4px;
+	.container {
+		display: flex;
+		.userPhoto {
+			padding-right: 15px;
+			img {
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
 			}
 		}
-		.tweetaHeader {
-			display: flex;
-			justify-content: space-between;
-			.userInfo {
+		.tweetaWrapper {
+			flex: 1;
+			.tweetaHeader {
 				display: flex;
-				flex-wrap: wrap;
-				h4 {
-					margin: 0 5px 0 0;
-					a {
-						text-decoration: none;
-						color: #000;
-						&:hover {
-							text-decoration: underline;
+				justify-content: space-between;
+				.userInfo {
+					display: flex;
+					flex-wrap: wrap;
+					h4 {
+						margin: 0 5px 0 0;
+						a {
+							text-decoration: none;
+							color: #000;
+							&:hover {
+								text-decoration: underline;
+							}
 						}
-					}
-				}
-				span {
-					font-size: 15px;
-				}
-				span:nth-of-type(1) {
-					margin-right: 5px;
-					font-size: 15px;
-					a {
-						text-decoration: none;
-						color: #797979;
-						&:hover {
-							text-decoration: underline;
-						}
-					}
-				}
-				span:nth-of-type(2) {
-					color: #797979;
-				}
-			}
-			.tweetaOption {
-				button {
-					${customMUIButton};
-					padding: 5px 0;
-				}
-				.optionsMenu {
-					svg {
-						margin-right: 10px !important;
 					}
 					span {
-						color: red !important;
+						font-size: 15px;
+					}
+					span:nth-of-type(1) {
+						margin-right: 5px;
+						font-size: 15px;
+						a {
+							text-decoration: none;
+							color: #797979;
+							&:hover {
+								text-decoration: underline;
+							}
+						}
+					}
+					span:nth-of-type(2) {
+						color: #797979;
+					}
+				}
+				.tweetaOption {
+					button {
+						${customMUIButton};
+						padding: 5px 0;
+					}
+					.optionsMenu {
+						svg {
+							margin-right: 10px !important;
+						}
+						span {
+							color: red !important;
+						}
 					}
 				}
 			}
-		}
-		a {
-			text-decoration: none;
-			color: #000;
-		}
-		.tweetaContent {
-			padding: 20px 0;
 			a {
-				display: flex;
-				flex: 1;
+				text-decoration: none;
+				color: #000;
 			}
-			span {
-				line-height: 1.72;
-			}
-			.tweetaImgs {
-				display: flex;
-				overflow: auto;
-				margin-top: 10px;
-				.modalImg {
-					position: relative;
-					flex: 0 0 100%;
+			.tweetaContent {
+				padding: 10px 0;
+				a {
+					display: flex;
+					flex: 1;
 				}
-				::-webkit-scrollbar {
-					height: 5px;
-					border-radius: 10px;
-					background-color: #ddd;
-				}
-				::-webkit-scrollbar-thumb {
-					background-color: #666;
-					border-radius: 10px;
-				}
-				img {
-					object-fit: cover;
-					border-radius: 3px;
-					width: 100%;
-					height: 250px;
-					cursor: pointer;
-				}
-			}
-		}
-		.tweetaFooter {
-			display: flex;
-			justify-content: space-between;
-			button {
-				${customMUIButton};
 				span {
-					color: #000;
+					line-height: 1.72;
 				}
-				.loved {
-					color: #f02727;
-					animation: bounce 0.45s ease;
-				}
-				.retweeted {
-					color: #1ad087;
-					animation: bounce 0.45s ease;
+				.tweetaImgs {
+					display: flex;
+					overflow: auto;
+					margin-top: 10px;
+					.modalImg {
+						position: relative;
+						flex: 0 0 100%;
+					}
+					::-webkit-scrollbar {
+						height: 5px;
+						border-radius: 10px;
+						background-color: #ddd;
+					}
+					::-webkit-scrollbar-thumb {
+						background-color: #666;
+						border-radius: 10px;
+					}
+					img {
+						object-fit: cover;
+						border-radius: 3px;
+						width: 100%;
+						height: 250px;
+						cursor: pointer;
+					}
 				}
 			}
-			@keyframes bounce {
-				0% {
-					transform: scale(0);
+			.tweetaFooter {
+				display: flex;
+				justify-content: space-between;
+				button {
+					${customMUIButton};
+					span {
+						color: #000;
+					}
+					.loved {
+						color: #f02727;
+						animation: bounce 0.45s ease;
+					}
+					.retweeted {
+						color: #1ad087;
+						animation: bounce 0.45s ease;
+					}
 				}
-				70% {
-					transform: scale(5);
-					opacity: 0.5;
-				}
-				100% {
-					transform: scale(1);
+				@keyframes bounce {
+					0% {
+						transform: scale(0);
+					}
+					70% {
+						transform: scale(5);
+						opacity: 0.5;
+					}
+					100% {
+						transform: scale(1);
+					}
 				}
 			}
 		}
