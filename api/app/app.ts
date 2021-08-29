@@ -17,6 +17,7 @@ connectToDB;
 import userRoutes from './routes/user';
 import tweetaRoutes from './routes/tweeta';
 import cloudinaryRoutes from './routes/cloudinary';
+import searchRoutes from './routes/search';
 
 // middlewares
 app.use(express.json({ limit: '2mb' }));
@@ -29,6 +30,7 @@ app.use(compression());
 app.use('/api', userRoutes);
 app.use('/api', tweetaRoutes);
 app.use('/api', cloudinaryRoutes);
+app.use('/api', searchRoutes);
 
 // app launching!
 const port: string | number = process.env.PORT || 5000;
