@@ -22,6 +22,12 @@ const searchTweeter = async (req: Request, res: Response) => {
 						},
 					},
 					{
+						$unwind: {
+							path: '$users',
+							preserveNullAndEmptyArrays: true,
+						},
+					},
+					{
 						$lookup: {
 							from: 'tweetas',
 							localField: '_id',
@@ -29,40 +35,128 @@ const searchTweeter = async (req: Request, res: Response) => {
 							as: 'tweets',
 						},
 					},
-					// populate nested objects
-					// -> postedBy, replyTo,
 					{
-						$lookup: {
-							from: 'users',
-							localField: 'tweets.postedBy',
-							foreignField: '_id',
-							as: 'postedBy',
+						$unwind: {
+							path: '$tweets',
+							preserveNullAndEmptyArrays: true,
 						},
 					},
 					{
 						$lookup: {
 							from: 'users',
-							localField: 'tweets.replyTo',
-							foreignField: '_id',
-							as: 'replyTo',
+							let: {
+								postedBy: '$tweets.postedBy',
+							},
+							as: 'tweets.postedBy',
+							pipeline: [
+								{
+									$match: {
+										$expr: {
+											$eq: ['$_id', '$$postedBy'],
+										},
+									},
+								},
+								{
+									$project: {
+										_id: '$_id',
+										name: 1,
+										username: 1,
+										profilePic: 1,
+									},
+								},
+							],
 						},
 					},
 					{
-						$addFields: {
-							'tweets.postedBy': {
-								$cond: [
-									{ $ne: ['$postedBy', []] },
-									{ $arrayElemAt: ['$postedBy', 0] },
-									'$tweets.postedBy',
-								],
+						$unwind: {
+							path: '$tweets.postedBy',
+							preserveNullAndEmptyArrays: true,
+						},
+					},
+					{
+						$lookup: {
+							from: 'tweetas',
+							localField: 'replyTo',
+							foreignField: '_id',
+							as: 'tweets.replyTo',
+						},
+					},
+					{
+						$unwind: {
+							path: '$tweets.replyTo',
+							preserveNullAndEmptyArrays: true,
+						},
+					},
+					{
+						$lookup: {
+							from: 'users',
+							let: {
+								postedBy: '$tweets.replyTo.postedBy',
 							},
-							'tweets.replyTo': {
-								$cond: [
-									{ $ne: ['$replyTo', []] },
-									{ $arrayElemAt: ['$replyTo', 0] },
-									'$tweets.replyTo',
-								],
+							as: 'tweets.replyTo.postedBy',
+							pipeline: [
+								{
+									$match: {
+										$expr: {
+											$eq: ['$_id', '$$postedBy'],
+										},
+									},
+								},
+								{
+									$project: {
+										_id: '$_id',
+										name: 1,
+										username: 1,
+										profilePic: 1,
+									},
+								},
+							],
+						},
+					},
+					{
+						$unwind: {
+							path: '$tweets.replyTo.postedBy',
+							preserveNullAndEmptyArrays: true,
+						},
+					},
+					{
+						$lookup: {
+							from: 'tweetas',
+							localField: 'retweetData',
+							foreignField: '_id',
+							as: 'tweets.retweetData',
+						},
+					},
+					{
+						$unwind: {
+							path: '$tweets.retweetData',
+							preserveNullAndEmptyArrays: true,
+						},
+					},
+					{
+						$lookup: {
+							from: 'users',
+							let: {
+								postedBy: '$tweets.retweetData.postedBy',
 							},
+							as: 'tweets.retweetData.postedBy',
+							pipeline: [
+								{
+									$match: {
+										$expr: {
+											$eq: ['$_id', '$$postedBy'],
+										},
+									},
+								},
+								{
+									$project: {
+										_id: '$_id',
+										name: 1,
+										username: 1,
+										profilePic: 1,
+									},
+								},
+							],
 						},
 					},
 					{
@@ -86,17 +180,15 @@ const searchTweeter = async (req: Request, res: Response) => {
 							],
 						},
 					},
-					{ $unwind: '$tweets' },
-					{ $unwind: '$users' },
 					{
 						$group: {
-							_id: 0,
+							_id: '$_id',
 							users: { $addToSet: '$users' },
-							tweets: { $addToSet: '$tweets' },
+							tweets: {
+								$addToSet: '$tweets',
+							},
 						},
 					},
-					// { $limit: limit },
-					// { $skip: skip },
 				],
 				(error: { message: string }, data: any[]) => {
 					if (error) {
