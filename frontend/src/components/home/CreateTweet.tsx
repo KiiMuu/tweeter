@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Picker from 'emoji-picker-react';
-import TweetaContext from '../../context/contexts/tweetaContext';
+import TweetaContext from '../../context/contexts/tweeta';
 import FileUpload from '../forms/FileUpload';
 import Snackbar from '../alerts/SnackBar';
 import useSnackBar from '../../hooks/useSnackBar';
@@ -13,7 +13,7 @@ import { Spin } from '../../styles/spinners';
 import { Button, Divider } from '@material-ui/core';
 import { FaSmile } from 'react-icons/fa';
 import { VscClose } from 'react-icons/vsc';
-import UserContext from '../../context/contexts/userContext';
+import UserContext from '../../context/contexts/user';
 
 interface Image {
 	public_id: string;

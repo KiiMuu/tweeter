@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
-import TweetaContext from '../contexts/tweetaContext';
-import { tweetaReducer, initialTweetaState } from '../reducers/tweetaReducer';
+import TweetaContext from '../contexts/tweeta';
+import { tweetaReducer, initialTweetaState } from '../reducers/tweeta';
 import {
 	CreateTweetaType,
 	GetSingleTweetaType,

@@ -16,7 +16,7 @@ import { AiOutlineUserAdd, AiOutlineUserSwitch } from 'react-icons/ai';
 import { HiOutlineKey } from 'react-icons/hi';
 import { AiOutlineMail } from 'react-icons/ai';
 import { Spin } from '../styles/spinners';
-import UserContext from '../context/contexts/userContext';
+import UserContext from '../context/contexts/user';
 
 const Signup: React.FC = () => {
 	const [name, setName] = useState<string>('');

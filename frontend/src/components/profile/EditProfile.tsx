@@ -3,7 +3,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { BiCamera } from 'react-icons/bi';
 import useUserInfo from '../../hooks/useUserInfo';
 import { UserEdit } from '../../styles/profile';
-import UserContext from '../../context/contexts/userContext';
+import UserContext from '../../context/contexts/user';
 import useSnackBar from '../../hooks/useSnackBar';
 import { Spin } from '../../styles/spinners';
 import ImageCropper from './ImageCropper';

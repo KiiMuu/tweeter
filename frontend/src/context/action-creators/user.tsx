@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
-import UserContext from '../contexts/userContext';
-import { userReducer, initialUserState } from '../reducers/userReducer';
+import UserContext from '../contexts/user';
+import { userReducer, initialUserState } from '../reducers/user';
 import {
 	EditProfileType,
 	ISignIn,

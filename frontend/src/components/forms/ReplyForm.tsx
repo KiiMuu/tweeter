@@ -3,7 +3,7 @@ import { CreateTweetaProps } from '../../typings';
 import { Reply } from '../../styles/tweeta';
 import FileUpload from './FileUpload';
 import { Button } from '@material-ui/core';
-import TweetaContext from '../../context/contexts/tweetaContext';
+import TweetaContext from '../../context/contexts/tweeta';
 import { Spin } from '../../styles/spinners';
 import { VscClose } from 'react-icons/vsc';
 

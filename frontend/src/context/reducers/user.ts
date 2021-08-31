@@ -1,4 +1,4 @@
-import { Action } from '../actions/userActions';
+import { Action } from '../actions/user';
 import { IMedia, ITweeta } from '../types/tweeta';
 import {
 	SignUpType,

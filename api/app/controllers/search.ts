@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { BAD_REQUEST, OK, SERVER_ERROR } from '../constants';
+import { BAD_REQUEST, OK } from '../constants';
 import Tweeta from '../models/Tweeta';
 import User from '../models/User';
 
@@ -205,7 +205,7 @@ const searchTweeter = async (req: Request, res: Response) => {
 
 		return res.status(OK).json({ users, data });
 	} catch (error) {
-		return res.status(SERVER_ERROR).json({
+		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
 	}

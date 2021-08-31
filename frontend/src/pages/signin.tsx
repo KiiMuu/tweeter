@@ -17,7 +17,7 @@ import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { AiOutlineMail } from 'react-icons/ai';
 import { HiOutlineKey } from 'react-icons/hi';
 import { Spin } from '../styles/spinners';
-import UserContext from '../context/contexts/userContext';
+import UserContext from '../context/contexts/user';
 
 const Signin: React.FC = () => {
 	const [email, setEmail] = useState<string>('');

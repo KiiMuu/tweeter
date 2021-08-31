@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { PageTitle } from '../../styles/headings';
-import TweetaContext from '../../context/contexts/tweetaContext';
+import TweetaContext from '../../context/contexts/tweeta';
 import CreateTweet from './CreateTweet';
 import Tweets from './Tweets';
 import { NewsFeedContainer } from '../../styles/home';

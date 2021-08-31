@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import TweetaContext from '../../context/contexts/tweetaContext';
-import UserContext from '../../context/contexts/userContext';
+import TweetaContext from '../../context/contexts/tweeta';
+import UserContext from '../../context/contexts/user';
 import { TweetaProps } from '../../typings';
 import { SingleTweeta } from '../../styles/home';
 import getTimeDifference from '../../helpers/geTimeDifference';

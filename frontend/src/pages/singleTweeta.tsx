@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ReplyForm from '../components/forms/ReplyForm';
 import HomeLayout from '../components/home/HomeLayout';
 import Tweeta from '../components/home/Tweeta';
-import TweetaContext from '../context/contexts/tweetaContext';
+import TweetaContext from '../context/contexts/tweeta';
 import { PageTitle } from '../styles/headings';
 import { AlertStyles } from '../styles/notifiers';
 import { Spin } from '../styles/spinners';

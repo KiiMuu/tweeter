@@ -1,4 +1,4 @@
-import { Action } from '../actions/tweetaActions';
+import { Action } from '../actions/tweeta';
 import {
 	CreateTweetaType,
 	GetTweetsType,

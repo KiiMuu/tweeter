@@ -14,7 +14,7 @@ import {
 	IoMdLogOut,
 } from 'react-icons/io';
 import useUserInfo from '../../hooks/useUserInfo';
-import UserContext from '../../context/contexts/userContext';
+import UserContext from '../../context/contexts/user';
 
 const Sidebar: React.FC = () => {
 	const authContext = useContext(UserContext);

@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import UserContext from '../../context/contexts/userContext';
+import UserContext from '../../context/contexts/user';
 import Cropper from 'react-easy-crop';
 import { Point, Area } from 'react-easy-crop/types';
 import { Button, Slider } from '@material-ui/core';

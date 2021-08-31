@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import HomeLayout from '../components/home/HomeLayout';
 import UserProfile from '../components/profile/UserProfile';
-import UserContext from '../context/contexts/userContext';
+import UserContext from '../context/contexts/user';
 import { UserInfoProps } from '../typings';
 
 const Profile = () => {

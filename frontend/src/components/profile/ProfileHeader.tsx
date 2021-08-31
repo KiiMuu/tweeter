@@ -19,7 +19,7 @@ import {
 	CgTree,
 	BiCalendar,
 } from 'react-icons/all';
-import UserContext from '../../context/contexts/userContext';
+import UserContext from '../../context/contexts/user';
 import useSnackBar from '../../hooks/useSnackBar';
 import { Spin } from '../../styles/spinners';
 import { UserInfoProps } from '../../typings';

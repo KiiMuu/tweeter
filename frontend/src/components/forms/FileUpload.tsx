@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect } from 'react';
 import FileResizer from 'react-image-file-resizer';
-import TweetaContext from '../../context/contexts/tweetaContext';
+import TweetaContext from '../../context/contexts/tweeta';
 import { BsImageFill } from 'react-icons/bs';
 import { Button } from '@material-ui/core';
 

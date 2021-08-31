@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import UserContext from '../../../context/contexts/userContext';
+import UserContext from '../../../context/contexts/user';
 import Tweets from './Tweets';
 import Replies from './Replies';
 import Likes from './Likes';
