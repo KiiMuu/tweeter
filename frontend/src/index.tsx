@@ -5,13 +5,16 @@ import { ThemeProvider } from '@material-ui/styles';
 import { theme } from './Material_UI_Config';
 import TweetaState from './context/action-creators/tweeta';
 import UserState from './context/action-creators/user';
+import SearchState from './context/action-creators/search';
 
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<GlobalStyles />
 		<UserState>
 			<TweetaState>
-				<App />
+				<SearchState>
+					<App />
+				</SearchState>
 			</TweetaState>
 		</UserState>
 	</ThemeProvider>,

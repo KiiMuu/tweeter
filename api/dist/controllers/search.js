@@ -6,11 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.searchTweeter = void 0;
 const constants_1 = require("../constants");
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
+const User_1 = __importDefault(require("../models/User"));
 const searchTweeter = async (req, res) => {
     try {
         const { searchTerm } = req.query;
+        let users = [];
+        let tweets = [];
         if (searchTerm) {
-            await Tweeta_1.default.aggregate([
+            users = await User_1.default.find({
+                $or: [
+                    { name: new RegExp(searchTerm, 'i') },
+                    { username: new RegExp(searchTerm, 'i') },
+                ],
+            })
+                .select('-password')
+                .exec();
+            tweets = await Tweeta_1.default.aggregate([
                 {
                     $lookup: {
                         from: 'users',
@@ -180,25 +191,18 @@ const searchTweeter = async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: '$_id',
-                        users: { $addToSet: '$users' },
+                        _id: 0,
                         tweets: {
-                            $addToSet: '$tweets',
+                            $push: '$tweets',
                         },
                     },
                 },
-            ], (error, data) => {
-                if (error) {
-                    return res.status(constants_1.BAD_REQUEST).json({
-                        message: error.message,
-                    });
-                }
-                return res.status(constants_1.OK).json(data);
-            });
+            ]);
         }
+        return res.status(constants_1.OK).json({ users, tweets });
     }
     catch (error) {
-        return res.status(constants_1.SERVER_ERROR).json({
+        return res.status(constants_1.BAD_REQUEST).json({
             message: error.message,
         });
     }

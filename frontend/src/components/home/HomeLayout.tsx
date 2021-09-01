@@ -1,5 +1,6 @@
 import { Grid } from '@material-ui/core';
 import Siderbar from './Sidebar';
+import ExtraContent from './ExtraContent';
 
 const HomeLayout: React.FC = ({ children }) => {
 	return (
@@ -12,7 +13,7 @@ const HomeLayout: React.FC = ({ children }) => {
 					{children}
 				</Grid>
 				<Grid item xs={12} sm={4}>
-					Extra Content
+					<ExtraContent />
 				</Grid>
 			</Grid>
 		</div>

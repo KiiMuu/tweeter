@@ -12,7 +12,8 @@ const searchTweeter = async (req: Request, res: Response) => {
 		const { searchTerm } = req.query as unknown as Search;
 
 		let users = [];
-		let data = [];
+		let tweets = [];
+
 		if (searchTerm) {
 			users = await User.find({
 				$or: [
@@ -23,7 +24,7 @@ const searchTweeter = async (req: Request, res: Response) => {
 				.select('-password')
 				.exec();
 
-			data = await Tweeta.aggregate([
+			tweets = await Tweeta.aggregate([
 				{
 					$lookup: {
 						from: 'users',
@@ -194,7 +195,6 @@ const searchTweeter = async (req: Request, res: Response) => {
 				{
 					$group: {
 						_id: 0,
-						// users: { $addToSet: '$users' },
 						tweets: {
 							$push: '$tweets',
 						},
@@ -203,7 +203,7 @@ const searchTweeter = async (req: Request, res: Response) => {
 			]);
 		}
 
-		return res.status(OK).json({ users, data });
+		return res.status(OK).json({ users, tweets });
 	} catch (error) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,

@@ -3,12 +3,13 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
 import FallbackScreen from './components/FallbackScreen';
 import ProtectRoute from './helpers/ProtectRoute';
-import Profile from './pages/profile';
 
 const Singup = lazy(() => import('./pages/signup'));
 const Signin = lazy(() => import('./pages/signin'));
 const Home = lazy(() => import('./pages/home'));
 const SingleTweeta = lazy(() => import('./pages/singleTweeta'));
+const Profile = lazy(() => import('./pages/profile'));
+const Search = lazy(() => import('./pages/search'));
 
 const App: React.FC = () => {
 	return (
@@ -27,6 +28,11 @@ const App: React.FC = () => {
 						exact
 						path={ROUTES.MY_PROFILE}
 						component={Profile}
+					/>
+					<ProtectRoute
+						exact
+						path={ROUTES.SEARCH}
+						component={Search}
 					/>
 				</Switch>
 			</Router>

@@ -1,8 +1,6 @@
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-
 import { Sider } from '../../styles/lists';
-
 import { Button, Tooltip, Zoom } from '@material-ui/core';
 import { HiOutlineHome } from 'react-icons/hi';
 import { BiMessageDetail } from 'react-icons/bi';

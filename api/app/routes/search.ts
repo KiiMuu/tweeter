@@ -5,6 +5,6 @@ const router: Router = Router();
 import { searchTweeter } from '../controllers/search';
 import { isAuth } from '../middlewares/isAuth';
 
-router.post('/search', searchTweeter);
+router.post('/search', isAuth, searchTweeter);
 
 export default router;
