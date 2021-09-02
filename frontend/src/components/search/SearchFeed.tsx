@@ -1,4 +1,5 @@
 import SwipeableViews from 'react-swipeable-views';
+import { useLocation } from 'react-router-dom';
 import useTabs from '../../hooks/useTabs';
 import Tweets from './Tweets';
 import People from './People';
@@ -31,6 +32,8 @@ const SearchFeed: React.FC<FeedProps> = ({
 	const theme = useTheme();
 	const { TabPanel, a11yProps, value, handleChange, handleChangeIndex } =
 		useTabs();
+	const { search } = useLocation();
+	const searchTerm = search.split('=')[1];
 
 	if (searchLoading)
 		return (
@@ -73,7 +76,13 @@ const SearchFeed: React.FC<FeedProps> = ({
 		);
 	})();
 
-	return (
+	return !searchTerm ? (
+		<AlertStyles style={{ marginTop: '20px' }}>
+			<Alert severity='info' icon={false}>
+				The things you're looking for will be listed here!
+			</Alert>
+		</AlertStyles>
+	) : (
 		<div className={classes.root}>
 			<Tabs
 				value={value}
@@ -93,13 +102,19 @@ const SearchFeed: React.FC<FeedProps> = ({
 				onChangeIndex={handleChangeIndex}
 			>
 				<TabPanel value={value} index={0} dir={theme.direction}>
-					<Tweets tweets={searchResult?.tweets[0]?.tweets} />
+					<Tweets
+						searchTerm={searchTerm}
+						tweets={searchResult?.tweets[0]?.tweets}
+					/>
 				</TabPanel>
 				<TabPanel value={value} index={1} dir={theme.direction}>
-					<People people={searchResult?.users} />
+					<People
+						searchTerm={searchTerm}
+						people={searchResult?.users}
+					/>
 				</TabPanel>
 				<TabPanel value={value} index={2} dir={theme.direction}>
-					<Photos photos={photosArr} />
+					<Photos searchTerm={searchTerm} photos={photosArr} />
 				</TabPanel>
 			</SwipeableViews>
 		</div>

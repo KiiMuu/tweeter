@@ -7,7 +7,11 @@ exports.searchTweeter = void 0;
 const constants_1 = require("../constants");
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
 const User_1 = __importDefault(require("../models/User"));
+const isEmptyObj = (obj) => {
+    return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+};
 const searchTweeter = async (req, res) => {
+    var _a, _b;
     try {
         const { searchTerm } = req.query;
         let users = [];
@@ -169,6 +173,12 @@ const searchTweeter = async (req, res) => {
                     },
                 },
                 {
+                    $unwind: {
+                        path: '$tweets.retweetData.postedBy',
+                        preserveNullAndEmptyArrays: true,
+                    },
+                },
+                {
                     $match: {
                         $or: [
                             {
@@ -199,6 +209,14 @@ const searchTweeter = async (req, res) => {
                 },
             ]);
         }
+        (_b = (_a = tweets[0]) === null || _a === void 0 ? void 0 : _a.tweets) === null || _b === void 0 ? void 0 : _b.forEach((tweeta) => {
+            if (isEmptyObj(tweeta.replyTo)) {
+                tweeta.replyTo = undefined;
+            }
+            if (isEmptyObj(tweeta.retweetData)) {
+                tweeta.retweetData = undefined;
+            }
+        });
         return res.status(constants_1.OK).json({ users, tweets });
     }
     catch (error) {

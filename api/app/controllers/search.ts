@@ -1,11 +1,16 @@
 import { Request, Response } from 'express';
 import { BAD_REQUEST, OK } from '../constants';
+import { ITweeta } from '../interfaces/tweeta';
 import Tweeta from '../models/Tweeta';
 import User from '../models/User';
 
 interface Search {
 	searchTerm: string;
 }
+
+const isEmptyObj = (obj: ITweeta | undefined) => {
+	return obj && Object.keys(obj).length === 0 && obj.constructor === Object;
+};
 
 const searchTweeter = async (req: Request, res: Response) => {
 	try {
@@ -172,6 +177,12 @@ const searchTweeter = async (req: Request, res: Response) => {
 					},
 				},
 				{
+					$unwind: {
+						path: '$tweets.retweetData.postedBy',
+						preserveNullAndEmptyArrays: true,
+					},
+				},
+				{
 					$match: {
 						$or: [
 							{
@@ -202,6 +213,16 @@ const searchTweeter = async (req: Request, res: Response) => {
 				},
 			]);
 		}
+
+		tweets[0]?.tweets?.forEach((tweeta: ITweeta) => {
+			if (isEmptyObj(tweeta.replyTo)) {
+				tweeta.replyTo = undefined;
+			}
+
+			if (isEmptyObj(tweeta.retweetData)) {
+				tweeta.retweetData = undefined;
+			}
+		});
 
 		return res.status(OK).json({ users, tweets });
 	} catch (error) {

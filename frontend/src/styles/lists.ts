@@ -50,3 +50,7 @@ export const Sider = styled.div`
 		}
 	}
 `;
+
+export const UserCardStyled = styled.div`
+	padding: 10px var(--paddingLeftRight);
+`;

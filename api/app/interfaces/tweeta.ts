@@ -29,6 +29,6 @@ export interface ITweeta extends Document {
 	isPinned: boolean;
 	likes: object[];
 	retweeters: object[];
-	retweetData: ITweeta;
-	replyTo: ITweeta;
+	retweetData: ITweeta | undefined;
+	replyTo: ITweeta | undefined;
 }

@@ -78,7 +78,7 @@ const Following: React.FC<FollowingProps> = ({
 									<ListItem
 										button
 										component={Link}
-										to={follower.username}
+										to={`/profile/${follower?.username}`}
 										key={follower._id}
 									>
 										<ListItemAvatar>
@@ -92,7 +92,12 @@ const Following: React.FC<FollowingProps> = ({
 											</Avatar>
 										</ListItemAvatar>
 										<ListItemText
-											primary={follower.name}
+											primary={
+												currentUser.user._id ===
+												follower?._id
+													? 'You'
+													: follower?.name
+											}
 											secondary={`@${follower.username} ${
 												follower.following.includes(
 													currentUser.user._id
