@@ -305,6 +305,31 @@ const getUserProfileData = async (
 	}
 };
 
+const getPeopleToFollow = async (
+	req: Request,
+	res: Response
+): Promise<object> => {
+	const username: string = req.params.username;
+	const { page } = req.body;
+
+	try {
+		let whoToFollow = await User.find({
+			username: { $ne: username },
+			_id: { $nin: req.user?.following },
+		})
+			.select('username name profilePic')
+			.limit(page)
+			.sort({ createdAt: -1 })
+			.exec();
+
+		return res.status(OK).json(whoToFollow);
+	} catch (error) {
+		return res.status(SERVER_ERROR).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	signUp,
 	signIn,
@@ -313,4 +338,5 @@ export {
 	editProfile,
 	follow,
 	getUserProfileData,
+	getPeopleToFollow,
 };

@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProfileData = exports.follow = exports.editProfile = exports.getUser = exports.getCurrentUser = exports.signIn = exports.signUp = void 0;
+exports.getPeopleToFollow = exports.getUserProfileData = exports.follow = exports.editProfile = exports.getUser = exports.getCurrentUser = exports.signIn = exports.signUp = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
 const Tweeta_1 = __importDefault(require("../models/Tweeta"));
@@ -244,3 +244,25 @@ const getUserProfileData = async (req, res) => {
     }
 };
 exports.getUserProfileData = getUserProfileData;
+const getPeopleToFollow = async (req, res) => {
+    var _a;
+    const username = req.params.username;
+    const { page } = req.body;
+    try {
+        let whoToFollow = await User_1.default.find({
+            username: { $ne: username },
+            _id: { $nin: (_a = req.user) === null || _a === void 0 ? void 0 : _a.following },
+        })
+            .select('username name profilePic')
+            .limit(page)
+            .sort({ createdAt: -1 })
+            .exec();
+        return res.status(constants_1.OK).json(whoToFollow);
+    }
+    catch (error) {
+        return res.status(constants_1.SERVER_ERROR).json({
+            message: error.message,
+        });
+    }
+};
+exports.getPeopleToFollow = getPeopleToFollow;

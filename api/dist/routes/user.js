@@ -16,4 +16,5 @@ router.get('/user/:username', isAuth_1.isAuth, user_1.getUser);
 router.put('/user/editProfile', isAuth_1.isAuth, user_1.editProfile);
 router.put('/user/:userId/follow', isAuth_1.isAuth, user_1.follow);
 router.get('/user/:username/tabs', isAuth_1.isAuth, user_1.getUserProfileData);
+router.post('/user/:username/whoToFollow', isAuth_1.isAuth, user_1.getPeopleToFollow);
 exports.default = router;
