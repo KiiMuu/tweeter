@@ -14,9 +14,10 @@ import {
 
 interface Props {
 	user: UserInfoProps;
+	paddingVal?: string;
 }
 
-const UserCard: React.FC<Props> = ({ user }) => {
+const UserCard: React.FC<Props> = ({ user, paddingVal }) => {
 	const { currentUser } = useUserInfo();
 	const { follow } = useContext(UserContext);
 
@@ -26,6 +27,7 @@ const UserCard: React.FC<Props> = ({ user }) => {
 			component={Link}
 			to={`/profile/${user?.username}`}
 			key={user?._id}
+			style={{ padding: paddingVal }}
 		>
 			<ListItemAvatar>
 				<Avatar>

@@ -10,6 +10,7 @@ import {
 	IUserProfile,
 	GetUserProfileDataType,
 	PinTweetaType,
+	WhoToFollowType,
 } from '../types/user';
 import { IMedia, ITweeta } from '../types/tweeta';
 
@@ -151,6 +152,20 @@ interface PinTweetaActionFail {
 	payload: string;
 }
 
+interface WhoToFollowActionRequest {
+	type: WhoToFollowType.WHO_TO_FOLLOW_REQUEST;
+}
+
+interface WhoToFollowActionSuccess {
+	type: WhoToFollowType.WHO_TO_FOLLOW_SUCCESS;
+	payload: IUserInfo[];
+}
+
+interface WhoToFollowActionFail {
+	type: WhoToFollowType.WHO_TO_FOLLOW_FAIL;
+	payload: string;
+}
+
 export type Action =
 	| GetUserProfileActionRequest
 	| GetUserProfileActionSuccess
@@ -179,4 +194,7 @@ export type Action =
 	| UserDataActionFail
 	| PinTweetaActionRequest
 	| PinTweetaActionSuccess
-	| PinTweetaActionFail;
+	| PinTweetaActionFail
+	| WhoToFollowActionRequest
+	| WhoToFollowActionSuccess
+	| WhoToFollowActionFail;

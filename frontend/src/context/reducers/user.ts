@@ -11,6 +11,8 @@ import {
 	ICurrentUser,
 	GetUserProfileDataType,
 	PinTweetaType,
+	IUserInfo,
+	WhoToFollowType,
 } from '../types/user';
 
 interface UserState {
@@ -24,6 +26,7 @@ interface UserState {
 		likes: ITweeta[];
 		media: IMedia[];
 	};
+	whoToFollowUsers: IUserInfo[];
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -45,6 +48,8 @@ interface UserState {
 	pinTweetaLoading: boolean;
 	pinTweetaError: string | null;
 	pinTweetaSuccess: boolean;
+	whoToFollowLoading: boolean;
+	whoToFollowError: string | null;
 }
 
 const userInfoFromLS: ICurrentUser = localStorage.getItem('tweeterUser')
@@ -62,6 +67,7 @@ export const initialUserState: UserState = {
 		likes: [],
 		media: [],
 	},
+	whoToFollowUsers: [],
 	userProfileLoading: false,
 	userProfileError: null,
 	addProfilePicLoading: false,
@@ -83,6 +89,8 @@ export const initialUserState: UserState = {
 	pinTweetaLoading: false,
 	pinTweetaError: null,
 	pinTweetaSuccess: false,
+	whoToFollowLoading: false,
+	whoToFollowError: null,
 };
 
 export const userReducer = (
@@ -300,6 +308,25 @@ export const userReducer = (
 				...state,
 				userProfileDataError: action.payload,
 				userProfileDataLoading: false,
+			};
+
+		// * who to follow users
+		case WhoToFollowType.WHO_TO_FOLLOW_REQUEST:
+			return {
+				...state,
+				whoToFollowLoading: true,
+			};
+		case WhoToFollowType.WHO_TO_FOLLOW_SUCCESS:
+			return {
+				...state,
+				whoToFollowLoading: false,
+				whoToFollowUsers: action.payload,
+			};
+		case WhoToFollowType.WHO_TO_FOLLOW_FAIL:
+			return {
+				...state,
+				whoToFollowError: action.payload,
+				whoToFollowLoading: false,
 			};
 		default:
 			return state;

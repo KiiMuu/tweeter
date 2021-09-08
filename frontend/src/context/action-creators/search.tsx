@@ -36,7 +36,7 @@ const SearchState = ({ children }: { children: React.ReactNode }) => {
 				type: SearchAppType.SEARCH_APP_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: SearchAppType.SEARCH_APP_FAIL,
 				payload: error.response?.data.message

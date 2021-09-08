@@ -14,6 +14,7 @@ import {
 	FollowType,
 	GetUserProfileDataType,
 	PinTweetaType,
+	WhoToFollowType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 import { IMedia, ITweeta } from '../types/tweeta';
@@ -43,7 +44,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 			});
 
 			localStorage.setItem('tweeterUser', JSON.stringify(data));
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: SignUpType.SIGNUP_FAIL,
 				payload: error.response?.data.message
@@ -73,7 +74,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 			});
 
 			localStorage.setItem('tweeterUser', JSON.stringify(data));
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: SignInType.SIGNIN_FAIL,
 				payload: error.response?.data.message
@@ -112,7 +113,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				type: GetUserProfileType.GET_USER_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: GetUserProfileType.GET_USER_FAIL,
 				payload: error.response?.data.message
@@ -144,7 +145,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				type: EditProfileType.ADD_USER_PIC_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: EditProfileType.ADD_USER_PIC_FAIL,
 				payload: error.response?.data.message
@@ -176,7 +177,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				type: EditProfileType.ADD_USER_COVER_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: EditProfileType.ADD_USER_COVER_FAIL,
 				payload: error.response?.data.message
@@ -220,7 +221,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				'tweeterUser',
 				JSON.stringify(currentUser)
 			);
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: EditProfileType.EDIT_PROFILE_FAIL,
 				payload: error.response?.data.message
@@ -259,7 +260,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				'tweeterUser',
 				JSON.stringify(currentUser)
 			);
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: FollowType.FOLLOW_FAIL,
 				payload: error.response?.data.message
@@ -294,7 +295,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				type: GetUserProfileDataType.GET_USER_PROFILE_DATA_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: GetUserProfileDataType.GET_USER_PROFILE_DATA_FAIL,
 				payload: error.response?.data.message
@@ -329,9 +330,44 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				type: PinTweetaType.PIN_TWEETA_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: PinTweetaType.PIN_TWEETA_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
+	const handleWhoToFollow = async (
+		username: string,
+		page: number
+	): Promise<IUserInfo[] | void> => {
+		try {
+			dispatch({
+				type: WhoToFollowType.WHO_TO_FOLLOW_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.post(
+				`/user/${username}/whoToFollow`,
+				{ page },
+				config
+			);
+
+			dispatch({
+				type: WhoToFollowType.WHO_TO_FOLLOW_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: WhoToFollowType.WHO_TO_FOLLOW_FAIL,
 				payload: error.response?.data.message
 					? error.response.data.message
 					: error.message,
@@ -368,6 +404,9 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				pinTweetaLoading: state.pinTweetaLoading,
 				pinTweetaError: state.pinTweetaError,
 				pinTweetaSuccess: state.pinTweetaSuccess,
+				whoToFollowLoading: state.whoToFollowLoading,
+				whoToFollowError: state.whoToFollowError,
+				whoToFollowUsers: state.whoToFollowUsers,
 				signUp,
 				signIn,
 				getUserProfile,
@@ -378,6 +417,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				follow,
 				getUserProfileData,
 				handleTweetaPin,
+				handleWhoToFollow,
 			}}
 		>
 			{children}

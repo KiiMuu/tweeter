@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Sider = styled.div`
+export const Sider = styled.aside`
 	height: 100vh;
 	display: flex;
 	align-items: start;
@@ -53,4 +53,13 @@ export const Sider = styled.div`
 
 export const UserCardStyled = styled.div`
 	padding: 10px var(--paddingLeftRight);
+`;
+
+export const WhoToFollowSection = styled.section`
+	padding: 10px var(--paddingLeftRight);
+	.mainContent {
+		background: #f7f9f9;
+		border-radius: var(--br);
+		padding: 20px;
+	}
 `;

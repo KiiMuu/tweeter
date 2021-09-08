@@ -46,6 +46,12 @@ export enum PinTweetaType {
 	PIN_TWEETA_FAIL = 'PIN_TWEETA_FAIL',
 }
 
+export enum WhoToFollowType {
+	WHO_TO_FOLLOW_REQUEST = 'WHO_TO_FOLLOW_REQUEST',
+	WHO_TO_FOLLOW_SUCCESS = 'WHO_TO_FOLLOW_SUCCESS',
+	WHO_TO_FOLLOW_FAIL = 'WHO_TO_FOLLOW_FAIL',
+}
+
 export enum LogoutType {
 	USER_LOGOUT = 'USER_LOGOUT',
 }

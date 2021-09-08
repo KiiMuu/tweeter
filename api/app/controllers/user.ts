@@ -317,7 +317,7 @@ const getPeopleToFollow = async (
 			username: { $ne: username },
 			_id: { $nin: req.user?.following },
 		})
-			.select('username name profilePic')
+			.select('username name profilePic following')
 			.limit(page)
 			.sort({ createdAt: -1 })
 			.exec();

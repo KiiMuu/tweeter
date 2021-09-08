@@ -17,6 +17,7 @@ type userContextType = {
 		likes: ITweeta[];
 		media: IMedia[];
 	};
+	whoToFollowUsers: IUserInfo[];
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -38,6 +39,8 @@ type userContextType = {
 	pinTweetaLoading: boolean;
 	pinTweetaSuccess: boolean;
 	pinTweetaError: string | null;
+	whoToFollowLoading: boolean;
+	whoToFollowError: string | null;
 	signUp: (user: ISignUp) => any;
 	signIn: (user: ISignIn) => any;
 	getUserProfile: (username: string) => IUserInfo | object;
@@ -62,6 +65,14 @@ type userContextType = {
 				tweeta: ITweeta;
 		  }
 		| object;
+	handleWhoToFollow: (
+		username: string,
+		page: number
+	) =>
+		| {
+				whoToFollowUsers: IUserInfo[];
+		  }
+		| object;
 };
 
 const userContextDefaultValues: userContextType = {
@@ -75,6 +86,7 @@ const userContextDefaultValues: userContextType = {
 		likes: [],
 		media: [],
 	},
+	whoToFollowUsers: [],
 	userProfileLoading: false,
 	userProfileError: null,
 	addProfilePicLoading: false,
@@ -96,6 +108,8 @@ const userContextDefaultValues: userContextType = {
 	pinTweetaLoading: false,
 	pinTweetaSuccess: false,
 	pinTweetaError: null,
+	whoToFollowLoading: false,
+	whoToFollowError: null,
 	signUp: () => {},
 	signIn: () => {},
 	addUserPic: () => {},
@@ -116,6 +130,9 @@ const userContextDefaultValues: userContextType = {
 	},
 	handleTweetaPin: () => {
 		return { tweeta: {} };
+	},
+	handleWhoToFollow: () => {
+		return { whoToFollowUsers: [] };
 	},
 };
 

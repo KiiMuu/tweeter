@@ -38,7 +38,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: CreateTweetaType.TWEETA_CREATE_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: CreateTweetaType.TWEETA_CREATE_FAIL,
 				payload: error.response?.data.message
@@ -70,7 +70,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: AddTweetaImgType.TWEETA_IMG_ADD_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: AddTweetaImgType.TWEETA_IMG_ADD_FAIL,
 				payload: error.response?.data.message
@@ -102,7 +102,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: RemoveTweetaImgType.TWEETA_IMG_REMOVE_FAIL,
 				payload: error.response?.data.message
@@ -132,7 +132,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 			});
 
 			return data;
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: GetTweetsType.TWEETS_LIST_FAIL,
 				payload: error.response?.data.message
@@ -160,7 +160,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: LikeTweetaType.LIKE_TWEETA_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: LikeTweetaType.LIKE_TWEETA_FAIL,
 				payload: error.response?.data.message
@@ -191,7 +191,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: GetSingleTweetaType.GET_SINGLE_TWEETA_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: GetSingleTweetaType.GET_SINGLE_TWEETA_FAIL,
 				payload: error.response?.data.message
@@ -219,7 +219,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: RemoveTweetaType.TWEETA_REMOVE_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: RemoveTweetaType.TWEETA_REMOVE_FAIL,
 				payload: error.response?.data.message
@@ -251,7 +251,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				type: RetweetTweetaType.RETWEET_TWEETA_SUCCESS,
 				payload: data,
 			});
-		} catch (error) {
+		} catch (error: any) {
 			dispatch({
 				type: RetweetTweetaType.RETWEET_TWEETA_FAIL,
 				payload: error.response?.data.message
