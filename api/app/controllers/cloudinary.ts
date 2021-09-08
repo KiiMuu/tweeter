@@ -24,7 +24,7 @@ const addTweetaImages = async (
 			public_id: result.public_id,
 			url: result.secure_url,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -47,7 +47,7 @@ const handleProfilePic = async (
 			public_id: result.public_id,
 			url: result.secure_url,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -70,7 +70,7 @@ const handleCoverPhoto = async (
 			public_id: result.public_id,
 			url: result.secure_url,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -87,7 +87,7 @@ const removeTweetaImages = async (
 		cloudinary.v2.uploader.destroy(image_id);
 
 		return res.json({ image_id });
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});

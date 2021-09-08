@@ -44,7 +44,7 @@ const signUp = async (
 			user,
 			token: generateToken(user._id),
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -78,7 +78,7 @@ const signIn = async (
 				message: 'Invalid user password',
 			});
 		}
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -101,7 +101,7 @@ const getCurrentUser = async (
 			user,
 			token: generateToken(user._id),
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -136,7 +136,7 @@ const getUser = async (
 		});
 
 		return res.json({ user });
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -174,7 +174,7 @@ const editProfile = async (req: Request, res: Response): Promise<object> => {
 		const updatedUser = await user.save();
 
 		return res.json(updatedUser);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -228,7 +228,7 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 			followers: user.followers,
 			followedUserId: user._id,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -298,7 +298,7 @@ const getUserProfileData = async (
 			likes: userLikes,
 			media,
 		});
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});
@@ -323,7 +323,7 @@ const getPeopleToFollow = async (
 			.exec();
 
 		return res.status(OK).json(whoToFollow);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,
 		});

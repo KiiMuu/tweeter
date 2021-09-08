@@ -225,7 +225,7 @@ const searchTweeter = async (req: Request, res: Response) => {
 		});
 
 		return res.status(OK).json({ users, tweets });
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});

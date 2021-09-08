@@ -29,7 +29,7 @@ const createTweeta = async (req: Request, res: Response): Promise<object> => {
 		await Tweeta.populate(newTweeta, { path: 'replyTo' });
 
 		return res.status(CREATED).json(newTweeta);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -51,7 +51,7 @@ const getTweets = async (req: Request, res: Response): Promise<object> => {
 		await User.populate(tweets, { path: 'retweetData.postedBy' });
 
 		return res.status(OK).json(tweets);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -88,7 +88,7 @@ const getSingleTweeta = async (
 		await User.populate(results, { path: 'retweetData.postedBy' });
 
 		return res.status(OK).json(results);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -102,7 +102,7 @@ const removeTweeta = async (req: Request, res: Response): Promise<object> => {
 		const removedTweeta = await Tweeta.findByIdAndRemove(tweetaId);
 
 		return res.status(OK).json(removedTweeta);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -145,7 +145,7 @@ const tweetaLike = async (req: Request, res: Response): Promise<object> => {
 		});
 
 		return res.status(OK).json(tweeta);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -204,7 +204,7 @@ const tweetaRetweet = async (req: Request, res: Response): Promise<object> => {
 		});
 
 		return res.status(OK).json(tweeta);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
@@ -235,7 +235,7 @@ const handlePin = async (req: Request, res: Response): Promise<object> => {
 		});
 
 		return res.status(OK).json(result);
-	} catch (error) {
+	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,
 		});
