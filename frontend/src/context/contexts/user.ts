@@ -41,6 +41,7 @@ type userContextType = {
 	pinTweetaError: string | null;
 	whoToFollowLoading: boolean;
 	whoToFollowError: string | null;
+	total: number;
 	signUp: (user: ISignUp) => any;
 	signIn: (user: ISignIn) => any;
 	getUserProfile: (username: string) => IUserInfo | object;
@@ -70,7 +71,8 @@ type userContextType = {
 		page: number
 	) =>
 		| {
-				whoToFollowUsers: IUserInfo[];
+				users: IUserInfo[];
+				total: number;
 		  }
 		| object;
 };
@@ -110,6 +112,7 @@ const userContextDefaultValues: userContextType = {
 	pinTweetaError: null,
 	whoToFollowLoading: false,
 	whoToFollowError: null,
+	total: 0,
 	signUp: () => {},
 	signIn: () => {},
 	addUserPic: () => {},
@@ -132,7 +135,7 @@ const userContextDefaultValues: userContextType = {
 		return { tweeta: {} };
 	},
 	handleWhoToFollow: () => {
-		return { whoToFollowUsers: [] };
+		return { users: [], total: 0 };
 	},
 };
 

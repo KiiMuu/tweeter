@@ -313,16 +313,47 @@ const getPeopleToFollow = async (
 	const { page } = req.body;
 
 	try {
-		let whoToFollow = await User.find({
-			username: { $ne: username },
-			_id: { $nin: req.user?.following },
-		})
-			.select('username name profilePic following')
-			.limit(page)
-			.sort({ createdAt: -1 })
-			.exec();
+		const [{ users, total }] = await User.aggregate([
+			{
+				$facet: {
+					users: [
+						{
+							$match: {
+								$and: [
+									{ username: { $ne: username } },
+									{ _id: { $nin: req.user?.following } },
+								],
+							},
+						},
+						{ $limit: page },
+						// { $sort: { createdAt: -1 } },
+					],
+					total: [
+						{
+							$match: {
+								$and: [
+									{ username: { $ne: username } },
+									{ _id: { $nin: req.user?.following } },
+								],
+							},
+						},
+						{ $count: 'total' },
+					],
+				},
+			},
+		]);
 
-		return res.status(OK).json(whoToFollow);
+		// ? without aggregation but no total included!
+		// let whoToFollow = await User.find({
+		// 	username: { $ne: username },
+		// 	_id: { $nin: req.user?.following },
+		// })
+		// 	.select('username name profilePic following')
+		// 	.limit(page)
+		// 	.sort({ createdAt: -1 })
+		// 	.exec();
+
+		return res.status(OK).json({ users, total: total[0].total });
 	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,

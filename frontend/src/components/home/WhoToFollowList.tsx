@@ -1,6 +1,5 @@
 import { AlertStyles } from '../../styles/notifiers';
 import { WhoToFollowSection } from '../../styles/lists';
-import { Spin } from '../../styles/spinners';
 import { UserInfoProps } from '../../typings';
 import UserCard from '../layout/UserCard';
 import { Grid, List, Button, Typography } from '@material-ui/core';
@@ -12,6 +11,7 @@ interface Props {
 	whoToFollowError: string | null;
 	onLoadMore: Function;
 	page: number;
+	total: number;
 }
 
 const WhoToFollowList: React.FC<Props> = ({
@@ -20,20 +20,8 @@ const WhoToFollowList: React.FC<Props> = ({
 	whoToFollowUsers,
 	onLoadMore,
 	page,
+	total,
 }) => {
-	if (whoToFollowLoading)
-		return (
-			<span
-				style={{
-					display: 'flex',
-					justifyContent: 'center',
-					marginTop: '30px',
-					overflow: 'hidden',
-				}}
-			>
-				<Spin></Spin>
-			</span>
-		);
 	if (whoToFollowError)
 		return (
 			<AlertStyles style={{ marginTop: '20px' }}>
@@ -42,9 +30,6 @@ const WhoToFollowList: React.FC<Props> = ({
 				</Alert>
 			</AlertStyles>
 		);
-
-	console.log('LEN', whoToFollowUsers?.length);
-	console.log('PAGE', page);
 
 	return !whoToFollowUsers?.length ? null : (
 		<WhoToFollowSection>
@@ -56,21 +41,17 @@ const WhoToFollowList: React.FC<Props> = ({
 					<List dense={false}>
 						{whoToFollowUsers?.length &&
 							whoToFollowUsers?.map((user: UserInfoProps) => (
-								<UserCard
-									user={user}
-									key={user._id}
-									paddingVal='7px 0'
-								/>
+								<UserCard user={user} key={user._id} />
 							))}
 					</List>
 				</Grid>
-				{page <= whoToFollowUsers?.length ? (
+				{page < total ? (
 					<Button
 						variant='text'
 						color='primary'
 						onClick={() => onLoadMore()}
 					>
-						Show more
+						{whoToFollowLoading ? 'Loading...' : 'Show more'}
 					</Button>
 				) : null}
 			</div>

@@ -51,6 +51,14 @@ export const Sider = styled.aside`
 	}
 `;
 
+export const ExtraContentStyled = styled.aside`
+	height: 100vh;
+	width: 450px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+`;
+
 export const UserCardStyled = styled.div`
 	padding: 10px var(--paddingLeftRight);
 `;
@@ -63,3 +71,5 @@ export const WhoToFollowSection = styled.section`
 		padding: 20px;
 	}
 `;
+
+export const WhatsHappeningSection = styled(WhoToFollowSection)``;

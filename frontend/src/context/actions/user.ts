@@ -158,7 +158,10 @@ interface WhoToFollowActionRequest {
 
 interface WhoToFollowActionSuccess {
 	type: WhoToFollowType.WHO_TO_FOLLOW_SUCCESS;
-	payload: IUserInfo[];
+	payload: {
+		users: IUserInfo[];
+		total: number;
+	};
 }
 
 interface WhoToFollowActionFail {

@@ -27,6 +27,7 @@ interface UserState {
 		media: IMedia[];
 	};
 	whoToFollowUsers: IUserInfo[];
+	total: number;
 	userProfileLoading: boolean;
 	userProfileError: string | null;
 	addProfilePicLoading: boolean;
@@ -68,6 +69,7 @@ export const initialUserState: UserState = {
 		media: [],
 	},
 	whoToFollowUsers: [],
+	total: 0,
 	userProfileLoading: false,
 	userProfileError: null,
 	addProfilePicLoading: false,
@@ -320,7 +322,8 @@ export const userReducer = (
 			return {
 				...state,
 				whoToFollowLoading: false,
-				whoToFollowUsers: action.payload,
+				whoToFollowUsers: action.payload.users,
+				total: action.payload.total,
 			};
 		case WhoToFollowType.WHO_TO_FOLLOW_FAIL:
 			return {

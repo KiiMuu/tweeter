@@ -407,6 +407,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				whoToFollowLoading: state.whoToFollowLoading,
 				whoToFollowError: state.whoToFollowError,
 				whoToFollowUsers: state.whoToFollowUsers,
+				total: state.total,
 				signUp,
 				signIn,
 				getUserProfile,

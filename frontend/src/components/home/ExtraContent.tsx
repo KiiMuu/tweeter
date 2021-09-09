@@ -4,6 +4,8 @@ import UserContext from '../../context/contexts/user';
 import useUserInfo from '../../hooks/useUserInfo';
 import SearchInput from '../search/SearchInput';
 import WhoToFollowList from './WhoToFollowList';
+import WhatsHappening from './WhatsHappening';
+import { ExtraContentStyled } from '../../styles/lists';
 
 const ExtraContent: React.FC = () => {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -14,6 +16,7 @@ const ExtraContent: React.FC = () => {
 		whoToFollowUsers,
 		whoToFollowLoading,
 		whoToFollowError,
+		total,
 	} = useContext(UserContext);
 	const { currentUser } = useUserInfo();
 
@@ -23,24 +26,26 @@ const ExtraContent: React.FC = () => {
 	}, [currentUser, page]);
 
 	const onLoadMore = useCallback(() => {
-		setPage(prev => prev + 1);
+		setPage(prev => prev + 3);
 	}, []);
 
 	return (
-		<>
+		<ExtraContentStyled>
 			<SearchInput
 				searchTerm={searchTerm}
 				setSearchTerm={setSearchTerm}
 				searchApp={searchApp}
 			/>
+			<WhatsHappening />
 			<WhoToFollowList
 				whoToFollowUsers={whoToFollowUsers}
 				whoToFollowLoading={whoToFollowLoading}
 				whoToFollowError={whoToFollowError}
 				onLoadMore={onLoadMore}
 				page={page}
+				total={total}
 			/>
-		</>
+		</ExtraContentStyled>
 	);
 };
 

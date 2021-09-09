@@ -27,7 +27,7 @@ const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     }
     body {
-        font-family: 'Poppins', sans-serif !important;
+        font-family: 'Poppins', sans-serif;
         scroll-behavior: smooth;
         padding: 0;
         margin: 0;

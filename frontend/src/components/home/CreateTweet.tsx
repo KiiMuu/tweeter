@@ -6,10 +6,8 @@ import FileUpload from '../forms/FileUpload';
 import Snackbar from '../alerts/SnackBar';
 import useSnackBar from '../../hooks/useSnackBar';
 import { CreateTweetaProps } from '../../typings';
-
 import { TweetForm } from '../../styles/home';
 import { Spin } from '../../styles/spinners';
-
 import { Button, Divider } from '@material-ui/core';
 import { FaSmile } from 'react-icons/fa';
 import { VscClose } from 'react-icons/vsc';
@@ -155,7 +153,6 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 							}}
 							variant='contained'
 							disableElevation
-							size='small'
 							color='primary'
 							type='submit'
 							disabled={!content.trim() && !images.length}
