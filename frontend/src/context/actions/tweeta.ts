@@ -7,8 +7,9 @@ import {
 	RemoveTweetaType,
 	LikeTweetaType,
 	RetweetTweetaType,
+	WhatsHappeningType,
 } from '../types/tweeta';
-import { TweetaProps } from '../../typings';
+import { TweetaProps, UserInfoProps } from '../../typings';
 
 interface CreateTweetaActionRequest {
 	type: CreateTweetaType.TWEETA_CREATE_REQUEST;
@@ -122,6 +123,23 @@ interface TweetaRetweetActionFail {
 	payload: string;
 }
 
+interface WhatsHappeningActionRequest {
+	type: WhatsHappeningType.WHATS_HAPPENING_REQUEST;
+}
+
+interface WhatsHappeningActionSuccess {
+	type: WhatsHappeningType.WHATS_HAPPENING_SUCCESS;
+	payload: {
+		joinedADayBefore: UserInfoProps[];
+		topLiked: TweetaProps[];
+	};
+}
+
+interface WhatsHappeningActionFail {
+	type: WhatsHappeningType.WHATS_HAPPENING_FAIL;
+	payload: string;
+}
+
 export type Action =
 	| CreateTweetaActionRequest
 	| CreateTweetaActionSuccess
@@ -146,4 +164,7 @@ export type Action =
 	| TweetaLikeActionFail
 	| TweetaRetweetActionRequest
 	| TweetaRetweetActionSuccess
-	| TweetaRetweetActionFail;
+	| TweetaRetweetActionFail
+	| WhatsHappeningActionRequest
+	| WhatsHappeningActionSuccess
+	| WhatsHappeningActionFail;

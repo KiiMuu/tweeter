@@ -242,6 +242,35 @@ const handlePin = async (req: Request, res: Response): Promise<object> => {
 	}
 };
 
+const getWhatsHappening = async (
+	req: Request,
+	res: Response
+): Promise<object> => {
+	try {
+		let yesterday = Date.now() - 1000 * 60 * 60 * 24;
+
+		const joinedADayBefore = await User.find({
+			createdAt: { $gt: yesterday },
+			username: { $ne: req.user?.username },
+		})
+			.select('-password')
+			.limit(3)
+			.exec();
+
+		const topLiked = await Tweeta.find({})
+			.limit(3)
+			.sort({ likes: -1 })
+			.populate('postedBy', 'name username profilePic')
+			.exec();
+
+		return res.status(OK).json({ joinedADayBefore, topLiked });
+	} catch (error: any) {
+		return res.status(BAD_REQUEST).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	createTweeta,
 	getTweets,
@@ -250,4 +279,5 @@ export {
 	tweetaLike,
 	tweetaRetweet,
 	handlePin,
+	getWhatsHappening,
 };

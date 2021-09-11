@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+const typeTextStyle = () => {
+	return `
+        color: var(--textGray);
+        font-size: 14px;
+        opacity: 0.7;
+        display: block;
+        margin-top: 10px;
+    `;
+};
+
 export const Sider = styled.aside`
 	height: 100vh;
 	display: flex;
@@ -51,13 +61,7 @@ export const Sider = styled.aside`
 	}
 `;
 
-export const ExtraContentStyled = styled.aside`
-	height: 100vh;
-	width: 450px;
-	position: fixed;
-	z-index: 1;
-	top: 0;
-`;
+export const ExtraContentStyled = styled.aside``;
 
 export const UserCardStyled = styled.div`
 	padding: 10px var(--paddingLeftRight);
@@ -72,4 +76,17 @@ export const WhoToFollowSection = styled.section`
 	}
 `;
 
-export const WhatsHappeningSection = styled(WhoToFollowSection)``;
+export const WhatsHappeningSection = styled(WhoToFollowSection)`
+	.mainContent {
+		.users {
+			.typeText {
+				${typeTextStyle()}
+			}
+		}
+		.topLikedTweets {
+			.typeText {
+				${typeTextStyle()}
+			}
+		}
+	}
+`;

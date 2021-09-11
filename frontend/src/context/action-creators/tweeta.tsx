@@ -11,8 +11,10 @@ import {
 	GetTweetsType,
 	LikeTweetaType,
 	RetweetTweetaType,
+	WhatsHappeningType,
 } from '../types/tweeta';
-import { ICreateTweeta } from '../types/tweeta';
+import { ICreateTweeta, ITweeta } from '../types/tweeta';
+import { IUserInfo } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 
 const TweetaState = ({ children }: { children: React.ReactNode }) => {
@@ -261,6 +263,37 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const getWhatsHappening = async (): Promise<{
+		joinedADayBefore: IUserInfo[];
+		topLiked: ITweeta[];
+	} | void> => {
+		try {
+			dispatch({
+				type: WhatsHappeningType.WHATS_HAPPENING_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.get(`/tweeta/whatsHappening`, config);
+
+			dispatch({
+				type: WhatsHappeningType.WHATS_HAPPENING_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: WhatsHappeningType.WHATS_HAPPENING_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<TweetaContext.Provider
 			value={{
@@ -305,6 +338,11 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				retweetTweetaError: state.likeTweetaError,
 				retweetTweetaSuccess: state.likeTweetaSuccess,
 
+				// * whats happening
+				whatsHappeningLoading: state.whatsHappeningLoading,
+				whatsHappeningError: state.whatsHappeningError,
+				whatsHappeningData: state.whatsHappeningData,
+
 				createTweeta,
 				addTweetaImgs,
 				removeTweetaImgs,
@@ -313,6 +351,7 @@ const TweetaState = ({ children }: { children: React.ReactNode }) => {
 				getSingleTweeta,
 				deleteTweeta,
 				tweetaRetweet,
+				getWhatsHappening,
 			}}
 		>
 			{children}

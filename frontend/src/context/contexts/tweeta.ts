@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import { ICreateTweeta } from '../types/tweeta';
+import { ICreateTweeta, ITweeta } from '../types/tweeta';
+import { IUserInfo } from '../types/user';
 
 type tweetaContextType = {
 	// * get tweets
@@ -44,6 +45,14 @@ type tweetaContextType = {
 	retweetTweetaError?: string | null;
 	retweetTweetaSuccess?: boolean;
 
+	// * whats happening
+	whatsHappeningLoading: boolean;
+	whatsHappeningError: string | null;
+	whatsHappeningData: {
+		joinedADayBefore: IUserInfo[];
+		topLiked: ITweeta[];
+	};
+
 	createTweeta: (tweeta: ICreateTweeta) => any;
 	addTweetaImgs: (images: object) => any;
 	removeTweetaImgs: (public_id: string) => any;
@@ -52,6 +61,12 @@ type tweetaContextType = {
 	tweetaRetweet: (id: string) => any;
 	getSingleTweeta: (id: string) => any;
 	deleteTweeta: (id: string) => any;
+	getWhatsHappening: () =>
+		| {
+				joinedADayBefore: IUserInfo[];
+				topLiked: ITweeta[];
+		  }
+		| object;
 };
 
 const tweetaContextDefaultValues: tweetaContextType = {
@@ -96,6 +111,14 @@ const tweetaContextDefaultValues: tweetaContextType = {
 	retweetTweetaError: null,
 	retweetTweetaSuccess: false,
 
+	// * whats happening
+	whatsHappeningLoading: false,
+	whatsHappeningError: null,
+	whatsHappeningData: {
+		joinedADayBefore: [],
+		topLiked: [],
+	},
+
 	createTweeta: () => {},
 	addTweetaImgs: () => {},
 	removeTweetaImgs: () => {},
@@ -104,6 +127,9 @@ const tweetaContextDefaultValues: tweetaContextType = {
 	tweetaRetweet: () => {},
 	getSingleTweeta: () => {},
 	deleteTweeta: () => {},
+	getWhatsHappening: () => {
+		return { joinedADayBefore: [], topLiked: [] };
+	},
 };
 
 const TweetaContext = createContext<tweetaContextType>(

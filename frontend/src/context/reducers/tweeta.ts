@@ -8,8 +8,9 @@ import {
 	RemoveTweetaType,
 	LikeTweetaType,
 	RetweetTweetaType,
+	WhatsHappeningType,
 } from '../types/tweeta';
-import { TweetaProps } from '../../typings';
+import { TweetaProps, UserInfoProps } from '../../typings';
 
 interface TweetaState {
 	// * get tweets
@@ -53,6 +54,14 @@ interface TweetaState {
 	retweetTweetaLoading?: boolean;
 	retweetTweetaError?: string | null;
 	retweetTweetaSuccess?: boolean;
+
+	// * whats happening
+	whatsHappeningLoading: boolean;
+	whatsHappeningError: string | null;
+	whatsHappeningData: {
+		joinedADayBefore: UserInfoProps[];
+		topLiked: TweetaProps[];
+	};
 }
 
 export const initialTweetaState: TweetaState = {
@@ -96,6 +105,14 @@ export const initialTweetaState: TweetaState = {
 	retweetTweetaLoading: false,
 	retweetTweetaError: null,
 	retweetTweetaSuccess: false,
+
+	// * whats happening
+	whatsHappeningLoading: false,
+	whatsHappeningError: null,
+	whatsHappeningData: {
+		joinedADayBefore: [],
+		topLiked: [],
+	},
 };
 
 export const tweetaReducer = (
@@ -275,6 +292,28 @@ export const tweetaReducer = (
 				...state,
 				retweetTweetaLoading: false,
 				retweetTweetaError: action.payload,
+			};
+
+		// * whats happening
+		case WhatsHappeningType.WHATS_HAPPENING_REQUEST:
+			return {
+				...state,
+				whatsHappeningLoading: true,
+			};
+		case WhatsHappeningType.WHATS_HAPPENING_SUCCESS:
+			return {
+				...state,
+				whatsHappeningLoading: false,
+				whatsHappeningData: {
+					joinedADayBefore: action.payload.joinedADayBefore,
+					topLiked: action.payload.topLiked,
+				},
+			};
+		case WhatsHappeningType.WHATS_HAPPENING_FAIL:
+			return {
+				...state,
+				whatsHappeningLoading: false,
+				whatsHappeningError: action.payload,
 			};
 		default:
 			return state;

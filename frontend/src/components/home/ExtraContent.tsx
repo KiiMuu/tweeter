@@ -6,6 +6,7 @@ import SearchInput from '../search/SearchInput';
 import WhoToFollowList from './WhoToFollowList';
 import WhatsHappening from './WhatsHappening';
 import { ExtraContentStyled } from '../../styles/lists';
+import TweetaContext from '../../context/contexts/tweeta';
 
 const ExtraContent: React.FC = () => {
 	const [searchTerm, setSearchTerm] = useState<string>('');
@@ -18,12 +19,23 @@ const ExtraContent: React.FC = () => {
 		whoToFollowError,
 		total,
 	} = useContext(UserContext);
+	const {
+		whatsHappeningLoading,
+		whatsHappeningError,
+		whatsHappeningData,
+		getWhatsHappening,
+	} = useContext(TweetaContext);
 	const { currentUser } = useUserInfo();
 
 	useEffect(() => {
 		handleWhoToFollow(currentUser?.user?.username, page);
 		// eslint-disable-next-line
 	}, [currentUser, page]);
+
+	useEffect(() => {
+		getWhatsHappening();
+		// eslint-disable-next-line
+	}, []);
 
 	const onLoadMore = useCallback(() => {
 		setPage(prev => prev + 3);
@@ -36,7 +48,11 @@ const ExtraContent: React.FC = () => {
 				setSearchTerm={setSearchTerm}
 				searchApp={searchApp}
 			/>
-			<WhatsHappening />
+			<WhatsHappening
+				whatsHappeningLoading={whatsHappeningLoading}
+				whatsHappeningError={whatsHappeningError}
+				whatsHappeningData={whatsHappeningData}
+			/>
 			<WhoToFollowList
 				whoToFollowUsers={whoToFollowUsers}
 				whoToFollowLoading={whoToFollowLoading}

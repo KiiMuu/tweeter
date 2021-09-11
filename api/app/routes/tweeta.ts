@@ -10,6 +10,7 @@ import {
 	tweetaLike,
 	tweetaRetweet,
 	handlePin,
+	getWhatsHappening,
 } from '../controllers/tweeta';
 import { isAuth } from '../middlewares/isAuth';
 
@@ -20,5 +21,6 @@ router.delete('/tweeta/remove/:id', isAuth, removeTweeta);
 router.put('/tweeta/:id/like', isAuth, tweetaLike);
 router.post('/tweeta/:id/retweet', isAuth, tweetaRetweet);
 router.put('/tweeta/:id/pin', isAuth, handlePin);
+router.get('/tweeta/whatsHappening', isAuth, getWhatsHappening);
 
 export default router;

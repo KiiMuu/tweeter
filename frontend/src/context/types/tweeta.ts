@@ -48,6 +48,12 @@ export enum RetweetTweetaType {
 	RETWEET_TWEETA_FAIL = 'RETWEET_TWEETA_FAIL',
 }
 
+export enum WhatsHappeningType {
+	WHATS_HAPPENING_REQUEST = 'WHATS_HAPPENING_REQUEST',
+	WHATS_HAPPENING_SUCCESS = 'WHATS_HAPPENING_SUCCESS',
+	WHATS_HAPPENING_FAIL = 'WHATS_HAPPENING_FAIL',
+}
+
 export interface ICreateTweeta {
 	content?: string;
 	images: object;

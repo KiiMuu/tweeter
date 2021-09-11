@@ -39,6 +39,7 @@ export const TweetForm = styled.form`
 			width: 50px;
 			height: 50px;
 			border-radius: 50%;
+			object-fit: cover;
 		}
 	}
 	.formContent {
@@ -177,6 +178,7 @@ export const SingleTweeta = styled.div`
 				width: 50px;
 				height: 50px;
 				border-radius: 50%;
+				object-fit: cover;
 			}
 		}
 		.tweetaWrapper {
