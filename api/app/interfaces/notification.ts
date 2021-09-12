@@ -3,7 +3,7 @@ import { Document, Model } from 'mongoose';
 export interface INotification extends Document {
 	to: string | object;
 	from: string | object;
-	type: string;
+	type: any;
 	isOpened: boolean;
 	entityId: string;
 }
@@ -13,7 +13,7 @@ export interface INotificationModel extends Model<INotification> {
 	insertNotification(
 		to: string | object,
 		from: string | object,
-		type: string,
+		type: any,
 		entityId: string
 	): INotification;
 }

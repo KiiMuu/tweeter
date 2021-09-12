@@ -2,9 +2,17 @@ import { Router } from 'express';
 
 const router: Router = Router();
 
-import { test } from '../controllers/notification';
+import {
+	getNotifications,
+	getLatestNotification,
+	markNotificationAsOpened,
+	markAllNotificationAsOpened,
+} from '../controllers/notification';
 import { isAuth } from '../middlewares/isAuth';
 
-router.post('/test', isAuth, test);
+router.post('/getNotifications', isAuth, getNotifications);
+router.get('/getLatestNotification', isAuth, getLatestNotification);
+router.put('/:id/markAsOpened', isAuth, markNotificationAsOpened);
+router.put('/markAllAsOpened', isAuth, markAllNotificationAsOpened);
 
 export default router;

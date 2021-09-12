@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import User from '../models/User';
 import Tweeta from '../models/Tweeta';
+import Notification from '../models/Notification';
 import generateToken from '../helpers/generateToken';
 import {
 	BAD_REQUEST,
@@ -222,6 +223,15 @@ const follow = async (req: Request, res: Response): Promise<object> => {
 			path: 'followers',
 			select: 'profilePic name username followers following',
 		});
+
+		if (!isFollowing) {
+			await Notification.insertNotification(
+				user._id,
+				req.user?._id,
+				'follow',
+				req.user?._id
+			);
+		}
 
 		return res.status(OK).json({
 			following: req.user?.following,
