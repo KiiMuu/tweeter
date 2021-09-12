@@ -2,9 +2,9 @@ import { Router } from 'express';
 
 const router: Router = Router();
 
-import { searchTweeter } from '../controllers/search';
+import { test } from '../controllers/notification';
 import { isAuth } from '../middlewares/isAuth';
 
-router.post('/search', isAuth, searchTweeter);
+router.post('/test', isAuth, test);
 
 export default router;

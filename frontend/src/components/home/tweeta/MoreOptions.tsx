@@ -101,15 +101,15 @@ const MoreOptions: React.FC<ChildProps> = ({
 							{pinTweetaLoading ? (
 								<Spin></Spin>
 							) : isPinned ? (
-								'Unpin this tweet'
+								'Unpin'
 							) : (
-								'Pin this tweet'
+								'Pin'
 							)}
 						</MenuItem>
 					) : null}
 					<MenuItem onClick={handleTweetaCopy}>
 						<AiOutlineCopy style={{ marginRight: '10px' }} />
-						<span>{`Copy @${tweetaUsername}'s tweet`}</span>
+						<span>Copy</span>
 					</MenuItem>
 					{tweetaCreatorId !== currentUserId ? (
 						<MenuItem onClick={() => handleFollow()}>
@@ -128,11 +128,7 @@ const MoreOptions: React.FC<ChildProps> = ({
 						<MenuItem onClick={() => handleRemove()}>
 							<AiOutlineDelete style={{ marginRight: '10px' }} />
 							<span>
-								{removeTweetaLoading ? (
-									<Spin></Spin>
-								) : (
-									'Delete this tweet'
-								)}
+								{removeTweetaLoading ? <Spin></Spin> : 'Delete'}
 							</span>
 						</MenuItem>
 					)}

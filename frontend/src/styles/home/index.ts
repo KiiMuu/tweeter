@@ -279,6 +279,9 @@ export const SingleTweeta = styled.div`
 					span {
 						color: #000;
 					}
+					span.count {
+						font-size: 14px;
+					}
 					.loved {
 						color: #f02727;
 						animation: bounce 0.45s ease;

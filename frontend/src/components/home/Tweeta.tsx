@@ -288,7 +288,9 @@ const Tweeta: React.FC<TweetaProps> = ({
 							onClick={() => setDialogOpen(true)}
 						>
 							<AiOutlineComment />
-							<span>{replies?.length || ''}</span>
+							<span className='count'>
+								{replies?.length || ''}
+							</span>
 						</Button>
 						<ReplyDialog
 							dialogOpen={dialogOpen}
@@ -314,7 +316,9 @@ const Tweeta: React.FC<TweetaProps> = ({
 										: ''
 								}
 							/>
-							<span>{tweeta?.retweeters?.length || ''}</span>
+							<span className='count'>
+								{tweeta?.retweeters?.length || ''}
+							</span>
 						</Button>
 						<Button
 							onClick={() => handleTweetaLike(tweeta?._id)}
@@ -326,7 +330,9 @@ const Tweeta: React.FC<TweetaProps> = ({
 							) : (
 								<AiOutlineHeart />
 							)}
-							<span>{tweeta?.likes?.length || ''}</span>
+							<span className='count'>
+								{tweeta?.likes?.length || ''}
+							</span>
 						</Button>
 					</div>
 				</div>

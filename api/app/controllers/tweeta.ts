@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Tweeta from '../models/Tweeta';
 import User from '../models/User';
+import Notification from '../models/Notification';
 import { BAD_REQUEST, CREATED, OK } from '../constants';
 import { IUserInfo } from '../interfaces/user';
 import { ITweeta } from '../interfaces/tweeta';
@@ -20,13 +21,22 @@ const createTweeta = async (req: Request, res: Response): Promise<object> => {
 			tweetaData.replyTo = replyTo;
 		}
 
-		let newTweeta = await Tweeta.create(tweetaData);
+		let newTweeta: ITweeta = await Tweeta.create(tweetaData);
 
 		await User.populate(newTweeta, {
 			path: 'postedBy',
 			select: '-password',
 		});
 		await Tweeta.populate(newTweeta, { path: 'replyTo' });
+
+		if (newTweeta.replyTo) {
+			await Notification.insertNotification(
+				newTweeta.replyTo.postedBy,
+				req.user?._id,
+				'reply',
+				newTweeta._id
+			);
+		}
 
 		return res.status(CREATED).json(newTweeta);
 	} catch (error: any) {
@@ -144,6 +154,15 @@ const tweetaLike = async (req: Request, res: Response): Promise<object> => {
 			select: '-password',
 		});
 
+		if (!isLiked) {
+			await Notification.insertNotification(
+				tweeta.postedBy,
+				user._id,
+				'like',
+				tweeta._id
+			);
+		}
+
 		return res.status(OK).json(tweeta);
 	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
@@ -202,6 +221,15 @@ const tweetaRetweet = async (req: Request, res: Response): Promise<object> => {
 		await Tweeta.populate(tweeta, {
 			path: 'retweetData replyTo',
 		});
+
+		if (!deletedTweeta) {
+			await Notification.insertNotification(
+				tweeta.postedBy,
+				user._id,
+				'retweet',
+				tweeta._id
+			);
+		}
 
 		return res.status(OK).json(tweeta);
 	} catch (error: any) {
