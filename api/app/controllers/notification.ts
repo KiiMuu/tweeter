@@ -63,7 +63,7 @@ const markNotificationAsOpened = async (
 	const id: string = req.params.id;
 
 	try {
-		await Notification.findByIdAndUpdate(id, {
+		let notification = await Notification.findByIdAndUpdate(id, {
 			isOpened: true,
 		})
 			.populate('to', '-password')
@@ -71,7 +71,7 @@ const markNotificationAsOpened = async (
 			.sort({ createdAt: -1 })
 			.exec();
 
-		return res.status(OK).json({ ok: 'ok' });
+		return res.status(OK).json(notification);
 	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,

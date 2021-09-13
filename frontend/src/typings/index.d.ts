@@ -76,6 +76,14 @@ declare module 'myTypes' {
 	interface IUserProfile {
 		user?: UserInfoProps;
 	}
+
+	interface INotification {
+		_id?: string;
+		to?: IUserInfo[];
+		from?: IUserInfo[];
+		type?: string;
+		entityId: string;
+	}
 }
 
 export {
@@ -91,4 +99,5 @@ export {
 	MediaProps,
 	TweetaMedia,
 	TweetaImg,
+	INotification,
 };

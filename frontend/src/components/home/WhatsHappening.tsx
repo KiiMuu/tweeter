@@ -136,38 +136,30 @@ const WhatsHappening: React.FC<Props> = ({
 				<Typography style={{ fontWeight: 'bold' }} variant='h6'>
 					What’s happening
 				</Typography>
-				{whatsHappeningData?.joinedADayBefore.length && (
-					<>
-						<div className='users'>
-							<span className='typeText'>
-								joined a day before
-							</span>
-							<Grid item xs={12}>
-								<List dense={false}>
-									{whatsHappeningData?.joinedADayBefore.map(
-										(user: UserInfoProps) => (
-											<UserCard
-												user={user}
-												key={user._id}
-											/>
-										)
-									)}
-								</List>
-							</Grid>
-						</div>
-						<div className='topLikedTweets'>
-							<span className='typeText'>Top liked tweets</span>
-							<Grid container spacing={0}>
-								<Grid item xs={12}>
-									{whatsHappeningData?.topLiked.map(
-										(tweeta: TweetaProps) =>
-											renderTopTweets(tweeta)
-									)}
-								</Grid>
-							</Grid>
-						</div>
-					</>
+				{whatsHappeningData?.joinedADayBefore.length > 0 && (
+					<div className='users'>
+						<span className='typeText'>joined a day before</span>
+						<Grid item xs={12}>
+							<List dense={false}>
+								{whatsHappeningData?.joinedADayBefore.map(
+									(user: UserInfoProps) => (
+										<UserCard user={user} key={user._id} />
+									)
+								)}
+							</List>
+						</Grid>
+					</div>
 				)}
+				<div className='topLikedTweets'>
+					<span className='typeText'>Top liked tweets</span>
+					<Grid container spacing={0}>
+						<Grid item xs={12}>
+							{whatsHappeningData?.topLiked.map(
+								(tweeta: TweetaProps) => renderTopTweets(tweeta)
+							)}
+						</Grid>
+					</Grid>
+				</div>
 			</div>
 		</WhatsHappeningSection>
 	);

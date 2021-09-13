@@ -10,6 +10,7 @@ const Home = lazy(() => import('./pages/home'));
 const SingleTweeta = lazy(() => import('./pages/singleTweeta'));
 const Profile = lazy(() => import('./pages/profile'));
 const Search = lazy(() => import('./pages/search'));
+const Notifications = lazy(() => import('./pages/notifications'));
 
 const App: React.FC = () => {
 	return (
@@ -33,6 +34,11 @@ const App: React.FC = () => {
 						exact
 						path={ROUTES.SEARCH}
 						component={Search}
+					/>
+					<ProtectRoute
+						exact
+						path={ROUTES.NOTIFICATIONS}
+						component={Notifications}
 					/>
 				</Switch>
 			</Router>

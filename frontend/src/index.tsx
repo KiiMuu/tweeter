@@ -6,19 +6,22 @@ import { theme } from './Material_UI_Config';
 import TweetaState from './context/action-creators/tweeta';
 import UserState from './context/action-creators/user';
 import SearchState from './context/action-creators/search';
+import NotificationState from './context/action-creators/notification';
 import SocketState from './context/action-creators/socket';
 
 ReactDOM.render(
 	<ThemeProvider theme={theme}>
 		<GlobalStyles />
 		<SocketState>
-			<UserState>
-				<TweetaState>
-					<SearchState>
-						<App />
-					</SearchState>
-				</TweetaState>
-			</UserState>
+			<NotificationState>
+				<UserState>
+					<TweetaState>
+						<SearchState>
+							<App />
+						</SearchState>
+					</TweetaState>
+				</UserState>
+			</NotificationState>
 		</SocketState>
 	</ThemeProvider>,
 	document.getElementById('root')

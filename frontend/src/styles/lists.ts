@@ -90,3 +90,9 @@ export const WhatsHappeningSection = styled(WhoToFollowSection)`
 		}
 	}
 `;
+
+export const StyledNotifications = styled.div`
+	.markAllButton {
+		padding: 10px var(--paddingLeftRight);
+	}
+`;
