@@ -19,6 +19,8 @@ interface ChildProps {
 	tweetaCreateLoading: boolean | undefined;
 	images: TweetaImg[];
 	tweetaId: string;
+	currentUserId: string;
+	postedById: string;
 }
 
 const ReplyDialog: React.FC<ChildProps> = ({
@@ -30,6 +32,8 @@ const ReplyDialog: React.FC<ChildProps> = ({
 	tweetaCreateLoading,
 	images,
 	tweetaId,
+	currentUserId,
+	postedById,
 }) => {
 	const handleTweetaCreate = useCallback(() => {
 		createTweeta({ content, images, replyTo: tweetaId });

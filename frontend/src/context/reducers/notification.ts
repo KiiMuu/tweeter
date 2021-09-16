@@ -2,6 +2,7 @@ import { Action } from '../actions/notification';
 import { INotification } from '../../typings';
 import {
 	GetNotificationsType,
+	GetLastNotificationType,
 	MarkAsReadType,
 	MarkAllAsReadType,
 } from '../types/notification';
@@ -10,6 +11,9 @@ interface NotificationState {
 	notificationsListLoading: boolean;
 	notificationsListError: string | null;
 	notificationsList: INotification[];
+	lastNotificationsLoading: boolean;
+	lastNotificationsError: string | null;
+	lastNotification: INotification;
 	markAsReadLoading: boolean;
 	markAsReadError: null | string;
 	markAsReadSuccess: boolean;
@@ -22,6 +26,9 @@ export const initialNotificationState: NotificationState = {
 	notificationsListLoading: false,
 	notificationsListError: null,
 	notificationsList: [],
+	lastNotificationsLoading: false,
+	lastNotificationsError: null,
+	lastNotification: {},
 	markAsReadLoading: false,
 	markAsReadError: null,
 	markAsReadSuccess: false,
@@ -51,6 +58,23 @@ export const notificationReducer = (
 				...state,
 				notificationsListLoading: false,
 				notificationsListError: action.payload,
+			};
+		case GetLastNotificationType.LAST_NOTIFICATION_REQUEST:
+			return {
+				...state,
+				lastNotificationsLoading: true,
+			};
+		case GetLastNotificationType.LAST_NOTIFICATION_SUCCESS:
+			return {
+				...state,
+				lastNotificationsLoading: false,
+				lastNotification: action.payload,
+			};
+		case GetLastNotificationType.LAST_NOTIFICATION_FAIL:
+			return {
+				...state,
+				lastNotificationsLoading: false,
+				lastNotificationsError: action.payload,
 			};
 		case MarkAsReadType.MARK_AS_READ_REQUEST:
 			return {

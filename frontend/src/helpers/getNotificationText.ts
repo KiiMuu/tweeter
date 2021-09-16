@@ -8,7 +8,7 @@ const getNotificationText = (from: UserInfoProps, type: string) => {
 	} else if (type === 'reply') {
 		return `${from.username} replied on one of your tweets.`;
 	} else if (type === 'retweet') {
-		return `${from.username} retweeted on one of your tweets.`;
+		return `${from.username} retweeted one of your tweets.`;
 	}
 };
 

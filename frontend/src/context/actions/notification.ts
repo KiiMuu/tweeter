@@ -2,6 +2,7 @@ import {
 	GetNotificationsType,
 	MarkAsReadType,
 	MarkAllAsReadType,
+	GetLastNotificationType,
 } from '../types/notification';
 import { INotification } from '../../typings';
 
@@ -16,6 +17,20 @@ interface GetNotificationsActionSuccess {
 
 interface GetNotificationsActionFail {
 	type: GetNotificationsType.NOTIFICATIONS_LIST_FAIL;
+	payload: string | null;
+}
+
+interface GetLastNotificationActionRequest {
+	type: GetLastNotificationType.LAST_NOTIFICATION_REQUEST;
+}
+
+interface GetLastNotificationActionSuccess {
+	type: GetLastNotificationType.LAST_NOTIFICATION_SUCCESS;
+	payload: INotification;
+}
+
+interface GetLastNotificationActionFail {
+	type: GetLastNotificationType.LAST_NOTIFICATION_FAIL;
 	payload: string | null;
 }
 
@@ -51,6 +66,9 @@ export type Action =
 	| GetNotificationsActionRequest
 	| GetNotificationsActionSuccess
 	| GetNotificationsActionFail
+	| GetLastNotificationActionRequest
+	| GetLastNotificationActionSuccess
+	| GetLastNotificationActionFail
 	| MarkAsReadActionRequest
 	| MarkAsReadActionSuccess
 	| MarkAsReadActionFail

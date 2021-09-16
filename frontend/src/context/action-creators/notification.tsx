@@ -6,6 +6,7 @@ import {
 	initialNotificationState,
 } from '../reducers/notification';
 import {
+	GetLastNotificationType,
 	GetNotificationsType,
 	MarkAllAsReadType,
 	MarkAsReadType,
@@ -48,6 +49,36 @@ const NotificationState = ({ children }: { children: React.ReactNode }) => {
 		} catch (error: any) {
 			dispatch({
 				type: GetNotificationsType.NOTIFICATIONS_LIST_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
+	const getLastNotification = async (): Promise<{
+		lastNotification: INotification;
+	} | void> => {
+		try {
+			dispatch({
+				type: GetLastNotificationType.LAST_NOTIFICATION_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.get(`/getLatestNotification`, config);
+
+			dispatch({
+				type: GetLastNotificationType.LAST_NOTIFICATION_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: GetLastNotificationType.LAST_NOTIFICATION_FAIL,
 				payload: error.response?.data.message
 					? error.response.data.message
 					: error.message,
@@ -119,6 +150,9 @@ const NotificationState = ({ children }: { children: React.ReactNode }) => {
 				notificationsListLoading: state.notificationsListLoading,
 				notificationsListError: state.notificationsListError,
 				notificationsList: state.notificationsList,
+				lastNotificationsLoading: state.lastNotificationsLoading,
+				lastNotificationsError: state.lastNotificationsError,
+				lastNotification: state.lastNotification,
 				markAsReadLoading: state.markAsReadLoading,
 				markAsReadError: state.markAsReadError,
 				markAsReadSuccess: state.markAsReadSuccess,
@@ -126,6 +160,7 @@ const NotificationState = ({ children }: { children: React.ReactNode }) => {
 				markAllAsReadError: state.markAllAsReadError,
 				markAllAsReadSuccess: state.markAllAsReadSuccess,
 				getNotifications,
+				getLastNotification,
 				markAsRead,
 				markAllAsRead,
 			}}

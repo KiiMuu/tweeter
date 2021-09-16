@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Menu, MenuItem } from '@material-ui/core';
 import {
@@ -9,7 +10,6 @@ import {
 	AiOutlinePushpin,
 } from 'react-icons/ai';
 import { Spin } from '../../../styles/spinners';
-import { useCallback } from 'react';
 
 interface ChildProps {
 	handleClick: any;

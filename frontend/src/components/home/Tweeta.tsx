@@ -23,6 +23,7 @@ import {
 	AiFillHeart,
 	AiOutlinePushpin,
 } from 'react-icons/ai';
+import SocketContext from '../../context/contexts/socket';
 
 interface Image {
 	public_id: string;
@@ -57,6 +58,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 	const { follow, handleTweetaPin, pinTweetaLoading } =
 		useContext(UserContext);
 	const { currentUser } = useUserInfo();
+	const { socket } = useContext(SocketContext);
 	const { open, setOpen, handleClose } = useSnackBar();
 	const location = useLocation();
 	const history = useHistory();
@@ -74,10 +76,16 @@ const Tweeta: React.FC<TweetaProps> = ({
 
 	const handleTweetaLike = (id: string) => {
 		tweetaLike(id);
+
+		!tweeta?.likes?.includes(currentUser?.user._id) &&
+			socket?.emit('notification received', tweeta?.postedBy?._id);
 	};
 
 	const handleTweetaRetweet = (id: string) => {
 		tweetaRetweet(id);
+
+		!tweeta?.retweeters?.includes(currentUser?.user._id) &&
+			socket?.emit('notification received', tweeta?.postedBy?._id);
 	};
 
 	const handleTweetaCopy = () => {
@@ -301,7 +309,10 @@ const Tweeta: React.FC<TweetaProps> = ({
 							tweetaId={tweeta?._id}
 							tweetaCreateLoading={tweetaCreateLoading}
 							images={images}
+							postedById={tweeta?.postedBy?._id}
+							currentUserId={currentUser?.user?._id}
 						/>
+						{console.log({ tweeta })}
 						<Button
 							onClick={() => handleTweetaRetweet(tweeta?._id)}
 							variant='text'

@@ -36,6 +36,7 @@ const Notification: React.FC<Props> = ({ notification, markAsRead }) => {
 					? ''
 					: 'rgba(29, 161, 242, .15)',
 			}}
+			onClick={() => handleMarkAsRead()}
 		>
 			<ListItemAvatar>
 				<Avatar>

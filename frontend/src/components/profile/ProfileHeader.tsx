@@ -20,6 +20,7 @@ import {
 	BiCalendar,
 } from 'react-icons/all';
 import UserContext from '../../context/contexts/user';
+import SocketContext from '../../context/contexts/socket';
 import useSnackBar from '../../hooks/useSnackBar';
 import { Spin } from '../../styles/spinners';
 import { UserInfoProps } from '../../typings';
@@ -61,6 +62,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 		editUserProfile,
 		follow,
 	} = useContext(UserContext);
+	const { socket } = useContext(SocketContext);
 
 	const handleEditProfile = () => {
 		editUserProfile({
@@ -72,6 +74,13 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 			website,
 			birthdate,
 		});
+	};
+
+	const handleFollow = () => {
+		follow(user?.user?._id);
+
+		!user?.user?.followers?.includes(currentUser?.user._id) &&
+			socket?.emit('notification received', user?.user?._id);
 	};
 
 	useEffect(() => {
@@ -214,7 +223,7 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 										? '#fff'
 										: '',
 								}}
-								onClick={() => follow(user?.user?._id)}
+								onClick={() => handleFollow()}
 							>
 								{currentUser?.user?.following?.includes(
 									user?.user._id

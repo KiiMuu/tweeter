@@ -5,6 +5,9 @@ type notificationContextType = {
 	notificationsListLoading: boolean;
 	notificationsListError: string | null;
 	notificationsList: INotification[];
+	lastNotificationsLoading: boolean;
+	lastNotificationsError: string | null;
+	lastNotification: INotification;
 	markAsReadLoading: boolean;
 	markAsReadError: null | string;
 	markAsReadSuccess: boolean;
@@ -14,6 +17,7 @@ type notificationContextType = {
 	getNotifications: (
 		searchTerm: string
 	) => { notificationsList: INotification[] } | object;
+	getLastNotification: () => { lastNotification: INotification } | object;
 	markAsRead: (id: string) => { notification: INotification } | object;
 	markAllAsRead: () => { ok: string } | object;
 };
@@ -22,6 +26,9 @@ const notificationContextDefaultValues: notificationContextType = {
 	notificationsListLoading: false,
 	notificationsListError: null,
 	notificationsList: [],
+	lastNotificationsLoading: false,
+	lastNotificationsError: null,
+	lastNotification: {},
 	markAsReadLoading: false,
 	markAsReadError: null,
 	markAsReadSuccess: false,
@@ -30,6 +37,9 @@ const notificationContextDefaultValues: notificationContextType = {
 	markAllAsReadSuccess: false,
 	getNotifications: () => {
 		return { notificationsList: [] };
+	},
+	getLastNotification: () => {
+		return { lastNotification: {} };
 	},
 	markAsRead: () => {
 		return { notification: {} };

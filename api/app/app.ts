@@ -46,16 +46,18 @@ app.use('/api', notificationRoutes);
 
 // socket io
 io.on('connection', (socket: Socket) => {
-	console.info(`Client connected [id=${socket.id}]`);
+	console.info(`client connected [id=${socket.id}]`);
 
-	socket.on('setup', userData => {
-		socket.join(userData._id);
+	socket.on('setup', user => {
+		console.log(`user connected: @${user.username}`);
+		socket.join(user._id);
 		socket.emit('connected');
 	});
 
-	socket.on('notification received', room =>
-		socket.in(room).emit('notification received')
-	);
+	socket.on('notification received', room => {
+		console.log('notification in room', room);
+		socket.in(room).emit('notification received');
+	});
 });
 
 // app launching!

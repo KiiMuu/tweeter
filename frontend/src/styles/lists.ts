@@ -28,10 +28,10 @@ export const Sider = styled.aside`
 				margin: 0 auto 20px auto;
 				button {
 					width: 100%;
-				}
-				a {
-					color: var(--mainColor);
-					font-size: 35px;
+					a {
+						color: var(--mainColor);
+						font-size: 35px;
+					}
 				}
 			}
 			&:not(:first-child) {
@@ -39,21 +39,19 @@ export const Sider = styled.aside`
 			}
 			button {
 				width: 100%;
-			}
-			a,
-			span {
-				color: var(--darkColor);
-				font-size: 25px;
-				text-decoration: none;
-				display: flex;
-				justify-content: flex-start;
-				align-items: center;
-				.linkTitle {
-					font-size: 15px;
-					margin-left: 15px;
-					font-weight: 900;
-					@media screen and (max-width: 1100px) {
-						display: none;
+				a,
+				span {
+					color: var(--darkColor);
+					text-decoration: none;
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
+					.linkTitle {
+						font-size: 15px;
+						font-weight: 600;
+						@media screen and (max-width: 1100px) {
+							display: none;
+						}
 					}
 				}
 			}

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import * as ROUTES from './constants/routes';
 import FallbackScreen from './components/FallbackScreen';
 import ProtectRoute from './helpers/ProtectRoute';
@@ -16,6 +17,7 @@ const App: React.FC = () => {
 	return (
 		<Suspense fallback={<FallbackScreen />}>
 			<Router>
+				<Toaster />
 				<Switch>
 					<Route exact path={ROUTES.SIGNUP} component={Singup} />
 					<Route exact path={ROUTES.SIGNIN} component={Signin} />
