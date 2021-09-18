@@ -29,6 +29,8 @@ import tweetaRoutes from './routes/tweeta';
 import cloudinaryRoutes from './routes/cloudinary';
 import searchRoutes from './routes/search';
 import notificationRoutes from './routes/notification';
+import chatRoutes from './routes/chat';
+import messageRoutes from './routes/message';
 
 // middlewares
 app.use(express.json({ limit: '2mb' }));
@@ -43,6 +45,8 @@ app.use('/api', tweetaRoutes);
 app.use('/api', cloudinaryRoutes);
 app.use('/api', searchRoutes);
 app.use('/api', notificationRoutes);
+app.use('/api', chatRoutes);
+app.use('/api', messageRoutes);
 
 // socket io
 io.on('connection', (socket: Socket) => {
