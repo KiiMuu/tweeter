@@ -5,8 +5,8 @@ import Notification from '../models/Notification';
 import Chat from '../models/Chat';
 import { IChat } from '../interfaces/chat';
 import { IMessage } from '../interfaces/message';
-import { BAD_REQUEST, OK } from '../constants';
 import { IUserInfo } from '../interfaces/user';
+import { BAD_REQUEST, OK } from '../constants';
 
 const createMessage = async (req: Request, res: Response): Promise<object> => {
 	try {
@@ -48,11 +48,11 @@ const createMessage = async (req: Request, res: Response): Promise<object> => {
 };
 
 const insertNotifications = (chat: IChat, message: IMessage) => {
-	chat.users.forEach((userId: any) => {
-		if (userId === message?.sender?._id.toString()) return;
+	chat.users.forEach((user: IUserInfo) => {
+		if (user?._id === message?.sender?._id) return;
 
 		Notification.insertNotification(
-			userId,
+			user?._id,
 			message?.sender?._id,
 			'message',
 			message?.chat?._id
