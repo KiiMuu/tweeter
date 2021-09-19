@@ -74,15 +74,17 @@ const Sidebar: React.FC = () => {
 					</Badge>
 				</li>
 				<li>
-					<Button
-						variant='text'
-						color='primary'
-						startIcon={<BiMessageDetail />}
-					>
-						<Link to='/messages'>
-							<span className='linkTitle'>Messages</span>
-						</Link>
-					</Button>
+					<Badge color='secondary' badgeContent={99}>
+						<Button
+							variant='text'
+							color='primary'
+							startIcon={<BiMessageDetail />}
+						>
+							<Link to='/messages'>
+								<span className='linkTitle'>Messages</span>
+							</Link>
+						</Button>
+					</Badge>
 				</li>
 				<li>
 					<Button

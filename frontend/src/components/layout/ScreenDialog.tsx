@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		title: {
 			marginLeft: theme.spacing(2),
 			flex: 1,
+			fontSize: '14px',
 		},
 	})
 );
@@ -68,6 +69,7 @@ const ScreenDialog: React.FC<Props> = ({
 						color='inherit'
 						onClick={() => onClose(false)}
 						aria-label='close'
+						size='small'
 					>
 						<CgClose />
 					</IconButton>
@@ -78,6 +80,7 @@ const ScreenDialog: React.FC<Props> = ({
 						autoFocus
 						color='inherit'
 						onClick={() => onClose(false)}
+						size='small'
 					>
 						{okButton}
 					</Button>

@@ -12,6 +12,7 @@ const SingleTweeta = lazy(() => import('./pages/singleTweeta'));
 const Profile = lazy(() => import('./pages/profile'));
 const Search = lazy(() => import('./pages/search'));
 const Notifications = lazy(() => import('./pages/notifications'));
+const Messages = lazy(() => import('./pages/messages'));
 
 const App: React.FC = () => {
 	return (
@@ -41,6 +42,11 @@ const App: React.FC = () => {
 						exact
 						path={ROUTES.NOTIFICATIONS}
 						component={Notifications}
+					/>
+					<ProtectRoute
+						exact
+						path={ROUTES.MESSAGES}
+						component={Messages}
 					/>
 				</Switch>
 			</Router>

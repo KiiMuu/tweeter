@@ -1,18 +1,20 @@
-import { useContext } from 'react';
 import { Route, useHistory } from 'react-router-dom';
-import UserContext from '../context/contexts/user';
+import useUserInfo from '../hooks/useUserInfo';
 
 const ProtectRoute = ({ component: Component, ...rest }: any) => {
 	const history = useHistory();
 
-	const authContext = useContext(UserContext);
-	const { currentUser } = authContext;
+	const { currentUser } = useUserInfo();
 
 	return (
 		<Route
 			{...rest}
 			render={props =>
-				currentUser ? <Component {...props} /> : history.push('/signin')
+				currentUser?.token ? (
+					<Component {...props} />
+				) : (
+					history.push('/signin')
+				)
 			}
 		/>
 	);

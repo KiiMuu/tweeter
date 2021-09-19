@@ -11,6 +11,7 @@ import {
 	follow,
 	getUserProfileData,
 	getPeopleToFollow,
+	getUsers,
 } from '../controllers/user';
 import { isAuth } from '../middlewares/isAuth';
 import runValidation from '../validators';
@@ -24,5 +25,6 @@ router.put('/user/editProfile', isAuth, editProfile);
 router.put('/user/:userId/follow', isAuth, follow);
 router.get('/user/:username/tabs', isAuth, getUserProfileData);
 router.post('/user/:username/whoToFollow', isAuth, getPeopleToFollow);
+router.get('/users', isAuth, getUsers);
 
 export default router;

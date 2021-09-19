@@ -50,4 +50,10 @@ export const PageTitle = styled.h3`
 	border-bottom: 1px solid var(--borderColor);
 	color: var(--darkColor);
 	padding: 10px var(--paddingLeftRight);
+	letter-spacing: 1.6px;
+	.content {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
 `;

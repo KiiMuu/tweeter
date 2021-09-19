@@ -84,6 +84,20 @@ declare module 'myTypes' {
 		type?: string;
 		entityId: string;
 	}
+
+	interface IChat {
+		chatName: string;
+		isGroupChat: boolean;
+		users: IUserInfo[];
+		latestMessage: IMessage;
+	}
+
+	interface IMessage {
+		sender: IUserInfo;
+		content: string;
+		chat: IChat;
+		readBy: IUserInfo[];
+	}
 }
 
 export {
@@ -100,4 +114,6 @@ export {
 	TweetaMedia,
 	TweetaImg,
 	INotification,
+	IChat,
+	IMessage,
 };

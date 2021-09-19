@@ -15,6 +15,11 @@ import {
 import { IUserInfo } from '../interfaces/user';
 import { ITweeta, IMedia } from '../interfaces/tweeta';
 
+interface IInUsers {
+	searchTerm: string;
+	limit: number;
+}
+
 const signUp = async (
 	req: Request,
 	res: Response
@@ -371,6 +376,42 @@ const getPeopleToFollow = async (
 	}
 };
 
+const getUsers = async (req: Request, res: Response): Promise<object> => {
+	try {
+		const { searchTerm, limit } = req.query as unknown as IInUsers;
+
+		let searchObj = searchTerm
+			? {
+					$or: [
+						{
+							name: {
+								$regex: searchTerm,
+								$options: 'i',
+							},
+						},
+						{
+							username: {
+								$regex: searchTerm,
+								$options: 'i',
+							},
+						},
+					],
+			  }
+			: {};
+
+		const users = await User.find({ ...searchObj })
+			.limit(+limit)
+			.select('name username profilePic')
+			.exec();
+
+		return res.status(OK).json(users);
+	} catch (error: any) {
+		return res.status(SERVER_ERROR).json({
+			message: error.message,
+		});
+	}
+};
+
 export {
 	signUp,
 	signIn,
@@ -380,4 +421,5 @@ export {
 	follow,
 	getUserProfileData,
 	getPeopleToFollow,
+	getUsers,
 };
