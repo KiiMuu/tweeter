@@ -6,5 +6,5 @@ export interface IChat extends Document {
 	chatName: string;
 	isGroupChat: boolean;
 	users: IUserInfo[];
-	latestMessage: any;
+	latestMessage: IMessage;
 }

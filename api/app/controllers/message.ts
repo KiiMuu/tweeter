@@ -6,6 +6,7 @@ import Chat from '../models/Chat';
 import { IChat } from '../interfaces/chat';
 import { IMessage } from '../interfaces/message';
 import { BAD_REQUEST, OK } from '../constants';
+import { IUserInfo } from '../interfaces/user';
 
 const createMessage = async (req: Request, res: Response): Promise<object> => {
 	try {
@@ -13,13 +14,13 @@ const createMessage = async (req: Request, res: Response): Promise<object> => {
 
 		if (!content || !chatId) {
 			return res.status(BAD_REQUEST).json({
-				message: 'Please type a message',
+				message: 'Invalid request params!',
 			});
 		}
 
-		let message = new Message({
+		let message = await Message.create({
 			content,
-			chatId,
+			chat: chatId,
 			sender: req.user?._id,
 		});
 
@@ -27,7 +28,10 @@ const createMessage = async (req: Request, res: Response): Promise<object> => {
 			.populate('sender', 'name username profilePic')
 			.execPopulate();
 		message = await message.populate('chat').execPopulate();
-		message = await User.populate(message, { path: 'chat.users' });
+		message = await User.populate(message, {
+			path: 'chat.users',
+			select: 'name username profilePic',
+		});
 
 		const chat = await Chat.findByIdAndUpdate(chatId, {
 			latestMessage: message,
@@ -45,13 +49,13 @@ const createMessage = async (req: Request, res: Response): Promise<object> => {
 
 const insertNotifications = (chat: IChat, message: IMessage) => {
 	chat.users.forEach((userId: any) => {
-		if (userId === message.sender._id.toString()) return;
+		if (userId === message?.sender?._id.toString()) return;
 
 		Notification.insertNotification(
 			userId,
-			message.sender._id,
+			message?.sender?._id,
 			'message',
-			message.chat._id
+			message?.chat?._id
 		);
 	});
 };

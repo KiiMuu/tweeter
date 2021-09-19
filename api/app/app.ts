@@ -8,6 +8,8 @@ import helmet from 'helmet';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import connectToDB from './config/db';
+import { IUserInfo } from './interfaces/user';
+import { IMessage } from './interfaces/message';
 
 // app init
 const app: Express = express();
@@ -56,6 +58,21 @@ io.on('connection', (socket: Socket) => {
 		console.log(`user connected: @${user.username}`);
 		socket.join(user._id);
 		socket.emit('connected');
+	});
+
+	socket.on('join room', room => socket.join(room));
+	socket.on('typing', room => socket.in(room).emit('typing'));
+	socket.on('stop typing', room => socket.in(room).emit('stop typing'));
+	socket.on('new message', (newMessage: IMessage) => {
+		let chat = newMessage?.chat;
+
+		if (!chat?.users) return console.log('No users in this chat!');
+
+		chat.users.forEach((user: IUserInfo) => {
+			if (user?._id == newMessage?.sender?._id) return;
+
+			socket.in(user?._id).emit('message received', newMessage);
+		});
 	});
 
 	socket.on('notification received', room => {

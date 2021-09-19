@@ -5,6 +5,6 @@ import { IChat } from './chat';
 export interface IMessage extends Document {
 	sender: IUserInfo;
 	content: string;
-	chat: any;
+	chat: IChat;
 	readBy: IUserInfo[];
 }

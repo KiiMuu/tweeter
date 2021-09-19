@@ -1,5 +1,4 @@
 import { model, Schema } from 'mongoose';
-import { IChat } from '../interfaces/chat';
 
 const { ObjectId } = Schema.Types;
 
@@ -27,6 +26,6 @@ const ChatSchema: Schema = new Schema(
 	{ timestamps: true }
 );
 
-const Chat = model<IChat>('Chat', ChatSchema);
+const Chat = model('Chat', ChatSchema);
 
 export default Chat;

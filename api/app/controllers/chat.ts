@@ -44,6 +44,11 @@ const getUserChats = async (req: Request, res: Response): Promise<object> => {
 			.sort({ createdAt: -1 })
 			.exec();
 
+		chats = await User.populate(chats, {
+			path: 'latestMessage.sender',
+			select: 'name username profilePic',
+		});
+
 		if (req.query.unreadOnly && req.query.unreadOnly === 'true') {
 			chats = chats.filter(
 				(chat: IChat) =>
@@ -51,8 +56,6 @@ const getUserChats = async (req: Request, res: Response): Promise<object> => {
 					!chat.latestMessage.readBy.includes(req.user?._id)
 			);
 		}
-
-		chats = await User.populate(chats, { path: 'latestMessage.sender' });
 
 		return res.status(OK).json(chats);
 	} catch (error: any) {
@@ -66,12 +69,18 @@ const getChat = async (req: Request, res: Response): Promise<object> => {
 	const chatId: string = req.params.chatId;
 
 	try {
-		const chat = await Chat.findOne({
+		let chat = await Chat.findOne({
 			_id: chatId,
 			users: { $elemMatch: { $eq: req.user?._id } },
 		})
 			.populate('users', '-password')
+			.populate('latestMessage')
 			.exec();
+
+		chat = await User.populate(chat, {
+			path: 'latestMessage.sender',
+			select: 'name username profilePic',
+		});
 
 		return res.status(OK).json(chat);
 	} catch (error: any) {
@@ -102,8 +111,8 @@ const getChatMessages = async (
 	const chatId: string = req.params.chatId;
 
 	try {
-		const chatMessages = await Message.find({ 'chat._id': chatId })
-			.populate('sender')
+		const chatMessages = await Message.find({ chat: chatId })
+			.populate('sender', 'name username profilePic')
 			.exec();
 
 		return res.status(OK).json(chatMessages);
@@ -119,7 +128,7 @@ const markAsRead = async (req: Request, res: Response): Promise<object> => {
 
 	try {
 		await Message.updateMany(
-			{ 'chat._id': chatId },
+			{ chat: chatId },
 			{ $addToSet: { readBy: req.user?._id } }
 		).exec();
 
