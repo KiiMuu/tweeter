@@ -13,6 +13,7 @@ import {
 	PinTweetaType,
 	IUserInfo,
 	WhoToFollowType,
+	GetUsersType,
 } from '../types/user';
 
 interface UserState {
@@ -51,6 +52,10 @@ interface UserState {
 	pinTweetaSuccess: boolean;
 	whoToFollowLoading: boolean;
 	whoToFollowError: string | null;
+	usersListLoading: boolean;
+	usersListError: string | null;
+	usersList: IUserInfo[];
+	totalUsers: number;
 }
 
 const userInfoFromLS: ICurrentUser = localStorage.getItem('tweeterUser')
@@ -93,6 +98,10 @@ export const initialUserState: UserState = {
 	pinTweetaSuccess: false,
 	whoToFollowLoading: false,
 	whoToFollowError: null,
+	usersListLoading: false,
+	usersListError: null,
+	usersList: [],
+	totalUsers: 0,
 };
 
 export const userReducer = (
@@ -330,6 +339,24 @@ export const userReducer = (
 				...state,
 				whoToFollowError: action.payload,
 				whoToFollowLoading: false,
+			};
+		case GetUsersType.GET_USERS_REQUEST:
+			return {
+				...state,
+				usersListLoading: true,
+			};
+		case GetUsersType.GET_USERS_SUCCESS:
+			return {
+				...state,
+				usersListLoading: false,
+				usersList: action.payload.users,
+				totalUsers: action.payload.totalUsers,
+			};
+		case GetUsersType.GET_USERS_FAIL:
+			return {
+				...state,
+				usersListError: action.payload,
+				usersListLoading: false,
 			};
 		default:
 			return state;

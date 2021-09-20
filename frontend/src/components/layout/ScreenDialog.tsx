@@ -42,6 +42,8 @@ interface Props {
 	okButton?: string;
 	open: boolean;
 	onClose: Function;
+	isAppBar?: boolean;
+	fullWidth: boolean;
 }
 
 const ScreenDialog: React.FC<Props> = ({
@@ -51,41 +53,50 @@ const ScreenDialog: React.FC<Props> = ({
 	okButton,
 	open,
 	onClose,
+	isAppBar = true,
+	fullWidth,
 }) => {
 	const classes = useStyles();
 
 	return (
 		<Dialog
+			fullWidth={fullWidth}
+			maxWidth='md'
 			fullScreen={fullScreen}
 			open={open}
 			onClose={() => onClose(false)}
 			TransitionComponent={Transition}
 			scroll='body'
 		>
-			<AppBar className={classes.appBar}>
-				<Toolbar>
-					<IconButton
-						edge='start'
-						color='inherit'
-						onClick={() => onClose(false)}
-						aria-label='close'
-						size='small'
-					>
-						<CgClose />
-					</IconButton>
-					<Typography variant='subtitle1' className={classes.title}>
-						{title}
-					</Typography>
-					<Button
-						autoFocus
-						color='inherit'
-						onClick={() => onClose(false)}
-						size='small'
-					>
-						{okButton}
-					</Button>
-				</Toolbar>
-			</AppBar>
+			{isAppBar ? (
+				<AppBar className={classes.appBar}>
+					<Toolbar>
+						<IconButton
+							edge='start'
+							color='inherit'
+							onClick={() => onClose(false)}
+							aria-label='close'
+							size='small'
+						>
+							<CgClose />
+						</IconButton>
+						<Typography
+							variant='subtitle1'
+							className={classes.title}
+						>
+							{title}
+						</Typography>
+						<Button
+							autoFocus
+							color='inherit'
+							onClick={() => onClose(false)}
+							size='small'
+						>
+							{okButton}
+						</Button>
+					</Toolbar>
+				</AppBar>
+			) : null}
 			{children}
 		</Dialog>
 	);

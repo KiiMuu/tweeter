@@ -42,6 +42,10 @@ type userContextType = {
 	whoToFollowLoading: boolean;
 	whoToFollowError: string | null;
 	total: number;
+	usersListLoading: boolean;
+	usersListError: string | null;
+	usersList: IUserInfo[];
+	totalUsers: number;
 	signUp: (user: ISignUp) => any;
 	signIn: (user: ISignIn) => any;
 	getUserProfile: (username: string) => IUserInfo | object;
@@ -73,6 +77,15 @@ type userContextType = {
 		| {
 				users: IUserInfo[];
 				total: number;
+		  }
+		| object;
+	getUsers: (
+		searchTerm: string,
+		limit: number
+	) =>
+		| {
+				users: IUserInfo[];
+				totalUsers: number;
 		  }
 		| object;
 };
@@ -113,6 +126,10 @@ const userContextDefaultValues: userContextType = {
 	whoToFollowLoading: false,
 	whoToFollowError: null,
 	total: 0,
+	usersListLoading: false,
+	usersListError: null,
+	usersList: [],
+	totalUsers: 0,
 	signUp: () => {},
 	signIn: () => {},
 	addUserPic: () => {},
@@ -136,6 +153,12 @@ const userContextDefaultValues: userContextType = {
 	},
 	handleWhoToFollow: () => {
 		return { users: [], total: 0 };
+	},
+	getUsers: () => {
+		return {
+			users: [],
+			totalUsers: 0,
+		};
 	},
 };
 

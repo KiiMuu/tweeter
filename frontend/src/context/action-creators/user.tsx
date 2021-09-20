@@ -15,6 +15,7 @@ import {
 	GetUserProfileDataType,
 	PinTweetaType,
 	WhoToFollowType,
+	GetUsersType,
 } from '../types/user';
 import useUserInfo from '../../hooks/useUserInfo';
 import { IMedia, ITweeta } from '../types/tweeta';
@@ -375,6 +376,42 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const getUsers = async (
+		searchTerm: string,
+		limit: number
+	): Promise<{
+		users: IUserInfo[];
+	} | void> => {
+		try {
+			dispatch({
+				type: GetUsersType.GET_USERS_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.get(
+				`/users?searchTerm=${searchTerm}&limit=${limit}`,
+				config
+			);
+
+			dispatch({
+				type: GetUsersType.GET_USERS_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: GetUsersType.GET_USERS_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -408,6 +445,10 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				whoToFollowError: state.whoToFollowError,
 				whoToFollowUsers: state.whoToFollowUsers,
 				total: state.total,
+				usersListLoading: state.usersListLoading,
+				usersListError: state.usersListError,
+				usersList: state.usersList,
+				totalUsers: state.totalUsers,
 				signUp,
 				signIn,
 				getUserProfile,
@@ -419,6 +460,7 @@ const UserState = ({ children }: { children: React.ReactNode }) => {
 				getUserProfileData,
 				handleTweetaPin,
 				handleWhoToFollow,
+				getUsers,
 			}}
 		>
 			{children}

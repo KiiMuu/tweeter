@@ -56,6 +56,7 @@ const Followers: React.FC<FollowersProps> = ({
 
 	return (
 		<ScreenDialog
+			fullWidth={false}
 			fullScreen={true}
 			open={areFollowersVisible}
 			onClose={setAreFollowersVisible}

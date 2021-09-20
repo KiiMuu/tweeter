@@ -3,6 +3,7 @@ import { IChat, IMessage, UserInfoProps } from '../../typings';
 
 type chatContextType = {
 	createChatLoading: boolean;
+	createChatSuccess: boolean;
 	createChatError: string | null;
 	userChatListLoading: boolean;
 	userChatListError: string | null;
@@ -31,6 +32,7 @@ type chatContextType = {
 const chatContextDefaultValues: chatContextType = {
 	createChatLoading: false,
 	createChatError: null,
+	createChatSuccess: false,
 	userChatListLoading: false,
 	userChatListError: null,
 	userChats: [],

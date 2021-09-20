@@ -56,6 +56,7 @@ const Following: React.FC<FollowingProps> = ({
 
 	return (
 		<ScreenDialog
+			fullWidth={false}
 			fullScreen={true}
 			open={areFollowingVisible}
 			onClose={setAreFollowingVisible}

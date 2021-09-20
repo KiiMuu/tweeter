@@ -12,6 +12,7 @@ import {
 interface ChatState {
 	createChatLoading: boolean;
 	createChatError: string | null;
+	createChatSuccess: boolean;
 	userChatListLoading: boolean;
 	userChatListError: string | null;
 	userChats: IChat[];
@@ -30,6 +31,7 @@ interface ChatState {
 export const initialChatState: ChatState = {
 	createChatLoading: false,
 	createChatError: null,
+	createChatSuccess: false,
 	userChatListLoading: false,
 	userChatListError: null,
 	userChats: [],
@@ -59,6 +61,7 @@ export const chatReducer = (
 			return {
 				...state,
 				createChatLoading: false,
+				createChatSuccess: true,
 				singleChat: action.payload,
 			};
 		case CreateChatType.CREATE_CHAT_FAIL:

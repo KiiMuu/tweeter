@@ -95,7 +95,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				},
 			};
 
-			const { data } = await axios.get(`/chats/:${chatId}`, config);
+			const { data } = await axios.get(`/chats/${chatId}`, config);
 
 			dispatch({
 				type: GetChatType.GET_CHAT_SUCCESS,
@@ -195,6 +195,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 
 			const { data } = await axios.put(
 				`/chats/${chatId}/messages/markAsRead`,
+				{},
 				config
 			);
 
@@ -217,6 +218,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 			value={{
 				createChatLoading: state.createChatLoading,
 				createChatError: state.createChatError,
+				createChatSuccess: state.createChatSuccess,
 				userChatListLoading: state.userChatListLoading,
 				userChatListError: state.userChatListError,
 				userChats: state.userChats,

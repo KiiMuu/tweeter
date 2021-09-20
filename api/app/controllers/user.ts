@@ -385,26 +385,31 @@ const getUsers = async (req: Request, res: Response): Promise<object> => {
 					$or: [
 						{
 							name: {
+								$ne: req.user?.name,
 								$regex: searchTerm,
 								$options: 'i',
 							},
 						},
 						{
 							username: {
+								$ne: req.user?.username,
 								$regex: searchTerm,
 								$options: 'i',
 							},
 						},
 					],
 			  }
-			: {};
+			: { _id: { $ne: req.user?._id } };
 
+		const totalUsers = await User.find({ _id: { $ne: req.user?._id } })
+			.countDocuments()
+			.exec();
 		const users = await User.find({ ...searchObj })
 			.limit(+limit)
 			.select('name username profilePic')
 			.exec();
 
-		return res.status(OK).json(users);
+		return res.status(OK).json({ users, totalUsers });
 	} catch (error: any) {
 		return res.status(SERVER_ERROR).json({
 			message: error.message,

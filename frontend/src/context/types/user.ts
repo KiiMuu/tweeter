@@ -52,6 +52,12 @@ export enum WhoToFollowType {
 	WHO_TO_FOLLOW_FAIL = 'WHO_TO_FOLLOW_FAIL',
 }
 
+export enum GetUsersType {
+	GET_USERS_REQUEST = 'GET_USERS_REQUEST',
+	GET_USERS_SUCCESS = 'GET_USERS_SUCCESS',
+	GET_USERS_FAIL = 'GET_USERS_FAIL',
+}
+
 export enum LogoutType {
 	USER_LOGOUT = 'USER_LOGOUT',
 }

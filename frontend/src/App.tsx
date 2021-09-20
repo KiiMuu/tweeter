@@ -13,6 +13,7 @@ const Profile = lazy(() => import('./pages/profile'));
 const Search = lazy(() => import('./pages/search'));
 const Notifications = lazy(() => import('./pages/notifications'));
 const Messages = lazy(() => import('./pages/messages'));
+const ChatPage = lazy(() => import('./pages/chat'));
 
 const App: React.FC = () => {
 	return (
@@ -47,6 +48,11 @@ const App: React.FC = () => {
 						exact
 						path={ROUTES.MESSAGES}
 						component={Messages}
+					/>
+					<ProtectRoute
+						exact
+						path={ROUTES.SINGLE_CHAT}
+						component={ChatPage}
 					/>
 				</Switch>
 			</Router>
