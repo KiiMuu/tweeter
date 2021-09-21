@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import HomeLayout from '../components/home/HomeLayout';
 import ChatBox from '../components/messages/ChatBox';
 import ChatContext from '../context/contexts/chat';
-import { PageTitle } from '../styles/headings';
 import { AlertStyles } from '../styles/notifiers';
 import { Spin } from '../styles/spinners';
 
@@ -16,6 +15,8 @@ const ChatPage: React.FC = () => {
 		singleChat,
 		getChatMessages,
 		chatMessages,
+		chatMessagesLoading,
+		chatMessagesError,
 	} = useContext(ChatContext);
 	const { id } = useParams<any>();
 
@@ -26,8 +27,7 @@ const ChatPage: React.FC = () => {
 	}, [id]);
 
 	return (
-		<HomeLayout>
-			<PageTitle>Chat</PageTitle>
+		<HomeLayout isExtraContent={false}>
 			{singleChatLoading ? (
 				<span
 					style={{
@@ -46,7 +46,12 @@ const ChatPage: React.FC = () => {
 					</Alert>
 				</AlertStyles>
 			) : (
-				<ChatBox singleChat={singleChat} chatMessages={chatMessages} />
+				<ChatBox
+					singleChat={singleChat}
+					chatMessages={chatMessages}
+					chatMessagesLoading={chatMessagesLoading}
+					chatMessagesError={chatMessagesError}
+				/>
 			)}
 		</HomeLayout>
 	);

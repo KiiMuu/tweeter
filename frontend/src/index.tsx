@@ -8,7 +8,6 @@ import UserState from './context/action-creators/user';
 import SearchState from './context/action-creators/search';
 import NotificationState from './context/action-creators/notification';
 import ChatState from './context/action-creators/chat';
-import MessageState from './context/action-creators/message';
 import SocketState from './context/action-creators/socket';
 
 ReactDOM.render(
@@ -20,9 +19,7 @@ ReactDOM.render(
 					<TweetaState>
 						<SearchState>
 							<ChatState>
-								<MessageState>
-									<App />
-								</MessageState>
+								<App />
 							</ChatState>
 						</SearchState>
 					</TweetaState>

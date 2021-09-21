@@ -312,7 +312,6 @@ const Tweeta: React.FC<TweetaProps> = ({
 							postedById={tweeta?.postedBy?._id}
 							currentUserId={currentUser?.user?._id}
 						/>
-						{console.log({ tweeta })}
 						<Button
 							onClick={() => handleTweetaRetweet(tweeta?._id)}
 							variant='text'

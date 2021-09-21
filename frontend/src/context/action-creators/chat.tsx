@@ -9,6 +9,7 @@ import {
 	GetUserChatsType,
 	UpdateChatType,
 	MarkChatAsReadType,
+	CreateMessageType,
 } from '../types/chat';
 import useUserInfo from '../../hooks/useUserInfo';
 import { IChat, IMessage, UserInfoProps } from '../../typings';
@@ -213,6 +214,42 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	// messages
+	const createMessage = async (
+		content: string,
+		chatId: string
+	): Promise<{ message: IMessage } | void> => {
+		try {
+			dispatch({
+				type: CreateMessageType.CREATE_MESSAGE_REQUEST,
+			});
+
+			const config = {
+				headers: {
+					Authorization: `Bearer ${currentUser?.token}`,
+				},
+			};
+
+			const { data } = await axios.post(
+				`/message`,
+				{ content, chatId },
+				config
+			);
+
+			dispatch({
+				type: CreateMessageType.CREATE_MESSAGE_SUCCESS,
+				payload: data,
+			});
+		} catch (error: any) {
+			dispatch({
+				type: CreateMessageType.CREATE_MESSAGE_FAIL,
+				payload: error.response?.data.message
+					? error.response.data.message
+					: error.message,
+			});
+		}
+	};
+
 	return (
 		<ChatContext.Provider
 			value={{
@@ -233,12 +270,17 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				markChatMessagesAsReadLoading:
 					state.markChatMessagesAsReadLoading,
 				markChatMessagesAsReadError: state.markChatMessagesAsReadError,
+				// messages
+				createMessageLoading: state.createMessageLoading,
+				createMessageError: state.createMessageError,
+				message: state.message,
 				createChat,
 				getUserChats,
 				getChat,
 				updateChat,
 				getChatMessages,
 				markChatMessagesAsRead,
+				createMessage,
 			}}
 		>
 			{children}

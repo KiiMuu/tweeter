@@ -7,6 +7,7 @@ import {
 	GetUserChatsType,
 	UpdateChatType,
 	MarkChatAsReadType,
+	CreateMessageType,
 } from '../types/chat';
 
 interface ChatState {
@@ -26,6 +27,10 @@ interface ChatState {
 	chatMessages: IMessage[];
 	markChatMessagesAsReadLoading: boolean;
 	markChatMessagesAsReadError: string | null;
+	// messages
+	createMessageLoading: boolean;
+	createMessageError: string | null;
+	message: IMessage;
 }
 
 export const initialChatState: ChatState = {
@@ -45,6 +50,10 @@ export const initialChatState: ChatState = {
 	chatMessages: [],
 	markChatMessagesAsReadLoading: false,
 	markChatMessagesAsReadError: null,
+	// messages
+	createMessageLoading: false,
+	createMessageError: null,
+	message: {},
 };
 
 export const chatReducer = (
@@ -154,6 +163,25 @@ export const chatReducer = (
 				...state,
 				markChatMessagesAsReadLoading: false,
 				markChatMessagesAsReadError: action.payload,
+			};
+		// messages
+		case CreateMessageType.CREATE_MESSAGE_REQUEST:
+			return {
+				...state,
+				createMessageLoading: true,
+			};
+		case CreateMessageType.CREATE_MESSAGE_SUCCESS:
+			return {
+				...state,
+				createMessageLoading: false,
+				message: action.payload,
+				chatMessages: [...state.chatMessages, state.message],
+			};
+		case CreateMessageType.CREATE_MESSAGE_FAIL:
+			return {
+				...state,
+				createMessageLoading: false,
+				createMessageError: action.payload,
 			};
 		default:
 			return state;

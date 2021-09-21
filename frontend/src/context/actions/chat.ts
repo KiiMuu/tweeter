@@ -5,6 +5,7 @@ import {
 	GetUserChatsType,
 	UpdateChatType,
 	MarkChatAsReadType,
+	CreateMessageType,
 } from '../types/chat';
 import { IChat, IMessage } from '../../typings';
 
@@ -92,6 +93,21 @@ interface MarkChatAsReadActionFail {
 	payload: string | null;
 }
 
+// messages
+interface CreateMessageActionRequest {
+	type: CreateMessageType.CREATE_MESSAGE_REQUEST;
+}
+
+interface CreateMessageActionSuccess {
+	type: CreateMessageType.CREATE_MESSAGE_SUCCESS;
+	payload: IMessage;
+}
+
+interface CreateMessageActionFail {
+	type: CreateMessageType.CREATE_MESSAGE_FAIL;
+	payload: string | null;
+}
+
 export type Action =
 	| CreateChatActionRequest
 	| CreateChatActionSuccess
@@ -110,4 +126,7 @@ export type Action =
 	| GetChatMessagesActionFail
 	| MarkChatAsReadActionRequest
 	| MarkChatAsReadActionSuccess
-	| MarkChatAsReadActionFail;
+	| MarkChatAsReadActionFail
+	| CreateMessageActionRequest
+	| CreateMessageActionSuccess
+	| CreateMessageActionFail;

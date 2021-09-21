@@ -18,6 +18,11 @@ type chatContextType = {
 	chatMessages: IMessage[];
 	markChatMessagesAsReadLoading: boolean;
 	markChatMessagesAsReadError: string | null;
+	// messages
+	createMessageLoading: boolean;
+	createMessageError: string | null;
+	message: IMessage;
+
 	createChat: (users: UserInfoProps[]) => { singleChat: IChat } | object;
 	getUserChats: (unreadOnly: boolean) => { userChats: IChat[] } | object;
 	getChat: (chatId: string) => { singleChat: IChat } | object;
@@ -27,6 +32,10 @@ type chatContextType = {
 	) => { singleChat: IChat } | object;
 	getChatMessages: (chatId: string) => { chatMessages: IMessage[] } | object;
 	markChatMessagesAsRead: (chatId: string) => { ok: string } | object;
+	createMessage: (
+		content: string,
+		chatId: string
+	) => { message: IMessage } | object;
 };
 
 const chatContextDefaultValues: chatContextType = {
@@ -46,6 +55,9 @@ const chatContextDefaultValues: chatContextType = {
 	chatMessages: [],
 	markChatMessagesAsReadLoading: false,
 	markChatMessagesAsReadError: null,
+	createMessageLoading: false,
+	createMessageError: null,
+	message: {},
 	createChat: () => {
 		return { chat: {} };
 	},
@@ -63,6 +75,9 @@ const chatContextDefaultValues: chatContextType = {
 	},
 	markChatMessagesAsRead: () => {
 		return { ok: '' };
+	},
+	createMessage: () => {
+		return { message: {} };
 	},
 };
 

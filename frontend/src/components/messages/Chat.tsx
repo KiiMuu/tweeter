@@ -1,6 +1,5 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import ChatContext from '../../context/contexts/chat';
 import { IChat, UserInfoProps } from '../../typings';
 import { StyledAvatarGroup } from '../../styles/messages';
 import {
@@ -11,7 +10,6 @@ import {
 	ListItemSecondaryAction,
 	Chip,
 } from '@material-ui/core';
-import useUserInfo from '../../hooks/useUserInfo';
 
 interface Props {
 	chat: IChat;
@@ -19,21 +17,6 @@ interface Props {
 }
 
 const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
-	const { getChatMessages, chatMessages } = useContext(ChatContext);
-	const { currentUser } = useUserInfo();
-
-	useEffect(() => {
-		getChatMessages(chat?._id);
-		// eslint-disable-next-line
-	}, []);
-
-	const unreadChatMessages = [];
-	chatMessages?.forEach(message => {
-		if (!message?.readBy?.includes(currentUser?.user?._id)) {
-			unreadChatMessages.push(message);
-		}
-	});
-
 	const handleChatRead = useCallback(() => {
 		markChatMessagesAsRead(chat?._id);
 	}, [markChatMessagesAsRead, chat?._id]);
@@ -71,16 +54,14 @@ const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
 				}
 				secondary={chat?.latestMessage?.content}
 			/>
-			{unreadChatMessages.length > 0 && (
-				<ListItemSecondaryAction>
-					<Chip
-						label={unreadChatMessages?.length}
-						color='primary'
-						size='small'
-						style={{ color: '#fff' }}
-					/>
-				</ListItemSecondaryAction>
-			)}
+			<ListItemSecondaryAction>
+				<Chip
+					label={7}
+					color='primary'
+					size='small'
+					style={{ color: '#fff' }}
+				/>
+			</ListItemSecondaryAction>
 		</ListItem>
 	);
 };

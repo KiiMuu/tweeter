@@ -113,6 +113,7 @@ const getChatMessages = async (
 	try {
 		const chatMessages = await Message.find({ chat: chatId })
 			.populate('sender', 'name username profilePic')
+			.populate('readBy', 'name username profilePic')
 			.exec();
 
 		return res.status(OK).json(chatMessages);
