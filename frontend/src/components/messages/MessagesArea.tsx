@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import Message from './Message';
 import { IMessage } from '../../typings';
 import { AlertStyles } from '../../styles/notifiers';
@@ -15,6 +16,19 @@ const MessagesArea: React.FC<Props> = ({
 	chatMessagesLoading,
 	chatMessagesError,
 }) => {
+	const bottomRef = useRef<null | HTMLDivElement>(null);
+
+	const scrollToBottom = () => {
+		bottomRef?.current?.scrollIntoView({
+			behavior: 'smooth',
+			block: 'start',
+		});
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [chatMessages]);
+
 	if (chatMessagesLoading)
 		return (
 			<span
@@ -36,14 +50,22 @@ const MessagesArea: React.FC<Props> = ({
 				</Alert>
 			</AlertStyles>
 		);
-	if (chatMessages?.length === 0) return <div>No messages here!</div>;
+	if (chatMessages?.length === 0)
+		return (
+			<AlertStyles style={{ marginTop: '20px' }}>
+				<Alert severity='info' icon={false}>
+					No messages
+				</Alert>
+			</AlertStyles>
+		);
 
 	return (
-		<>
+		<div className='messages'>
 			{chatMessages?.map((message: IMessage) => (
 				<Message key={message._id} message={message} />
 			))}
-		</>
+			<div ref={bottomRef}></div>
+		</div>
 	);
 };
 

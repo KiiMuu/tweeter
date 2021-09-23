@@ -21,7 +21,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 	// * actions
 	const createChat = async (
 		users: UserInfoProps
-	): Promise<{ singleChat: IChat } | void> => {
+	): Promise<{ createdChat: IChat } | void> => {
 		try {
 			dispatch({
 				type: CreateChatType.CREATE_CHAT_REQUEST,
@@ -256,6 +256,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				createChatLoading: state.createChatLoading,
 				createChatError: state.createChatError,
 				createChatSuccess: state.createChatSuccess,
+				createdChat: state.createdChat,
 				userChatListLoading: state.userChatListLoading,
 				userChatListError: state.userChatListError,
 				userChats: state.userChats,
@@ -272,6 +273,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				markChatMessagesAsReadError: state.markChatMessagesAsReadError,
 				// messages
 				createMessageLoading: state.createMessageLoading,
+				createMessageSuccess: state.createMessageSuccess,
 				createMessageError: state.createMessageError,
 				message: state.message,
 				createChat,

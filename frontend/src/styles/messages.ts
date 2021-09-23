@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface UserNames {
-	me: string;
+	current: string;
 	you: string;
 }
 
@@ -18,20 +18,33 @@ export const StyledAvatarGroup = styled.div`
 export const StyledChatBox = styled.section`
 	height: 100vh;
 	position: relative;
+	.messagesArea,
+	.heading {
+		padding: 10px var(--paddingLeftRight);
+		box-shadow: 0px 0px 5px rgb(0 0 0 / 10%);
+	}
 	.heading {
 		background: var(--grayColor);
 	}
 	.messagesArea {
-		background: red;
-		height: calc(100% - 50px);
-	}
-	.messagesArea,
-	.heading {
-		padding: 10px var(--paddingLeftRight);
+		background: var(--grayColor);
+		height: calc(100% - 102px);
+		overflow-y: auto;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-all;
+		hyphens: auto;
+		.messages {
+			display: flex;
+			flex: 0 1 auto;
+			flex-flow: column nowrap;
+			justify-content: flex-end;
+			padding-bottom: 20px;
+		}
 	}
 `;
 
-export const StyledMessageInput = styled.div`
+export const StyledMessageInput = styled.form`
 	position: absolute;
 	background: var(--grayColor);
 	bottom: 0;
@@ -68,23 +81,40 @@ export const StyledMessageInput = styled.div`
 `;
 
 export const MessageBox = styled.div<UserNames>`
-	background: #fff;
-	padding: 10px;
-	border-radius: var(--br);
-	display: table;
 	&:not(:last-child) {
 		margin-bottom: 10px;
 	}
+	flex: none;
+	.msg {
+		padding: 5px 10px;
+		border-radius: var(--br);
+		box-shadow: 0px 0px 5px rgb(0 0 0 / 10%);
+		${props =>
+			props.current === props.you
+				? {
+						background: 'var(--mainColor)',
+						color: '#fff',
+				  }
+				: {
+						background: '#fff',
+				  }}
+		.username {
+			font-weight: 600;
+		}
+	}
+	.msgDateSeen {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 5px;
+		color: var(--textGray);
+	}
 	${props =>
-		props.me === props.you
+		props.current === props.you
 			? {
-					background: 'yellow',
+					alignSelf: 'flex-end',
 			  }
 			: {
-					background: 'green',
-			  }}/* overflow-wrap: break-word;
-	word-wrap: break-word;
-	word-break: break-all;
-	word-break: break-word;
-	hyphens: auto; */
+					alignSelf: 'flex-start',
+			  }}
 `;

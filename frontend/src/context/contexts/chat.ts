@@ -5,6 +5,7 @@ type chatContextType = {
 	createChatLoading: boolean;
 	createChatSuccess: boolean;
 	createChatError: string | null;
+	createdChat: IChat;
 	userChatListLoading: boolean;
 	userChatListError: string | null;
 	userChats: IChat[];
@@ -20,10 +21,11 @@ type chatContextType = {
 	markChatMessagesAsReadError: string | null;
 	// messages
 	createMessageLoading: boolean;
+	createMessageSuccess: boolean;
 	createMessageError: string | null;
 	message: IMessage;
 
-	createChat: (users: UserInfoProps[]) => { singleChat: IChat } | object;
+	createChat: (users: UserInfoProps[]) => { createdChat: IChat } | object;
 	getUserChats: (unreadOnly: boolean) => { userChats: IChat[] } | object;
 	getChat: (chatId: string) => { singleChat: IChat } | object;
 	updateChat: (
@@ -42,6 +44,7 @@ const chatContextDefaultValues: chatContextType = {
 	createChatLoading: false,
 	createChatError: null,
 	createChatSuccess: false,
+	createdChat: {},
 	userChatListLoading: false,
 	userChatListError: null,
 	userChats: [],
@@ -56,10 +59,11 @@ const chatContextDefaultValues: chatContextType = {
 	markChatMessagesAsReadLoading: false,
 	markChatMessagesAsReadError: null,
 	createMessageLoading: false,
+	createMessageSuccess: false,
 	createMessageError: null,
 	message: {},
 	createChat: () => {
-		return { chat: {} };
+		return { createdChat: {} };
 	},
 	getUserChats: () => {
 		return { userChats: [] };

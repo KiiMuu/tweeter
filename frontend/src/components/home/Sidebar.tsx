@@ -14,10 +14,13 @@ import {
 import useUserInfo from '../../hooks/useUserInfo';
 import UserContext from '../../context/contexts/user';
 import NotificationContext from '../../context/contexts/notification';
+import { IChat } from '../../typings';
+import ChatContext from '../../context/contexts/chat';
 
 const Sidebar: React.FC = () => {
 	const { logout } = useContext(UserContext);
 	const { notificationsList } = useContext(NotificationContext);
+	const { userChats } = useContext(ChatContext);
 	const { currentUser } = useUserInfo();
 	const history = useHistory();
 
@@ -25,6 +28,16 @@ const Sidebar: React.FC = () => {
 	notificationsList?.forEach(n => {
 		if (!n.isOpened) {
 			unreadNotifications.push(n.isOpened);
+		}
+	});
+
+	let unreadMesages: IChat[] = [];
+	userChats?.forEach((chat: IChat) => {
+		if (
+			chat.latestMessage &&
+			!chat.latestMessage.readBy.includes(currentUser?.user?._id)
+		) {
+			unreadMesages.push(chat);
 		}
 	});
 
@@ -74,7 +87,10 @@ const Sidebar: React.FC = () => {
 					</Badge>
 				</li>
 				<li>
-					<Badge color='secondary' badgeContent={99}>
+					<Badge
+						color='secondary'
+						badgeContent={unreadMesages?.length}
+					>
 						<Button
 							variant='text'
 							color='primary'

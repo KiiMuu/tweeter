@@ -1,8 +1,10 @@
-import { IChat, IMessage, UserInfoProps } from '../../typings';
+import { IChat, IMessage } from '../../typings';
 import MessageInput from './MessageInput';
 import MessagesArea from './MessagesArea';
 import { StyledChatBox } from '../../styles/messages';
 import { Typography } from '@material-ui/core';
+import useUserInfo from '../../hooks/useUserInfo';
+import { getChatName, listChatUsers } from '../../util';
 
 interface Props {
 	singleChat: IChat;
@@ -17,29 +19,17 @@ const ChatBox: React.FC<Props> = ({
 	chatMessagesLoading,
 	chatMessagesError,
 }) => {
+	const { currentUser } = useUserInfo();
+
 	return (
 		<StyledChatBox>
 			<div className='heading'>
 				<Typography variant='h5'>
-					{singleChat?.isGroupChat
-						? singleChat?.chatName
-						: 'name here'}
+					{getChatName(singleChat, currentUser)}
 				</Typography>
-				{singleChat?.isGroupChat &&
-					singleChat?.users?.map((user: UserInfoProps) => (
-						<Typography
-							key={user._id}
-							variant='caption'
-							gutterBottom
-						>
-							{user?.username}
-							{user?.username ===
-							singleChat?.users[singleChat?.users?.length - 1]
-								?.username
-								? null
-								: ', '}
-						</Typography>
-					))}
+				<Typography variant='caption'>
+					{listChatUsers(singleChat)}
+				</Typography>
 			</div>
 			<div className='messagesArea'>
 				<MessagesArea
@@ -48,7 +38,7 @@ const ChatBox: React.FC<Props> = ({
 					chatMessagesError={chatMessagesError}
 				/>
 			</div>
-			<MessageInput />
+			<MessageInput singleChat={singleChat} />
 		</StyledChatBox>
 	);
 };

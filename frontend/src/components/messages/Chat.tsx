@@ -1,5 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, memo } from 'react';
 import { Link } from 'react-router-dom';
+import useUserInfo from '../../hooks/useUserInfo';
+import { getChatName } from '../../util';
 import { IChat, UserInfoProps } from '../../typings';
 import { StyledAvatarGroup } from '../../styles/messages';
 import {
@@ -8,7 +10,7 @@ import {
 	ListItemAvatar,
 	Avatar,
 	ListItemSecondaryAction,
-	Chip,
+	Badge,
 } from '@material-ui/core';
 
 interface Props {
@@ -20,6 +22,7 @@ const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
 	const handleChatRead = useCallback(() => {
 		markChatMessagesAsRead(chat?._id);
 	}, [markChatMessagesAsRead, chat?._id]);
+	const { currentUser } = useUserInfo();
 
 	return (
 		<ListItem
@@ -27,6 +30,13 @@ const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
 			component={Link}
 			to={`/messages/${chat?._id}/chat`}
 			onClick={() => handleChatRead()}
+			style={{
+				backgroundColor: chat?.latestMessage?.readBy?.includes(
+					currentUser?.user?._id
+				)
+					? ''
+					: 'rgba(29, 161, 242, .15)',
+			}}
 		>
 			{chat?.isGroupChat ? (
 				<StyledAvatarGroup>
@@ -42,28 +52,21 @@ const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
 				<ListItemAvatar>
 					<Avatar
 						alt={chat?.chatName}
-						src={chat?.latestMessage?.sender?.profilePic}
+						src={chat?.users[1]?.profilePic}
 					/>
 				</ListItemAvatar>
 			)}
 			<ListItemText
-				primary={
-					chat?.isGroupChat
-						? chat?.chatName || 'No Name'
-						: chat?.latestMessage?.sender?.name
-				}
+				primary={getChatName(chat, currentUser)}
 				secondary={chat?.latestMessage?.content}
 			/>
-			<ListItemSecondaryAction>
-				<Chip
-					label={7}
-					color='primary'
-					size='small'
-					style={{ color: '#fff' }}
-				/>
-			</ListItemSecondaryAction>
+			{!chat?.latestMessage?.readBy?.includes(currentUser?.user?._id) ? (
+				<ListItemSecondaryAction>
+					<Badge color='secondary' variant='dot'></Badge>
+				</ListItemSecondaryAction>
+			) : null}
 		</ListItem>
 	);
 };
 
-export default Chat;
+export default memo(Chat);

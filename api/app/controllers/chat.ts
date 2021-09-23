@@ -17,7 +17,7 @@ const createChat = async (req: Request, res: Response): Promise<object> => {
 
 		users.push(req.user);
 
-		const chat = new Chat({ users, isGroupChat: true });
+		let chat = await Chat.create({ users, isGroupChat: true });
 
 		return res.status(OK).json(chat);
 	} catch (error: any) {
@@ -67,15 +67,50 @@ const getUserChats = async (req: Request, res: Response): Promise<object> => {
 
 const getChat = async (req: Request, res: Response): Promise<object> => {
 	const chatId: string = req.params.chatId;
+	const userId: string = req.user?._id;
 
 	try {
 		let chat = await Chat.findOne({
 			_id: chatId,
-			users: { $elemMatch: { $eq: req.user?._id } },
+			users: { $elemMatch: { $eq: userId } },
 		})
 			.populate('users', '-password')
 			.populate('latestMessage')
 			.exec();
+
+		// handle individual chats
+		if (!chat) {
+			// Check if chat id is really user id
+			let otherUser = await User.findById(chatId);
+
+			if (otherUser) {
+				// get chat using user id
+				chat = await Chat.findOneAndUpdate(
+					{
+						isGroupChat: false,
+						users: {
+							$size: 2,
+							$all: [
+								{ $elemMatch: { $eq: userId } },
+								{ $elemMatch: { $eq: otherUser._id } },
+							],
+						},
+					},
+					{
+						$setOnInsert: {
+							users: [userId, otherUser._id],
+						},
+					},
+					{
+						new: true,
+						upsert: true,
+					}
+				)
+					.populate('users', '-password')
+					.populate('latestMessage')
+					.exec();
+			}
+		}
 
 		chat = await User.populate(chat, {
 			path: 'latestMessage.sender',
