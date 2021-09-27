@@ -41,7 +41,7 @@ const getUserChats = async (req: Request, res: Response): Promise<object> => {
 				'-password -likes -following -followers -retweets'
 			)
 			.populate('latestMessage')
-			.sort({ createdAt: -1 })
+			.sort({ latestMessage: -1 })
 			.exec();
 
 		chats = await User.populate(chats, {
@@ -129,9 +129,15 @@ const updateChat = async (req: Request, res: Response): Promise<object> => {
 	const chatId: string = req.params.chatId;
 
 	try {
-		const chat = await Chat.findByIdAndUpdate(chatId, req.body).exec();
+		const { chatName } = req.body;
 
-		return res.status(OK).json(chat);
+		const chat = await Chat.findById(chatId).exec();
+
+		chat.chatName = chatName || chat.chatName;
+
+		const updatedUser = await chat.save();
+
+		return res.status(OK).json(updatedUser);
 	} catch (error: any) {
 		return res.status(BAD_REQUEST).json({
 			message: error.message,

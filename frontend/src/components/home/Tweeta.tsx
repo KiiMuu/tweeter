@@ -10,7 +10,7 @@ import useSnackBar from '../../hooks/useSnackBar';
 import ReplyDialog from './tweeta/ReplyDialog';
 import MoreOptions from './tweeta/MoreOptions';
 import {
-	Button,
+	IconButton,
 	Dialog,
 	DialogContent,
 	DialogContentText,
@@ -290,16 +290,12 @@ const Tweeta: React.FC<TweetaProps> = ({
 						</div>
 					</div>
 					<div className='tweetaFooter'>
-						<Button
-							variant='text'
-							size='small'
-							onClick={() => setDialogOpen(true)}
-						>
+						<IconButton onClick={() => setDialogOpen(true)}>
 							<AiOutlineComment />
 							<span className='count'>
 								{replies?.length || ''}
 							</span>
-						</Button>
+						</IconButton>
 						<ReplyDialog
 							dialogOpen={dialogOpen}
 							setDialogOpen={setDialogOpen}
@@ -312,10 +308,8 @@ const Tweeta: React.FC<TweetaProps> = ({
 							postedById={tweeta?.postedBy?._id}
 							currentUserId={currentUser?.user?._id}
 						/>
-						<Button
+						<IconButton
 							onClick={() => handleTweetaRetweet(tweeta?._id)}
-							variant='text'
-							size='small'
 						>
 							<AiOutlineRetweet
 								className={
@@ -329,11 +323,9 @@ const Tweeta: React.FC<TweetaProps> = ({
 							<span className='count'>
 								{tweeta?.retweeters?.length || ''}
 							</span>
-						</Button>
-						<Button
+						</IconButton>
+						<IconButton
 							onClick={() => handleTweetaLike(tweeta?._id)}
-							variant='text'
-							size='small'
 						>
 							{tweeta?.likes?.includes(currentUser?.user._id) ? (
 								<AiFillHeart className='loved' />
@@ -343,7 +335,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 							<span className='count'>
 								{tweeta?.likes?.length || ''}
 							</span>
-						</Button>
+						</IconButton>
 					</div>
 				</div>
 			</div>

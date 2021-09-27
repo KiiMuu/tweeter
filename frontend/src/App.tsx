@@ -1,11 +1,23 @@
-import { lazy, Suspense, useContext, useEffect } from 'react';
+import { lazy, Suspense, useCallback, useContext, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import { Link, Redirect } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
+import { formatRelative } from 'date-fns';
 import * as ROUTES from './constants/routes';
 import FallbackScreen from './components/FallbackScreen';
 import ProtectRoute from './helpers/ProtectRoute';
 import NotificationContext from './context/contexts/notification';
 import ChatContext from './context/contexts/chat';
+import useUserInfo from './hooks/useUserInfo';
+import SocketContext from './context/contexts/socket';
+import useSocket from './hooks/useSocket';
+import getNotificationText from './helpers/getNotificationText';
+import {
+	ListItem,
+	ListItemAvatar,
+	Avatar,
+	ListItemText,
+} from '@material-ui/core';
 
 const Singup = lazy(() => import('./pages/signup'));
 const Signin = lazy(() => import('./pages/signin'));
@@ -18,9 +30,79 @@ const Messages = lazy(() => import('./pages/messages'));
 const ChatPage = lazy(() => import('./pages/chat'));
 
 const App: React.FC = () => {
-	const { getNotifications } = useContext(NotificationContext);
+	const { currentUser } = useUserInfo();
 	const { getUserChats } = useContext(ChatContext);
+	const { socket } = useContext(SocketContext);
+	const { getNotifications, getLastNotification, lastNotification } =
+		useContext(NotificationContext);
 
+	socket?.emit('setup', currentUser?.user);
+	useSocket('connected', () => console.log('socketIO connected!'));
+	useSocket('notification received', getLastNotification);
+
+	const notificationContent = useCallback(
+		() => (
+			<Link
+				to={`/${
+					lastNotification?.type === 'follow' ? 'profile' : 'tweeta'
+				}/${
+					lastNotification?.type === 'follow'
+						? lastNotification?.from.username
+						: lastNotification?.entityId
+				}`}
+				style={{ textDecoration: 'none', color: 'inherit' }}
+			>
+				<ListItem
+					style={{
+						background: '#fff',
+						borderRadius: '3px',
+						color: '#000',
+						boxShadow: 'rgb(0 0 0 / 30%) 0px 0px 3px 0px',
+					}}
+				>
+					<ListItemAvatar>
+						<Avatar>
+							<img
+								src={lastNotification?.from?.profilePic}
+								alt={lastNotification?.from?.username}
+								width={40}
+								height={40}
+							/>
+						</Avatar>
+					</ListItemAvatar>
+					<ListItemText
+						primary={getNotificationText(
+							lastNotification?.from,
+							lastNotification?.type
+						)}
+						secondary={formatRelative(
+							new Date(lastNotification?.createdAt),
+							new Date()
+						)}
+					/>
+				</ListItem>
+			</Link>
+		),
+		[
+			lastNotification?.createdAt,
+			lastNotification?.from,
+			lastNotification?.type,
+			lastNotification?.entityId,
+		]
+	);
+
+	useEffect(() => {
+		if (!currentUser?.token) {
+			<Redirect to='/signin' />;
+		}
+	}, [currentUser]);
+	useEffect(() => {
+		lastNotification?.from &&
+			toast.custom(notificationContent, {
+				position: 'bottom-left',
+				duration: 5000,
+			});
+	}, [lastNotification?.from, notificationContent]);
 	useEffect(() => {
 		getNotifications('');
 		getUserChats(true);

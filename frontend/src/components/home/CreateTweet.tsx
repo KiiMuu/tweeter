@@ -8,7 +8,7 @@ import useSnackBar from '../../hooks/useSnackBar';
 import { CreateTweetaProps } from '../../typings';
 import { TweetForm } from '../../styles/home';
 import { Spin } from '../../styles/spinners';
-import { Button, Divider } from '@material-ui/core';
+import { IconButton, Button, Divider } from '@material-ui/core';
 import { FaSmile } from 'react-icons/fa';
 import { VscClose } from 'react-icons/vsc';
 import UserContext from '../../context/contexts/user';
@@ -125,15 +125,13 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 							<FileUpload images={images} setImages={setImages} />
 						</div>
 						<div className='addEmoji'>
-							<Button
-								variant='text'
-								size='small'
+							<IconButton
 								onClick={() => {
 									setPickerVisible(!pickerVisible);
 								}}
 							>
 								<FaSmile />
-							</Button>
+							</IconButton>
 							{pickerVisible ? (
 								<div className='EmojiPicker'>
 									<Picker

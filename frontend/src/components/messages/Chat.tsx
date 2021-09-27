@@ -1,4 +1,4 @@
-import { useCallback, memo } from 'react';
+import { useCallback, memo, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import useUserInfo from '../../hooks/useUserInfo';
 import { getChatName } from '../../util';
@@ -12,6 +12,7 @@ import {
 	ListItemSecondaryAction,
 	Badge,
 } from '@material-ui/core';
+import SocketContext from '../../context/contexts/socket';
 
 interface Props {
 	chat: IChat;
@@ -19,10 +20,12 @@ interface Props {
 }
 
 const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
+	const { currentUser } = useUserInfo();
+	const { socket } = useContext(SocketContext);
 	const handleChatRead = useCallback(() => {
 		markChatMessagesAsRead(chat?._id);
-	}, [markChatMessagesAsRead, chat?._id]);
-	const { currentUser } = useUserInfo();
+		socket?.emit('join room', chat?._id);
+	}, [socket, markChatMessagesAsRead, chat?._id]);
 
 	return (
 		<ListItem
@@ -58,7 +61,11 @@ const Chat: React.FC<Props> = ({ chat, markChatMessagesAsRead }) => {
 			)}
 			<ListItemText
 				primary={getChatName(chat, currentUser)}
-				secondary={chat?.latestMessage?.content}
+				secondary={
+					chat?.isGroupChat
+						? `${chat?.latestMessage?.sender?.username}: ${chat?.latestMessage?.content}`
+						: chat?.latestMessage?.content
+				}
 			/>
 			{!chat?.latestMessage?.readBy?.includes(currentUser?.user?._id) ? (
 				<ListItemSecondaryAction>

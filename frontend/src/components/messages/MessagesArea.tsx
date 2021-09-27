@@ -8,12 +8,14 @@ import { Alert } from '@material-ui/lab';
 interface Props {
 	chatMessages: IMessage[];
 	chatMessagesLoading: boolean;
+	showTypingDots: boolean;
 	chatMessagesError: string | null;
 }
 
 const MessagesArea: React.FC<Props> = ({
 	chatMessages,
 	chatMessagesLoading,
+	showTypingDots,
 	chatMessagesError,
 }) => {
 	const bottomRef = useRef<null | HTMLDivElement>(null);
@@ -27,7 +29,7 @@ const MessagesArea: React.FC<Props> = ({
 
 	useEffect(() => {
 		scrollToBottom();
-	}, [chatMessages]);
+	}, [chatMessages, showTypingDots]);
 
 	if (chatMessagesLoading)
 		return (

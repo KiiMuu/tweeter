@@ -108,6 +108,11 @@ interface CreateMessageActionFail {
 	payload: string | null;
 }
 
+interface MessageRecievedAction {
+	type: CreateMessageType.MESSAGE_RECIEVED;
+	payload: IMessage;
+}
+
 export type Action =
 	| CreateChatActionRequest
 	| CreateChatActionSuccess
@@ -129,4 +134,5 @@ export type Action =
 	| MarkChatAsReadActionFail
 	| CreateMessageActionRequest
 	| CreateMessageActionSuccess
-	| CreateMessageActionFail;
+	| CreateMessageActionFail
+	| MessageRecievedAction;

@@ -55,12 +55,15 @@ io.on('connection', (socket: Socket) => {
 	console.info(`client connected [id=${socket.id}]`);
 
 	socket.on('setup', user => {
-		console.log(`user connected: @${user.username}`);
-		socket.join(user._id);
+		console.log(`user connected: @${user?.username}`);
+		socket.join(user?._id);
 		socket.emit('connected');
 	});
 
-	socket.on('join room', room => socket.join(room));
+	socket.on('join room', room => {
+		socket.join(room);
+		console.log('user joined in: ', room);
+	});
 	socket.on('typing', room => socket.in(room).emit('typing'));
 	socket.on('stop typing', room => socket.in(room).emit('stop typing'));
 	socket.on('new message', (newMessage: IMessage) => {
@@ -71,7 +74,7 @@ io.on('connection', (socket: Socket) => {
 		chat.users.forEach((user: IUserInfo) => {
 			if (user?._id == newMessage?.sender?._id) return;
 
-			socket.in(user?._id).emit('message received', newMessage);
+			socket.in(user?._id).emit('new message', newMessage);
 		});
 	});
 
@@ -79,6 +82,8 @@ io.on('connection', (socket: Socket) => {
 		console.log('notification in room', room);
 		socket.in(room).emit('notification received');
 	});
+
+	socket.on('disconnect', () => socket.disconnect());
 });
 
 // app launching!

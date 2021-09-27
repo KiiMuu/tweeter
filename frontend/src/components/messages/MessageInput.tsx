@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import ChatContext from '../../context/contexts/chat';
 import Picker, { SKIN_TONE_LIGHT } from 'emoji-picker-react';
 import { StyledMessageInput } from '../../styles/messages';
@@ -7,16 +7,20 @@ import { Button } from '@material-ui/core';
 import { FiSmile } from 'react-icons/fi';
 import { IoCloseOutline } from 'react-icons/io5';
 import { SiTelegram } from 'react-icons/si';
+import SocketContext from '../../context/contexts/socket';
 
 interface Props {
 	singleChat: IChat;
+	updateTyping: () => void;
 }
 
-const MessageInput: React.FC<Props> = ({ singleChat }) => {
+const MessageInput: React.FC<Props> = ({ singleChat, updateTyping }) => {
 	const [content, setContent] = useState<string>('');
 	const [pickerVisible, setPickerVisible] = useState<boolean>(false);
 
-	const { createMessage } = useContext(ChatContext);
+	const { createMessage, createMessageSuccess, message } =
+		useContext(ChatContext);
+	const { socket } = useContext(SocketContext);
 
 	const onEmojiClick = (
 		e: React.MouseEvent<Element, MouseEvent>,
@@ -27,18 +31,28 @@ const MessageInput: React.FC<Props> = ({ singleChat }) => {
 		setContent(`${content}${emojiObject.emoji}`);
 	};
 
-	const handleMessageCreation = () => {
-		createMessage(content, singleChat?._id);
-		setContent('');
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setContent(e.target.value);
 	};
 
 	const handleEnterPress = (e: React.KeyboardEvent) => {
 		if (e.code === 'Enter') {
 			e.preventDefault();
 			createMessage(content, singleChat?._id);
-			setContent('');
 		}
 	};
+
+	const handleMessageCreation = () => {
+		createMessage(content, singleChat?._id);
+	};
+
+	useEffect(() => {
+		if (createMessageSuccess) {
+			socket?.emit('stop typing', singleChat?._id);
+			socket?.emit('new message', message);
+			setContent('');
+		}
+	}, [socket, createMessageSuccess, singleChat?._id, message]);
 
 	return (
 		<StyledMessageInput onKeyPress={handleEnterPress}>
@@ -71,7 +85,8 @@ const MessageInput: React.FC<Props> = ({ singleChat }) => {
 				type='text'
 				placeholder='Type a message'
 				value={content}
-				onChange={e => setContent(e.target.value)}
+				onChange={handleChange}
+				onKeyDown={updateTyping}
 			/>
 			<Button
 				variant='text'

@@ -60,13 +60,21 @@ const Chats = () => {
 					label='Unread messages only'
 				/>
 			</div>
-			{userChats?.map((chat: IChat) => (
-				<Chat
-					key={chat._id}
-					chat={chat}
-					markChatMessagesAsRead={markChatMessagesAsRead}
-				/>
-			))}
+			{!userChats?.length ? (
+				<AlertStyles style={{ marginTop: '20px' }}>
+					<Alert severity='info' icon={false}>
+						Nothing to show.
+					</Alert>
+				</AlertStyles>
+			) : (
+				userChats?.map((chat: IChat) => (
+					<Chat
+						key={chat._id}
+						chat={chat}
+						markChatMessagesAsRead={markChatMessagesAsRead}
+					/>
+				))
+			)}
 		</List>
 	);
 };

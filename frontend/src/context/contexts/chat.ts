@@ -13,6 +13,7 @@ type chatContextType = {
 	singleChatError: string | null;
 	singleChat: IChat;
 	updateChatLoading: boolean;
+	updateChatSuccess: boolean;
 	updateChatError: string | null;
 	chatMessagesLoading: boolean;
 	chatMessagesError: string | null;
@@ -38,6 +39,7 @@ type chatContextType = {
 		content: string,
 		chatId: string
 	) => { message: IMessage } | object;
+	onMessageRecieved: (message: IMessage) => void;
 };
 
 const chatContextDefaultValues: chatContextType = {
@@ -52,6 +54,7 @@ const chatContextDefaultValues: chatContextType = {
 	singleChatError: null,
 	singleChat: {},
 	updateChatLoading: false,
+	updateChatSuccess: false,
 	updateChatError: null,
 	chatMessagesLoading: false,
 	chatMessagesError: null,
@@ -83,6 +86,7 @@ const chatContextDefaultValues: chatContextType = {
 	createMessage: () => {
 		return { message: {} };
 	},
+	onMessageRecieved: () => {},
 };
 
 const ChatContext = createContext<chatContextType>(chatContextDefaultValues);

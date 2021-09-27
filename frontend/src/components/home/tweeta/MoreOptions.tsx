@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import {
 	AiOutlineMore,
 	AiOutlineEye,
@@ -64,15 +64,9 @@ const MoreOptions: React.FC<ChildProps> = ({
 
 	return (
 		<div className='tweetaOption'>
-			<Button
-				aria-controls='simple-menu'
-				aria-haspopup='true'
-				variant='text'
-				size='small'
-				onClick={handleClick}
-			>
+			<IconButton onClick={handleClick}>
 				<AiOutlineMore />
-			</Button>
+			</IconButton>
 			<div className='optionsMenu'>
 				<Menu
 					id='simple-menu'

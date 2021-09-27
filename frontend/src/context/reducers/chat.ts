@@ -22,6 +22,7 @@ interface ChatState {
 	singleChatError: string | null;
 	singleChat: IChat;
 	updateChatLoading: boolean;
+	updateChatSuccess: boolean;
 	updateChatError: string | null;
 	chatMessagesLoading: boolean;
 	chatMessagesError: string | null;
@@ -49,6 +50,7 @@ export const initialChatState: ChatState = {
 	updateChatLoading: false,
 	updateChatError: null,
 	chatMessagesLoading: false,
+	updateChatSuccess: false,
 	chatMessagesError: null,
 	chatMessages: [],
 	markChatMessagesAsReadLoading: false,
@@ -143,7 +145,11 @@ export const chatReducer = (
 			return {
 				...state,
 				updateChatLoading: false,
-				singleChat: action.payload,
+				updateChatSuccess: true,
+				singleChat: {
+					...state.singleChat,
+					chatName: action.payload.chatName,
+				},
 			};
 		case UpdateChatType.UPDATE_CHAT_FAIL:
 			return {
@@ -179,14 +185,19 @@ export const chatReducer = (
 				...state,
 				createMessageLoading: false,
 				createMessageSuccess: true,
-				message: action.payload,
 				chatMessages: [...state.chatMessages, action.payload],
+				message: action.payload,
 			};
 		case CreateMessageType.CREATE_MESSAGE_FAIL:
 			return {
 				...state,
 				createMessageLoading: false,
 				createMessageError: action.payload,
+			};
+		case CreateMessageType.MESSAGE_RECIEVED:
+			return {
+				...state,
+				chatMessages: [...state.chatMessages, action.payload],
 			};
 		default:
 			return state;

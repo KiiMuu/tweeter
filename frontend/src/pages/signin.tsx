@@ -16,7 +16,6 @@ import {
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { AiOutlineMail } from 'react-icons/ai';
 import { HiOutlineKey } from 'react-icons/hi';
-import { Spin } from '../styles/spinners';
 import UserContext from '../context/contexts/user';
 
 const Signin: React.FC = () => {
@@ -122,14 +121,16 @@ const Signin: React.FC = () => {
 										variant='contained'
 										color='primary'
 										size='large'
+										disableElevation
 									>
-										{loading ? <Spin></Spin> : 'Sign In'}
+										{loading ? 'Loading...' : 'Sign In'}
 									</Button>
 									<Button
 										style={{ borderRadius: '0' }}
 										color='primary'
 										variant='outlined'
 										size='large'
+										disableElevation
 									>
 										<Link
 											to='/signup'

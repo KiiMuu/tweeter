@@ -6,6 +6,8 @@ import ChatContext from '../context/contexts/chat';
 import { AlertStyles } from '../styles/notifiers';
 import { Alert } from '@material-ui/lab';
 import { Spin } from '../styles/spinners';
+import { IMessage } from '../typings';
+import useSocket from '../hooks/useSocket';
 
 const ChatPage: React.FC = () => {
 	const {
@@ -17,6 +19,7 @@ const ChatPage: React.FC = () => {
 		chatMessages,
 		getChat,
 		getChatMessages,
+		onMessageRecieved,
 	} = useContext(ChatContext);
 	const { id } = useParams<any>();
 
@@ -24,7 +27,11 @@ const ChatPage: React.FC = () => {
 		getChat(id);
 		getChatMessages(id);
 		// eslint-disable-next-line
-	}, []);
+	}, [id]);
+
+	useSocket('new message', (message: IMessage) => {
+		onMessageRecieved(message);
+	});
 
 	if (singleChatLoading)
 		return (

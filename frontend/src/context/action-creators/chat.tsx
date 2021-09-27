@@ -13,6 +13,7 @@ import {
 } from '../types/chat';
 import useUserInfo from '../../hooks/useUserInfo';
 import { IChat, IMessage, UserInfoProps } from '../../typings';
+import { toast } from 'react-hot-toast';
 
 const ChatState = ({ children }: { children: React.ReactNode }) => {
 	const [state, dispatch] = useReducer(chatReducer, initialChatState);
@@ -137,6 +138,11 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				type: UpdateChatType.UPDATE_CHAT_SUCCESS,
 				payload: data,
 			});
+
+			toast.success('Chat updated successfully!', {
+				position: 'top-center',
+				duration: 5000,
+			});
 		} catch (error: any) {
 			dispatch({
 				type: UpdateChatType.UPDATE_CHAT_FAIL,
@@ -250,6 +256,13 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 		}
 	};
 
+	const onMessageRecieved = (message: IMessage) => {
+		dispatch({
+			type: CreateMessageType.MESSAGE_RECIEVED,
+			payload: message,
+		});
+	};
+
 	return (
 		<ChatContext.Provider
 			value={{
@@ -264,6 +277,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				singleChatError: state.singleChatError,
 				singleChat: state.singleChat,
 				updateChatLoading: state.updateChatLoading,
+				updateChatSuccess: state.updateChatSuccess,
 				updateChatError: state.updateChatError,
 				chatMessagesLoading: state.chatMessagesLoading,
 				chatMessagesError: state.chatMessagesError,
@@ -283,6 +297,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 				getChatMessages,
 				markChatMessagesAsRead,
 				createMessage,
+				onMessageRecieved,
 			}}
 		>
 			{children}

@@ -25,6 +25,9 @@ export const StyledChatBox = styled.section`
 	}
 	.heading {
 		background: var(--grayColor);
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 	}
 	.messagesArea {
 		background: var(--grayColor);
@@ -117,4 +120,9 @@ export const MessageBox = styled.div<UserNames>`
 			: {
 					alignSelf: 'flex-start',
 			  }}
+`;
+
+export const StyledEditForm = styled.div`
+	padding: 10px var(--paddingLeftRight);
+	margin-top: 30px;
 `;

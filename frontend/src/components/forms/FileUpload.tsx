@@ -2,7 +2,7 @@ import { Fragment, useContext, useEffect } from 'react';
 import FileResizer from 'react-image-file-resizer';
 import TweetaContext from '../../context/contexts/tweeta';
 import { BsImageFill } from 'react-icons/bs';
-import { Button } from '@material-ui/core';
+import { IconButton } from '@material-ui/core';
 
 interface Image {
 	public_id: string;
@@ -71,14 +71,9 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 				onChange={handleUpload}
 			/>
 			<label htmlFor='contained-button-file'>
-				<Button
-					variant='text'
-					color='primary'
-					component='span'
-					size='small'
-				>
+				<IconButton color='primary' component='span' size='small'>
 					<BsImageFill />
-				</Button>
+				</IconButton>
 			</label>
 		</Fragment>
 	);
