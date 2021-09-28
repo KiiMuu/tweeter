@@ -83,7 +83,7 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 				message='Tweet has been posted'
 			/>
 			<div className='userPhoto'>
-				<Link to='/profile'>
+				<Link to={`/profile/${currentUser?.user?.username}`}>
 					<img
 						src={currentUser?.user?.profilePic}
 						alt={currentUser?.user?.username}

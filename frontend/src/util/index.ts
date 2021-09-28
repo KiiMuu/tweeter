@@ -1,4 +1,4 @@
-import { IChat, UserInfoProps } from '../typings';
+import { IChat, UserInfoProps, INotification } from '../typings';
 
 export const getChatName = (chat: IChat, currentUser: UserInfoProps) => {
 	let chatName = chat?.chatName;
@@ -32,4 +32,14 @@ const getOtherChatUsers = (
 	return users?.filter(
 		(user: UserInfoProps) => user?._id !== currentUser?.user?._id
 	);
+};
+
+export const toNotificationBox = (notification: INotification) => {
+	if (notification?.type === 'follow') {
+		return `/profile/${notification?.from.username}`;
+	} else if (notification?.type === 'message') {
+		return `/messages/${notification?.entityId}/chat`;
+	} else {
+		return `/tweeta/${notification?.entityId}`;
+	}
 };

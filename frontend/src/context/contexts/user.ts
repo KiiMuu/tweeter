@@ -10,7 +10,7 @@ type userContextType = {
 	loading: boolean;
 	error: string | null;
 	currentUser: any;
-	userProfile: object;
+	userProfile: {};
 	userProfileData: {
 		tweets: ITweeta[];
 		replies: ITweeta[];

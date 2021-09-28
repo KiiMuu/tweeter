@@ -46,6 +46,11 @@ export const ProfileHeadContainer = styled.div`
 				}
 			}
 		}
+		.followBtn {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
 	}
 	.userBio {
 		margin-top: 15px;

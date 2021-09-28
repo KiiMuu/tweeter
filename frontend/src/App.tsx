@@ -12,6 +12,7 @@ import useUserInfo from './hooks/useUserInfo';
 import SocketContext from './context/contexts/socket';
 import useSocket from './hooks/useSocket';
 import getNotificationText from './helpers/getNotificationText';
+import { toNotificationBox } from './util';
 import {
 	ListItem,
 	ListItemAvatar,
@@ -28,6 +29,7 @@ const Search = lazy(() => import('./pages/search'));
 const Notifications = lazy(() => import('./pages/notifications'));
 const Messages = lazy(() => import('./pages/messages'));
 const ChatPage = lazy(() => import('./pages/chat'));
+const WhatsHappening = lazy(() => import('./pages/WhatsHappening'));
 
 const App: React.FC = () => {
 	const { currentUser } = useUserInfo();
@@ -43,13 +45,7 @@ const App: React.FC = () => {
 	const notificationContent = useCallback(
 		() => (
 			<Link
-				to={`/${
-					lastNotification?.type === 'follow' ? 'profile' : 'tweeta'
-				}/${
-					lastNotification?.type === 'follow'
-						? lastNotification?.from.username
-						: lastNotification?.entityId
-				}`}
+				to={toNotificationBox(lastNotification)}
 				style={{ textDecoration: 'none', color: 'inherit' }}
 			>
 				<ListItem
@@ -83,26 +79,21 @@ const App: React.FC = () => {
 				</ListItem>
 			</Link>
 		),
-		[
-			lastNotification?.createdAt,
-			lastNotification?.from,
-			lastNotification?.type,
-			lastNotification?.entityId,
-		]
+		[lastNotification]
 	);
 
 	useEffect(() => {
 		if (!currentUser?.token) {
 			<Redirect to='/signin' />;
 		}
-	}, [currentUser]);
+	}, [currentUser?.token]);
 	useEffect(() => {
 		lastNotification?.from &&
 			toast.custom(notificationContent, {
 				position: 'bottom-left',
 				duration: 5000,
 			});
-	}, [lastNotification?.from, notificationContent]);
+	}, [lastNotification, notificationContent]);
 	useEffect(() => {
 		getNotifications('');
 		getUserChats(true);
@@ -146,6 +137,11 @@ const App: React.FC = () => {
 						exact
 						path={ROUTES.SINGLE_CHAT}
 						component={ChatPage}
+					/>
+					<ProtectRoute
+						exact
+						path={ROUTES.WHATS_HAPPENING}
+						component={WhatsHappening}
 					/>
 				</Switch>
 			</Router>

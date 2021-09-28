@@ -7,3 +7,4 @@ export const SEARCH: string = '/search';
 export const NOTIFICATIONS: string = '/notifications';
 export const MESSAGES: string = '/messages';
 export const SINGLE_CHAT: string = '/messages/:id/chat';
+export const WHATS_HAPPENING: string = '/whats-happening';

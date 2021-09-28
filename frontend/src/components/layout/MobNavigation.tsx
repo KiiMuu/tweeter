@@ -1,13 +1,12 @@
 import { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { Sider } from '../../styles/lists';
-import { Button, Tooltip, Zoom, Badge, IconButton } from '@material-ui/core';
-import { HiOutlineHome } from 'react-icons/hi';
+import { IconButton, Tooltip, Zoom, Badge } from '@material-ui/core';
+import { StyledMobNavigation } from '../../styles/lists';
 import { BiMessageDetail } from 'react-icons/bi';
-import { AiOutlineUser } from 'react-icons/ai';
+import { HiOutlineHome } from 'react-icons/hi';
+import { AiOutlineUser, AiOutlineFire } from 'react-icons/ai';
 import {
 	IoMdNotificationsOutline,
-	IoLogoTwitter,
 	IoMdSearch,
 	IoMdLogOut,
 } from 'react-icons/io';
@@ -17,7 +16,7 @@ import NotificationContext from '../../context/contexts/notification';
 import { IChat } from '../../typings';
 import ChatContext from '../../context/contexts/chat';
 
-const Sidebar: React.FC = () => {
+const MobNavigation = () => {
 	const { logout } = useContext(UserContext);
 	const { notificationsList } = useContext(NotificationContext);
 	const { userChats } = useContext(ChatContext);
@@ -48,108 +47,13 @@ const Sidebar: React.FC = () => {
 	};
 
 	return (
-		<Sider>
+		<StyledMobNavigation>
 			<ul>
 				<li>
 					<Tooltip title='Home' arrow TransitionComponent={Zoom}>
 						<IconButton>
 							<Link to='/'>
-								<IoLogoTwitter />
-							</Link>
-						</IconButton>
-					</Tooltip>
-				</li>
-				<li>
-					<Link to='/'>
-						<Button
-							variant='text'
-							color='primary'
-							startIcon={<HiOutlineHome />}
-						>
-							<span className='linkTitle'>Home</span>
-						</Button>
-					</Link>
-				</li>
-				<li>
-					<Badge
-						color='secondary'
-						badgeContent={unreadNotifications?.length}
-					>
-						<Link to='/notifications'>
-							<Button
-								variant='text'
-								color='primary'
-								startIcon={<IoMdNotificationsOutline />}
-							>
-								<span className='linkTitle'>Notifications</span>
-							</Button>
-						</Link>
-					</Badge>
-				</li>
-				<li>
-					<Badge
-						color='secondary'
-						badgeContent={unreadMesages?.length}
-					>
-						<Link to='/messages'>
-							<Button
-								variant='text'
-								color='primary'
-								startIcon={<BiMessageDetail />}
-							>
-								<span className='linkTitle'>Messages</span>
-							</Button>
-						</Link>
-					</Badge>
-				</li>
-				<li>
-					<Link to='/search'>
-						<Button
-							variant='text'
-							color='primary'
-							startIcon={<IoMdSearch />}
-						>
-							<span className='linkTitle'>Search</span>
-						</Button>
-					</Link>
-				</li>
-				<li>
-					<Link to={`/profile/${currentUser?.user.username}`}>
-						<Button
-							variant='text'
-							color='primary'
-							startIcon={<AiOutlineUser />}
-						>
-							<span className='linkTitle'>My Profile</span>
-						</Button>
-					</Link>
-				</li>
-				<li>
-					<Button
-						onClick={handleLogout}
-						variant='text'
-						color='primary'
-						startIcon={<IoMdLogOut />}
-					>
-						<span className='linkTitle'>Sign Out</span>
-					</Button>
-				</li>
-			</ul>
-			<ul className='linkIcon'>
-				<li>
-					<Tooltip title='Home' arrow TransitionComponent={Zoom}>
-						<IconButton>
-							<Link to='/'>
-								<IoLogoTwitter />
-							</Link>
-						</IconButton>
-					</Tooltip>
-				</li>
-				<li>
-					<Tooltip title='Home' arrow TransitionComponent={Zoom}>
-						<IconButton>
-							<Link to='/'>
-								<HiOutlineHome />
+								<HiOutlineHome size={18} />
 							</Link>
 						</IconButton>
 					</Tooltip>
@@ -167,11 +71,24 @@ const Sidebar: React.FC = () => {
 						>
 							<IconButton>
 								<Link to='/notifications'>
-									<IoMdNotificationsOutline />
+									<IoMdNotificationsOutline size={18} />
 								</Link>
 							</IconButton>
 						</Tooltip>
 					</Badge>
+				</li>
+				<li>
+					<Tooltip
+						title='Whats Happening'
+						arrow
+						TransitionComponent={Zoom}
+					>
+						<IconButton>
+							<Link to='/whats-happening'>
+								<AiOutlineFire size={18} />
+							</Link>
+						</IconButton>
+					</Tooltip>
 				</li>
 				<li>
 					<Badge
@@ -186,7 +103,7 @@ const Sidebar: React.FC = () => {
 						>
 							<IconButton>
 								<Link to='/messages'>
-									<BiMessageDetail />
+									<BiMessageDetail size={18} />
 								</Link>
 							</IconButton>
 						</Tooltip>
@@ -196,7 +113,7 @@ const Sidebar: React.FC = () => {
 					<Tooltip title='Search' arrow TransitionComponent={Zoom}>
 						<IconButton>
 							<Link to='/search'>
-								<IoMdSearch />
+								<IoMdSearch size={18} />
 							</Link>
 						</IconButton>
 					</Tooltip>
@@ -209,7 +126,7 @@ const Sidebar: React.FC = () => {
 					>
 						<IconButton>
 							<Link to={`/profile/${currentUser?.user.username}`}>
-								<AiOutlineUser />
+								<AiOutlineUser size={18} />
 							</Link>
 						</IconButton>
 					</Tooltip>
@@ -217,13 +134,13 @@ const Sidebar: React.FC = () => {
 				<li>
 					<Tooltip title='Sign Out' arrow TransitionComponent={Zoom}>
 						<IconButton onClick={handleLogout}>
-							<IoMdLogOut />
+							<IoMdLogOut size={18} />
 						</IconButton>
 					</Tooltip>
 				</li>
 			</ul>
-		</Sider>
+		</StyledMobNavigation>
 	);
 };
 
-export default Sidebar;
+export default MobNavigation;

@@ -50,6 +50,7 @@ const MessageInput: React.FC<Props> = ({ singleChat, updateTyping }) => {
 		if (createMessageSuccess) {
 			socket?.emit('stop typing', singleChat?._id);
 			socket?.emit('new message', message);
+			socket?.emit('notification received', singleChat?._id);
 			setContent('');
 		}
 	}, [socket, createMessageSuccess, singleChat?._id, message]);

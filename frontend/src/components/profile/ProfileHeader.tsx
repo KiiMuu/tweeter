@@ -8,6 +8,7 @@ import {
 	DialogTitle,
 	Snackbar,
 	IconButton,
+	Tooltip,
 } from '@material-ui/core';
 import { format } from 'date-fns';
 import useUserInfo from '../../hooks/useUserInfo';
@@ -20,7 +21,7 @@ import {
 	HiOutlineLink,
 	CgTree,
 	BiCalendar,
-	FaEnvelope,
+	AiOutlineMessage,
 } from 'react-icons/all';
 import UserContext from '../../context/contexts/user';
 import SocketContext from '../../context/contexts/socket';
@@ -194,15 +195,6 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 							<span>@{user?.user?.username}</span>
 						</div>
 					</div>
-					{currentUser?.user?._id !== user?.user?._id && (
-						<div className='messageBtn'>
-							<Link to={`/messages/${user?.user?._id}/chat`}>
-								<IconButton color='primary'>
-									<FaEnvelope size={16} />
-								</IconButton>
-							</Link>
-						</div>
-					)}
 					{currentUser?.user?._id === user?.user?._id ? (
 						<div className='editProfileBtn'>
 							<Button
@@ -217,6 +209,19 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 						</div>
 					) : (
 						<div className='followBtn'>
+							{currentUser?.user?._id !== user?.user?._id && (
+								<Tooltip
+									title={`Message ${user?.user?.username}`}
+								>
+									<Link
+										to={`/messages/${user?.user?._id}/chat`}
+									>
+										<IconButton color='primary'>
+											<AiOutlineMessage size={16} />
+										</IconButton>
+									</Link>
+								</Tooltip>
+							)}
 							<Button
 								variant={
 									currentUser?.user?.following?.includes(

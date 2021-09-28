@@ -112,7 +112,11 @@ interface FollowActionRequest {
 
 interface FollowActionSuccess {
 	type: FollowType.FOLLOW_SUCCESS;
-	payload: IUserInfo;
+	payload: {
+		followers: IUserInfo[];
+		following: IUserInfo[];
+		followedUserId: string;
+	};
 }
 
 interface FollowActionFail {
