@@ -35,10 +35,7 @@ type chatContextType = {
 	) => { singleChat: IChat } | object;
 	getChatMessages: (chatId: string) => { chatMessages: IMessage[] } | object;
 	markChatMessagesAsRead: (chatId: string) => { ok: string } | object;
-	createMessage: (
-		content: string,
-		chatId: string
-	) => { message: IMessage } | object;
+	createMessage: (content: string, chatId: string) => IMessage;
 	onMessageRecieved: (message: IMessage) => void;
 };
 

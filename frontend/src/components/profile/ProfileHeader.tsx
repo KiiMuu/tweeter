@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
 	Button,
@@ -77,7 +77,14 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 			location,
 			website,
 			birthdate,
-		});
+		})
+			.then(() => {
+				setOpenDialog(false);
+				setOpen(true);
+			})
+			.catch((error: any) => {
+				setOpen(true);
+			});
 	};
 
 	const handleFollow = () => {
@@ -86,18 +93,6 @@ const ProfileHeader: React.FC<UserInfoProps> = ({ user }) => {
 		!user?.user?.followers?.includes(currentUser?.user._id) &&
 			socket?.emit('notification received', user?.user?._id);
 	};
-
-	useEffect(() => {
-		if (editProfileSuccess) {
-			setOpenDialog(false);
-			setOpen(true);
-		}
-
-		if (editProfileError) {
-			setOpen(true);
-		}
-		// eslint-disable-next-line
-	}, [editProfileSuccess, editProfileError]);
 
 	const editUserProfileDialog = () => (
 		<Dialog

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import { BiCamera } from 'react-icons/bi';
 import useUserInfo from '../../hooks/useUserInfo';
@@ -60,11 +60,9 @@ const EditProfile: React.FC<ChildProps> = ({
 	// * state
 	const {
 		addProfilePicLoading,
-		addProfilePicSuccess,
 		profilePic: profilePhoto,
 		addUserPic,
 		addCoverPicLoading,
-		addCoverPicSuccess,
 		coverPhoto,
 		addUserCover,
 	} = useContext(UserContext);
@@ -107,7 +105,11 @@ const EditProfile: React.FC<ChildProps> = ({
 				croppedAreaPixels
 			);
 			setCroppedImage(croppedImage);
-			addUserCover({ coverPhoto: croppedImage });
+			addUserCover({ coverPhoto: croppedImage }).then(() => {
+				setCoverPhoto(coverPhoto);
+				setOpen(true);
+				setCoverSrc('');
+			});
 		} catch (e) {
 			console.error(e);
 		}
@@ -121,7 +123,11 @@ const EditProfile: React.FC<ChildProps> = ({
 				croppedAreaPixels
 			);
 			setCroppedImage(croppedImage);
-			addUserPic({ profilePic: croppedImage });
+			addUserPic({ profilePic: croppedImage }).then(() => {
+				setProfilePic(profilePhoto);
+				setOpen(true);
+				setProfileSrc('');
+			});
 		} catch (e) {
 			console.error(e);
 		}
@@ -132,21 +138,6 @@ const EditProfile: React.FC<ChildProps> = ({
 		setProfileSrc('');
 		setCoverSrc('');
 	}, []);
-
-	useEffect(() => {
-		if (addProfilePicSuccess) {
-			setProfilePic(profilePhoto);
-			setOpen(true);
-			setProfileSrc('');
-		}
-
-		if (addCoverPicSuccess) {
-			setCoverPhoto(coverPhoto);
-			setOpen(true);
-			setCoverSrc('');
-		}
-		// eslint-disable-next-line
-	}, [addProfilePicSuccess, addCoverPicSuccess]);
 
 	return (
 		<UserEdit>

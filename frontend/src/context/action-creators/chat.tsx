@@ -221,10 +221,7 @@ const ChatState = ({ children }: { children: React.ReactNode }) => {
 	};
 
 	// messages
-	const createMessage = async (
-		content: string,
-		chatId: string
-	): Promise<{ message: IMessage } | void> => {
+	const createMessage = async (content: string, chatId: string): IMessage => {
 		try {
 			dispatch({
 				type: CreateMessageType.CREATE_MESSAGE_REQUEST,

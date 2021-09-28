@@ -16,7 +16,6 @@ interface ChildProps {
 
 const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 	const {
-		addTweetaImgError,
 		addTweetaImgSuccess,
 		addTweetaImgs,
 		images: fileChunks,
@@ -44,10 +43,6 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 	};
 
 	useEffect(() => {
-		if (addTweetaImgError) {
-			console.log({ addTweetaImgError });
-		}
-
 		if (addTweetaImgSuccess) {
 			let uploadedFiles = images;
 
@@ -58,7 +53,7 @@ const FileUpload: React.FC<ChildProps> = ({ images, setImages }) => {
 			}
 		}
 		// eslint-disable-next-line
-	}, [addTweetaImgError, addTweetaImgSuccess, images, fileChunks]);
+	}, [addTweetaImgSuccess, images, fileChunks]);
 
 	return (
 		<Fragment>

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { CreateTweetaProps } from '../../typings';
 import { Reply } from '../../styles/tweeta';
 import FileUpload from './FileUpload';
@@ -16,15 +16,18 @@ const ReplyForm: React.FC<CreateTweetaProps> = ({ singleTweeta }) => {
 	const [content, setContent] = useState<string>('');
 	const [images, setImages] = useState<Image[]>([]);
 
-	const {
-		createTweeta,
-		tweetaCreateLoading,
-		tweetaCreateSuccess,
-		removeTweetaImgs,
-	} = useContext(TweetaContext);
+	const { createTweeta, tweetaCreateLoading, removeTweetaImgs } =
+		useContext(TweetaContext);
 
 	const handleCreateReply = () => {
-		createTweeta({ content, images, replyTo: singleTweeta?.tweeta?._id });
+		createTweeta({
+			content,
+			images,
+			replyTo: singleTweeta?.tweeta?._id,
+		}).then(() => {
+			setContent('');
+			setImages([]);
+		});
 	};
 
 	const handleRemove = (id: string) => {
@@ -34,13 +37,6 @@ const ReplyForm: React.FC<CreateTweetaProps> = ({ singleTweeta }) => {
 
 		setImages(filteredImgs);
 	};
-
-	useEffect(() => {
-		if (tweetaCreateSuccess) {
-			setContent('');
-			setImages([]);
-		}
-	}, [tweetaCreateSuccess]);
 
 	return (
 		<Reply>

@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import ChatContext from '../../context/contexts/chat';
 import Picker, { SKIN_TONE_LIGHT } from 'emoji-picker-react';
 import { StyledMessageInput } from '../../styles/messages';
@@ -21,6 +22,7 @@ const MessageInput: React.FC<Props> = ({ singleChat, updateTyping }) => {
 	const { createMessage, createMessageSuccess, message } =
 		useContext(ChatContext);
 	const { socket } = useContext(SocketContext);
+	const { pathname } = useLocation();
 
 	const onEmojiClick = (
 		e: React.MouseEvent<Element, MouseEvent>,
@@ -50,10 +52,11 @@ const MessageInput: React.FC<Props> = ({ singleChat, updateTyping }) => {
 		if (createMessageSuccess) {
 			socket?.emit('stop typing', singleChat?._id);
 			socket?.emit('new message', message);
-			socket?.emit('notification received', singleChat?._id);
 			setContent('');
+			if (pathname === `/messages/${singleChat?._id}/chat`) return;
+			socket?.emit('notification received', singleChat?._id);
 		}
-	}, [socket, createMessageSuccess, singleChat?._id, message]);
+	}, [socket, pathname, createMessageSuccess, singleChat?._id, message]);
 
 	return (
 		<StyledMessageInput onKeyPress={handleEnterPress}>

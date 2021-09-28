@@ -51,9 +51,7 @@ const Tweeta: React.FC<TweetaProps> = ({
 		removeTweetaLoading,
 		tweetaRetweet,
 		createTweeta,
-		tweetaCreateSuccess,
 		tweetaCreateLoading,
-		removeTweetaError,
 	} = useContext(TweetaContext);
 	const { follow, handleTweetaPin, pinTweetaLoading } =
 		useContext(UserContext);
@@ -99,7 +97,13 @@ const Tweeta: React.FC<TweetaProps> = ({
 	};
 
 	const handleTweetaRemove = (id: string) => {
-		deleteTweeta(id);
+		deleteTweeta(id)
+			.then(() => {
+				handleMenuClose();
+			})
+			.catch(() => {
+				handleMenuClose();
+			});
 	};
 
 	const handleClickOpen = (id: string) => {
@@ -109,25 +113,6 @@ const Tweeta: React.FC<TweetaProps> = ({
 	const handleModalClose = () => {
 		setSelectedImg(null);
 	};
-
-	useEffect(() => {
-		if (removeTweetaSuccess) {
-			handleMenuClose();
-		}
-
-		if (tweetaCreateSuccess) {
-			setDialogOpen(false);
-		}
-
-		if (removeTweetaError) {
-			handleMenuClose();
-		}
-	}, [
-		removeTweetaSuccess,
-		tweetaCreateSuccess,
-		removeTweetaError,
-		handleMenuClose,
-	]);
 
 	useEffect(() => {
 		if (

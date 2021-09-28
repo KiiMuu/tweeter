@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Picker from 'emoji-picker-react';
 import TweetaContext from '../../context/contexts/tweeta';
@@ -25,12 +25,8 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 
 	const { open, setOpen, handleClose } = useSnackBar();
 	const { currentUser } = useContext(UserContext);
-	const {
-		tweetaCreateError,
-		tweetaCreateSuccess,
-		tweetaCreateLoading,
-		removeTweetaImgs,
-	} = useContext(TweetaContext);
+	const { tweetaCreateError, tweetaCreateLoading, removeTweetaImgs } =
+		useContext(TweetaContext);
 
 	const setInput =
 		(setter: Function) => (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -40,7 +36,15 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 	const handleCreateTweet = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		createTweeta({ content, images });
+		createTweeta({ content, images })
+			.then(() => {
+				setContent('');
+				setImages([]);
+				setOpen(prev => !prev);
+			})
+			.catch((error: any) => {
+				setOpen(prev => !prev);
+			});
 	};
 
 	const handleRemove = (id: string) => {
@@ -60,27 +64,17 @@ const CreateTweet: React.FC<CreateTweetaProps> = ({ createTweeta }) => {
 		setContent(`${content}${emojiObject.emoji}`);
 	};
 
-	useEffect(() => {
-		if (tweetaCreateError) {
-			setOpen(prev => !prev);
-		}
-
-		if (tweetaCreateSuccess) {
-			setContent('');
-			setImages([]);
-			setOpen(prev => !prev);
-		}
-
-		// eslint-disable-next-line
-	}, [tweetaCreateError, tweetaCreateSuccess]);
-
 	return (
 		<TweetForm onSubmit={handleCreateTweet}>
 			<Snackbar
 				open={open}
 				handleClose={handleClose}
 				autoHideDuration={3000}
-				message='Tweet has been posted'
+				message={
+					tweetaCreateError
+						? tweetaCreateError
+						: 'Tweet has been posted'
+				}
 			/>
 			<div className='userPhoto'>
 				<Link to={`/profile/${currentUser?.user?.username}`}>
