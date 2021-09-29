@@ -139,7 +139,8 @@ const Tweeta: React.FC<TweetaProps> = ({
 				message='Copied'
 			/>
 			<div className='headerText'>
-				{tweeta?.isPinned ? (
+				{tweeta?.postedBy?.username === currentUser?.user?.username &&
+				tweeta?.isPinned ? (
 					<Fragment>
 						<span>
 							<AiOutlinePushpin />

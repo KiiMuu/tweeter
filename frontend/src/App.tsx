@@ -91,7 +91,7 @@ const App: React.FC = () => {
 		lastNotification?.from &&
 			toast.custom(notificationContent, {
 				position: 'bottom-left',
-				duration: 5000,
+				duration: 7000,
 			});
 	}, [lastNotification, notificationContent]);
 	useEffect(() => {
