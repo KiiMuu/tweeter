@@ -19,7 +19,7 @@
 
 #### Fully-Responsive
 
-![Chat Demo](Demo/Responsiveness.gif)
+![Fully-Responsive Demo](Demo/Responsiveness.gif)
 
 #### Chat
 
@@ -27,20 +27,20 @@
 
 ### Notification Page
 
-![Chat Demo](Demo/Notification_Page.gif)
+![Notification Page Demo](Demo/Notification_Page.gif)
 
 ### Tweeta create and search
 
-![Chat Demo](Demo/Create_Tweet_And_Search.gif)
+![Tweeta create and search Demo](Demo/Create_Tweet_And_Search.gif)
 
 ### Group Chat
 
-![Chat Demo](Demo/Group_Chat.gif)
+![Group Chat Demo](Demo/Group_Chat.gif)
 
 ### User Profile
 
-![Chat Demo](Demo/Profile.gif)
+![User Profile Demo](Demo/Profile.gif)
 
 ### Real-Time Notification
 
-![Chat Demo](Demo/Real_Notifications.gif)
+![Real-Time Notification Demo](Demo/Real_Notification.gif)
