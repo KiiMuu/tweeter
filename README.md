@@ -14,3 +14,33 @@
   <li>Real-Time notifications</li>
   <li>Real-Time messages</li>
 </ul>
+
+## Demo
+
+#### Fully-Responsive
+
+![Chat Demo](Demo/Responsiveness.gif)
+
+#### Chat
+
+![Chat Demo](Demo/Chat.gif)
+
+### Notification Page
+
+![Chat Demo](Demo/Notification_Page.gif)
+
+### Tweeta create and search
+
+![Chat Demo](Demo/Create_Tweet_And_Search.gif)
+
+### Group Chat
+
+![Chat Demo](Demo/Group_Chat.gif)
+
+### User Profile
+
+![Chat Demo](Demo/Profile.gif)
+
+### Real-Time Notification
+
+![Chat Demo](Demo/Real_Notifications.gif)
